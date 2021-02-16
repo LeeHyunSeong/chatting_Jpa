@@ -1,12 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<meta charset="UTF-8">
-	<title>Room</title>
-	<style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Room</title>
+    <style>
 		*{
 			margin:0;
 			padding:0;
@@ -70,7 +68,8 @@
 			width: 330px;
 			height: 25px;
 		}
-	</style>
+
+    </style>
 </head>
 
 <script type="text/javascript">
@@ -81,8 +80,8 @@
 	}
 
 	function getRoom(){
-		commonAjax('/getRoom', "", 'post', function(result){
-			createChatingRoom(result);
+		commonAjax('/api/rooms', "", 'get', function(result){
+			createChattingRoom(result);
 		});
 	}
 	
@@ -90,8 +89,8 @@
 		$("#createRoom").click(function(){
 			var msg = {	roomName : $('#roomName').val()	};
 
-			commonAjax('/createRoom', msg, 'post', function(result){
-				createChatingRoom(result);
+			commonAjax('/api/rooms', msg, 'post', function(result){
+				createChattingRoom(result);
 			});
 
 			$("#roomName").val("");
@@ -99,10 +98,10 @@
 	}
 
 	function goRoom(number, name){
-		location.href="/moveChating?roomName="+name+"&"+"roomNumber="+number;
+		location.href="/chatting?roomName="+name+"&"+"roomNumber="+number;
 	}
 
-	function createChatingRoom(res){
+	function createChattingRoom(res){
 		if(res != null){
 			var tag = "<tr><th class='num'>순서</th><th class='room'>방 이름</th><th class='go'></th></tr>";
 			res.forEach(function(d, idx){
@@ -118,37 +117,40 @@
 		}
 	}
 
-	function commonAjax(url, parameter, type, calbak, contentType){
+	function commonAjax(url, parameter, type, callback, contentType){
 		$.ajax({
 			url: url,
 			data: parameter,
 			type: type,
 			contentType : contentType!=null?contentType:'application/x-www-form-urlencoded; charset=UTF-8',
 			success: function (res) {
-				calbak(res);
+				callback(res);
 			},
 			error : function(err){
 				console.log('error');
-				calbak(err);
+				callback(err);
 			}
 		});
 	}
+
 </script>
 <body>
-	<div class="container">
-		<h1>채팅방</h1>
-		<div id="roomContainer" class="roomContainer">
-			<table id="roomList" class="roomList"></table>
-		</div>
-		<div>
-			<table class="inputTable">
-				<tr>
-					<th>방 제목</th>
-					<th><input type="text" name="roomName" id="roomName"></th>
-					<th><button id="createRoom">방 만들기</button></th>
-				</tr>
-			</table>
-		</div>
-	</div>
+<div class="container">
+    <h1>채팅방</h1>
+    <div id="roomContainer" class="roomContainer">
+        <table id="roomList" class="roomList"></table>
+    </div>
+    <div>
+        <table class="inputTable">
+            <tr>
+                <th>방 제목</th>
+                <th><input type="text" name="roomName" id="roomName"></th>
+                <th>
+                    <button id="createRoom">방 만들기</button>
+                </th>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>

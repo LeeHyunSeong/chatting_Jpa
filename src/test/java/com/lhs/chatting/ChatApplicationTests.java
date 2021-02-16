@@ -1,4 +1,4 @@
-package com.lhs.chating;
+package com.lhs.chatting;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

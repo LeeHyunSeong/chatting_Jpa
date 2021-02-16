@@ -1,4 +1,4 @@
-package com.lhs.chating.config;
+package com.lhs.chatting.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -6,17 +6,18 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-import com.lhs.chating.handler.SocketHandler;
+import com.lhs.chatting.handler.SocketHandler;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfig implements WebSocketConfigurer{
+public class WebSocketConfig implements WebSocketConfigurer {
 
-	@Autowired
-	SocketHandler socketHandler;
-	
-	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(socketHandler, "/chating/{roomNumber}");
-	}
+    @Autowired
+    SocketHandler socketHandler;
+
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(socketHandler, "/chatting/{roomNumber}");
+    }
+
 }
