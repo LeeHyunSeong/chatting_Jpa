@@ -1,17 +1,18 @@
 package com.lhs.chatting.handler;
 
-import com.lhs.chatting.model.Room;
-import com.lhs.chatting.util.JsonUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.lhs.chatting.model.Room;
+import com.lhs.chatting.util.JsonUtils;
 
 @Component
 public class SocketHandler extends TextWebSocketHandler {
