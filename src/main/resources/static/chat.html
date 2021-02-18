@@ -49,6 +49,13 @@
 <script type="text/javascript">
 	var ws;
 
+	window.onload = function(){
+		var msg = {	roomNumber : document.location.href.split("roomNumber=")[1]	};
+		commonAjax('/api/room', msg, 'get', function(result){
+			initRoom(result);
+		});
+	}
+	
 	function wsOpen(){
 		//웹소켓 전송시 현재 방의 번호를 넘겨서 보낸다.
 		ws = new WebSocket("ws://" + location.host + "/chatting/"+$("#roomNumber").val());
@@ -57,7 +64,6 @@
 		
 	function wsEvt() {
 		ws.onopen = function(data){
-			//소켓이 열리면 동작
 		}
 		
 		ws.onmessage = function(data) {
@@ -113,11 +119,35 @@
 		ws.send(JSON.stringify(option))
 		$('#chatting').val("");
 	}
+	
+	function initRoom(res){
+		var room = res;
+		var roomName = document.getElementById("roomName");
+		roomName.innerHTML = room.name + "의 채팅방";
+		$("#roomNumber").val(room.number);
+		$("#sessionId").val(room.name);
+	}
+	
+	function commonAjax(url, parameter, type, callback, contentType){
+		$.ajax({
+			url: url,
+			data: parameter,
+			type: type,
+			contentType : contentType!=null?contentType:'application/x-www-form-urlencoded; charset=UTF-8',
+			success: function (res) {
+				callback(res);
+			},
+			error : function(err){
+				console.log('error');
+				callback(err);
+			}
+		});
+	}
 
 </script>
 <body>
 <div id="container" class="container">
-    <h1>${roomName}의 채팅방</h1>
+    <h1 id="roomName"></h1>
     <input type="hidden" id="sessionId" value="">
     <input type="hidden" id="roomNumber" value="${roomNumber}">
 

@@ -44,17 +44,23 @@ public class MainController {
         return rooms;
     }
 
+    @GetMapping("/api/room")
+    @ResponseBody
+    public Room getRoom(@RequestParam("roomNumber") String roomNumber) {
+    	return rooms.get(Integer.parseInt(roomNumber)-1);
+    }
+    
     @RequestMapping("/chatting")
-    public ModelAndView chatting(@RequestParam("roomNumber") int roomNumber, @RequestParam("roomName") String roomName) {
+    public ModelAndView chatting(@RequestParam("roomNumber") String roomNumber, @RequestParam("roomName") String roomName) {
         ModelAndView modelAndView = new ModelAndView();
         Room room = Room.builder()
-                .number(roomNumber)
+                .number(Integer.parseInt(roomNumber))
                 .name(roomName)
                 .build();
 
         if (isRoomExist(room.getNumber())) {
             // TODO : ModelAndView가 꼭 필요한지 체크
-//            modelAndView.addObject("room", room);
+        	modelAndView.addObject("room", room);
             modelAndView.setViewName("chat");
         } else {
             modelAndView.setViewName("room");

@@ -64,7 +64,6 @@ public class SocketHandler extends TextWebSocketHandler {
         if (lastPathIndex < 0) {
             throw new RuntimeException("Can not find room number of session");
         }
-
         return Integer.parseInt(uriStr.substring(lastPathIndex + 1));
     }
 
