@@ -68,7 +68,9 @@
 		
 		ws.onmessage = function(data) {
 			//메시지를 받으면 동작
+			console.log(data);
 			var msg = data.data;
+			console.log("msg=" + msg);
 			if(msg != null && msg.trim() != ''){
 				var d = JSON.parse(msg);
 				if(d.type == "getId"){
@@ -114,10 +116,11 @@
 			roomNumber: $("#roomNumber").val(),
 			sessionId : $("#sessionId").val(),
 			userName : $("#userName").val(),
-			msg : $("#chatting").val()
+			msg : $("#chat").val()
 		}
-		ws.send(JSON.stringify(option))
-		$('#chatting').val("");
+		console.log(option);
+		ws.send(JSON.stringify(option));
+		$('#chat').val("");
 	}
 	
 	function initRoom(res){
@@ -169,7 +172,7 @@
         <table class="inputTable">
             <tr>
                 <th>메시지</th>
-                <th><input id="chatting" placeholder="보내실 메시지를 입력하세요."></th>
+                <th><input id="chat" placeholder="보내실 메시지를 입력하세요."></th>
                 <th>
                     <button onclick="send()" id="sendBtn">보내기</button>
                 </th>
