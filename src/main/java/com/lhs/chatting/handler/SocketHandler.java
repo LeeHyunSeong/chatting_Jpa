@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.lhs.chatting.model.Room;
 import com.lhs.chatting.util.JsonUtils;
 
 @Component
@@ -22,12 +22,15 @@ public class SocketHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String messagePayload = message.getPayload();
-        Room room = JsonUtils.readValue(messagePayload, Room.class)
-                .orElseThrow(() -> new RuntimeException("Can not parse json to room"));
+        Map<String, String> payloadMap = JsonUtils.readValue(messagePayload, new TypeReference<Map<String, String>>() {
+        }).orElseThrow(() -> new RuntimeException("Can not parse json to room"));
 
-        List<WebSocketSession> roomSessions = roomSessionsMap.get(room.getNumber());
+        int roomNumber = Integer.parseInt(payloadMap.get("roomNumber"));
+        String content = payloadMap.get("msg");
+
+        List<WebSocketSession> roomSessions = roomSessionsMap.get(roomNumber);
         for (WebSocketSession roomSession : roomSessions) {
-            roomSession.sendMessage(new TextMessage(room.toString()));
+            roomSession.sendMessage(new TextMessage(content));
         }
     }
 

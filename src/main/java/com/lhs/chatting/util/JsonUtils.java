@@ -3,6 +3,7 @@ package com.lhs.chatting.util;
 import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.experimental.UtilityClass;
@@ -18,6 +19,15 @@ public class JsonUtils {
             return Optional.empty();
         }
     }
+
+    public <T> Optional<T> readValue(String value, TypeReference<T> valueTypeReference) {
+        try {
+            return Optional.of(MAPPER.readValue(value, valueTypeReference));
+        } catch (JsonProcessingException e) {
+            return Optional.empty();
+        }
+    }
+
 
     public <T> String writeValue(Object value) {
         try {
