@@ -1,14 +1,21 @@
 package com.lhs.chatting.controller;
 
-import com.lhs.chatting.model.Room;
-import com.lhs.chatting.util.RoomNumberGenerateUtils;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.lhs.chatting.model.Room;
+import com.lhs.chatting.util.RoomNumberGenerateUtils;
 
 @Controller
 public class MainController {
@@ -51,22 +58,18 @@ public class MainController {
 	}
 
 	@RequestMapping("/chatting")
-	public ModelAndView chatting(@RequestParam("roomNumber") Integer roomNumber,
-			@RequestParam("roomName") String roomName) {
-		ModelAndView modelAndView = new ModelAndView();
+	public String chatting(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("roomName") String roomName, Model model) {
 		Room room = Room.builder()
 				.number(roomNumber)
 				.name(roomName)
 				.build();
-
 		if (isRoomExist(room.getNumber())) {
 			// TODO : ModelAndView가 꼭 필요한지 체크
-			modelAndView.addObject("room", room);
-			modelAndView.setViewName("chat");
+			model.addAttribute(room);
+			return "chat.html";
 		} else {
-			modelAndView.setViewName("room");
+			return "room.html";
 		}
-		return modelAndView;
 	}
 
 	private boolean isRoomExist(int roomNumber) {
