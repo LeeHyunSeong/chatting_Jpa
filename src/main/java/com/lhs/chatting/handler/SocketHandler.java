@@ -5,13 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.lhs.chatting.util.JsonUtils;
 
 @Component
@@ -27,16 +28,13 @@ public class SocketHandler extends TextWebSocketHandler {
 
         int roomNumber = Integer.parseInt(payloadMap.get("roomNumber"));
 
-        String msg = "{";
-    	for(Map.Entry<String, String> entry : payloadMap.entrySet()) {
-    		msg += "\"" + entry.getKey() + "\":\"" + payloadMap.get(entry.getKey()) + "\",";
-    	}
-    	msg = msg.substring(0, msg.length()-1);
-    	msg += "}";
+        JSONObject roomSessionJsonObject = new JSONObject();
+    	for(Map.Entry<String, String> entry : payloadMap.entrySet())
+    		roomSessionJsonObject.put(entry.getKey(), payloadMap.get(entry.getKey()));
     	
         List<WebSocketSession> roomSessions = roomSessionsMap.get(roomNumber);
         for (WebSocketSession roomSession : roomSessions) {
-        	roomSession.sendMessage(new TextMessage(msg));
+        	roomSession.sendMessage(new TextMessage(roomSessionJsonObject.toString()));
         }
     }
 
