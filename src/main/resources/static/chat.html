@@ -50,14 +50,13 @@
 	var ws;
 
 	window.onload = function(){
-		var msg = {	roomNumber : document.location.href.split("roomNumber=")[1]	};
-		commonAjax('/api/room', msg, 'get', function(result){
+		var msg = document.location.href.split("roomNumber=")[1];
+		commonAjax('/api/rooms/' + msg, 'get', function(result){
 			initRoom(result);
 		});
 	}
 	
 	function wsOpen(){
-		//웹소켓 전송시 현재 방의 번호를 넘겨서 보낸다.
 		ws = new WebSocket("ws://" + location.host + "/chatting/"+$("#roomNumber").val());
 		wsEvt();
 	}
@@ -67,10 +66,7 @@
 		}
 		
 		ws.onmessage = function(data) {
-			//메시지를 받으면 동작
-			console.log(data);
 			var msg = data.data;
-			console.log("msg=" + msg);
 			if(msg != null && msg.trim() != ''){
 				var d = JSON.parse(msg);
 				if(d.type == "getId"){
@@ -131,10 +127,9 @@
 		$("#sessionId").val(room.name);
 	}
 	
-	function commonAjax(url, parameter, type, callback, contentType){
+	function commonAjax(url, type, callback, contentType){
 		$.ajax({
 			url: url,
-			data: parameter,
 			type: type,
 			contentType : contentType!=null?contentType:'application/x-www-form-urlencoded; charset=UTF-8',
 			success: function (res) {

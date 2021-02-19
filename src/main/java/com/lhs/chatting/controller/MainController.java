@@ -13,63 +13,57 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    private final List<Room> rooms = new ArrayList<>();
+	private final List<Room> rooms = new ArrayList<>();
 
-    @GetMapping("/chat")
-    public String chatPage() {
-        return "chat.html";
-    }
+	@GetMapping("/chat")
+	public String chatPage() {
+		return "chat.html";
+	}
 
-    @GetMapping("/room")
-    public String roomPage() {
-        return "room.html";
-    }
+	@GetMapping("/room")
+	public String roomPage() {
+		return "room.html";
+	}
 
-    @PostMapping("/api/rooms")
-    @ResponseBody
-    public List<Room> createRoom(@RequestParam("roomName") String roomName) {
-        if (StringUtils.hasText(roomName)) {
-            Room room = Room.builder()
-                    .number(RoomNumberGenerateUtils.getNextRoomNumber())
-                    .name(roomName)
-                    .build();
-            rooms.add(room);
-        }
-        return rooms;
-    }
+	@PostMapping("/api/rooms")
+	@ResponseBody
+	public List<Room> createRoom(@RequestParam("roomName") String roomName) {
+		if (StringUtils.hasText(roomName)) {
+			Room room = Room.builder().number(RoomNumberGenerateUtils.getNextRoomNumber()).name(roomName).build();
+			rooms.add(room);
+		}
+		return rooms;
+	}
 
-    @GetMapping("/api/rooms")
-    @ResponseBody
-    public List<Room> getRooms() {
-        return rooms;
-    }
+	@GetMapping("/api/rooms")
+	@ResponseBody
+	public List<Room> getRooms() {
+		return rooms;
+	}
 
-    @GetMapping("/api/room")
-    @ResponseBody
-    public Room getRoom(@RequestParam("roomNumber") String roomNumber) {
-    	return rooms.get(Integer.parseInt(roomNumber)-1);
-    }
-    
-    @RequestMapping("/chatting")
-    public ModelAndView chatting(@RequestParam("roomNumber") String roomNumber, @RequestParam("roomName") String roomName) {
-        ModelAndView modelAndView = new ModelAndView();
-        Room room = Room.builder()
-                .number(Integer.parseInt(roomNumber))
-                .name(roomName)
-                .build();
+	@GetMapping("/api/rooms/{roomNumber}")
+	@ResponseBody
+	public Room getRoom(@PathVariable("roomNumber") String roomNumber) {
+		return rooms.get(Integer.parseInt(roomNumber) - 1);
+	}
 
-        if (isRoomExist(room.getNumber())) {
-            // TODO : ModelAndView가 꼭 필요한지 체크
-        	modelAndView.addObject("room", room);
-            modelAndView.setViewName("chat");
-        } else {
-            modelAndView.setViewName("room");
-        }
-        return modelAndView;
-    }
+	@RequestMapping("/chatting")
+	public ModelAndView chatting(@RequestParam("roomNumber") String roomNumber,
+			@RequestParam("roomName") String roomName) {
+		ModelAndView modelAndView = new ModelAndView();
+		Room room = Room.builder().number(Integer.parseInt(roomNumber)).name(roomName).build();
 
-    private boolean isRoomExist(int roomNumber) {
-        return rooms.stream()
-                .anyMatch(room -> room.getNumber() == roomNumber);
-    }
+		if (isRoomExist(room.getNumber())) {
+			// TODO : ModelAndView가 꼭 필요한지 체크
+			modelAndView.addObject("room", room);
+			modelAndView.setViewName("chat");
+		} else {
+			modelAndView.setViewName("room");
+		}
+		return modelAndView;
+	}
+
+	private boolean isRoomExist(int roomNumber) {
+		return rooms.stream().anyMatch(room -> room.getNumber() == roomNumber);
+	}
 }
