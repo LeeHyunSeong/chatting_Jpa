@@ -29,7 +29,10 @@ public class MainController {
 	@ResponseBody
 	public List<Room> createRoom(@RequestParam("roomName") String roomName) {
 		if (StringUtils.hasText(roomName)) {
-			Room room = Room.builder().number(RoomNumberGenerateUtils.getNextRoomNumber()).name(roomName).build();
+			Room room = Room.builder()
+					.number(RoomNumberGenerateUtils.getNextRoomNumber())
+					.name(roomName)
+					.build();
 			rooms.add(room);
 		}
 		return rooms;
@@ -48,10 +51,13 @@ public class MainController {
 	}
 
 	@RequestMapping("/chatting")
-	public ModelAndView chatting(@RequestParam("roomNumber") String roomNumber,
+	public ModelAndView chatting(@RequestParam("roomNumber") Integer roomNumber,
 			@RequestParam("roomName") String roomName) {
 		ModelAndView modelAndView = new ModelAndView();
-		Room room = Room.builder().number(Integer.parseInt(roomNumber)).name(roomName).build();
+		Room room = Room.builder()
+				.number(roomNumber)
+				.name(roomName)
+				.build();
 
 		if (isRoomExist(room.getNumber())) {
 			// TODO : ModelAndView가 꼭 필요한지 체크
