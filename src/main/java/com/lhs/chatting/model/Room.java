@@ -1,10 +1,11 @@
 package com.lhs.chatting.model;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
 public class Room {
-    int number;
-    String name;
+    private int number;
+    private String name;
 }
