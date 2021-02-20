@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -28,7 +27,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
         int roomNumber = Integer.parseInt(payloadMap.get("roomNumber"));
 
-         List<WebSocketSession> roomSessions = roomSessionsMap.get(roomNumber);
+        List<WebSocketSession> roomSessions = roomSessionsMap.get(roomNumber);
         for (WebSocketSession roomSession : roomSessions) {
         	roomSession.sendMessage(new TextMessage(messagePayload));
         }
