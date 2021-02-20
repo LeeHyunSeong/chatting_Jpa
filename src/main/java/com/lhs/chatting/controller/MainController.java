@@ -58,14 +58,13 @@ public class MainController {
 	}
 
 	@RequestMapping("/chatting")
-	public String chatting(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("roomName") String roomName, Model model) {
+	public String chatting(@RequestParam("roomNumber") Integer roomNumber, @RequestParam("roomName") String roomName) {
 		Room room = Room.builder()
 				.number(roomNumber)
 				.name(roomName)
 				.build();
 		if (isRoomExist(room.getNumber())) {
 			// TODO : ModelAndView가 꼭 필요한지 체크
-			model.addAttribute(room);
 			return "chat.html";
 		} else {
 			return "room.html";
