@@ -114,7 +114,6 @@
 			userName : $("#userName").val(),
 			msg : $("#chat").val()
 		}
-		console.log(option);
 		ws.send(JSON.stringify(option));
 		$('#chat').val("");
 	}

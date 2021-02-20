@@ -28,13 +28,9 @@ public class SocketHandler extends TextWebSocketHandler {
 
         int roomNumber = Integer.parseInt(payloadMap.get("roomNumber"));
 
-        JSONObject roomSessionJsonObject = new JSONObject();
-    	for(Map.Entry<String, String> entry : payloadMap.entrySet())
-    		roomSessionJsonObject.put(entry.getKey(), payloadMap.get(entry.getKey()));
-    	
-        List<WebSocketSession> roomSessions = roomSessionsMap.get(roomNumber);
+         List<WebSocketSession> roomSessions = roomSessionsMap.get(roomNumber);
         for (WebSocketSession roomSession : roomSessions) {
-        	roomSession.sendMessage(new TextMessage(roomSessionJsonObject.toString()));
+        	roomSession.sendMessage(new TextMessage(messagePayload));
         }
     }
 
