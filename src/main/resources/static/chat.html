@@ -50,8 +50,8 @@
 	var ws;
 
 	window.onload = function(){
-		var msg = document.location.href.split("roomNumber=")[1];
-		commonAjax('/api/rooms/' + msg, 'get', function(result){
+		var roomNumber = new URLSearchParams(location.search).get("roomNumber");
+		commonAjax('/api/rooms/' + roomNumber, 'get', function(result){
 			initRoom(result);
 		});
 	}
@@ -62,23 +62,20 @@
 	}
 		
 	function wsEvt() {
-		ws.onopen = function(data){
-		}
-		
 		ws.onmessage = function(data) {
-			var msg = data.data;
-			if(msg != null && msg.trim() != ''){
-				var d = JSON.parse(msg);
-				if(d.type == "getId"){
-					var si = d.sessionId != null ? d.sessionId : "";
-					if(si != ''){
-						$("#sessionId").val(si); 
+			var sessionJSONData = data.data;
+			if(sessionJSONData != null && sessionJSONData.trim() != ''){
+				var sessionData = JSON.parse(sessionJSONData);
+				if(sessionData.type == "getId"){
+					var sessionId = sessionData.sessionId != null ? sessionData.sessionId : "";
+					if(sessionId != ''){
+						$("#sessionId").val(sessionId); 
 					}
-				}else if(d.type == "message"){
-					if(d.sessionId == $("#sessionId").val()){
-						$("#chatting").append("<p class='me'>나 :" + d.msg + "</p>");
+				}else if(sessionData.type == "message"){
+					if(sessionData.sessionId == $("#sessionId").val()){
+						$("#chatting").append("<p class='me'>나 :" + sessionData.msg + "</p>");
 					}else{
-						$("#chatting").append("<p class='others'>" + d.userName + " :" + d.msg + "</p>");
+						$("#chatting").append("<p class='others'>" + sessionData.userName + " :" + sessionData.msg + "</p>");
 					}
 						
 				}else{
@@ -88,7 +85,7 @@
 		}
 
 		document.addEventListener("keypress", function(e){
-			if(e.keyCode == 13){ //enter press
+			if(e.keyCode == 13){
 				send();
 			}
 		});
@@ -107,21 +104,20 @@
 	}
 
 	function send() {
-		var option ={
+		var messageData ={
 			type: "message",
 			roomNumber: $("#roomNumber").val(),
 			sessionId : $("#sessionId").val(),
 			userName : $("#userName").val(),
 			msg : $("#chat").val()
 		}
-		ws.send(JSON.stringify(option));
+		ws.send(JSON.stringify(messageData));
 		$('#chat').val("");
 	}
 	
 	function initRoom(res){
 		var room = res;
-		var roomName = document.getElementById("roomName");
-		roomName.innerHTML = room.name + "의 채팅방";
+		$("#roomName").append(room.name + "의 채팅방");
 		$("#roomNumber").val(room.number);
 		$("#sessionId").val(room.name);
 	}
