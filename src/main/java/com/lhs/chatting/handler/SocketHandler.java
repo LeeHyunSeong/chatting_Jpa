@@ -1,8 +1,8 @@
 package com.lhs.chatting.handler;
 
-import java.util.Map;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.lhs.chatting.service.WebSocketService;
+import com.lhs.chatting.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -10,8 +10,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.lhs.chatting.util.JsonUtils;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor

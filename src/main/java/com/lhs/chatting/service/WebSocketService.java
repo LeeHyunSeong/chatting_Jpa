@@ -1,6 +1,7 @@
 package com.lhs.chatting.service;
 
 import com.lhs.chatting.repository.RoomSessionRepository;
+import com.lhs.chatting.repository.UserRepository;
 import com.lhs.chatting.util.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +20,10 @@ import java.util.Map;
 public class WebSocketService {
     private final RoomSessionRepository roomSessionRepository;
 
-    public void sendMessage(int roomNumber, String message) {
+    public void sendMessage(int roomNumber, String contents) {
         List<WebSocketSession> roomSessions = roomSessionRepository.findAllByRoomNumber(roomNumber);
         for (WebSocketSession roomSession : roomSessions) {
-            sendMessage(roomSession, message);
+            sendMessage(roomSession, contents);
         }
     }
 
@@ -45,9 +46,16 @@ public class WebSocketService {
 
     private String generateConnectMessage(WebSocketSession session) {
         Map<String, Object> payloadMap = new HashMap<>();
-        payloadMap.put("type", "message");
+        payloadMap.put("type", "session");
         payloadMap.put("sessionId", session.getId());
         return JsonUtils.writeValue(payloadMap);
     }
 
+    private String generateChatMessage(WebSocketSession session, String contents) {
+        Map<String, Object> payloadMap = new HashMap<>();
+        payloadMap.put("type", "message");
+        payloadMap.put("sessionId", session.getId());
+        payloadMap.put("contents", contents);
+        return JsonUtils.writeValue(payloadMap);
+    }
 }
