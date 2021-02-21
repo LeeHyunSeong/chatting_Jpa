@@ -18,4 +18,8 @@ public class UserRepository {
     public User findBySessionId(String sessionId) {
         return userMap.get(sessionId);
     }
+
+    public void deleteBySessionId(String sessionId) {
+        userMap.remove(sessionId);
+    }
 }

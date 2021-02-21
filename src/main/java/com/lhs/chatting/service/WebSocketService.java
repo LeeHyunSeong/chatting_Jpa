@@ -1,5 +1,6 @@
 package com.lhs.chatting.service;
 
+import com.lhs.chatting.model.User;
 import com.lhs.chatting.repository.RoomSessionRepository;
 import com.lhs.chatting.repository.UserRepository;
 import com.lhs.chatting.util.JsonUtils;
@@ -18,12 +19,13 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class WebSocketService {
+    private final UserRepository userRepository;
     private final RoomSessionRepository roomSessionRepository;
 
-    public void sendMessage(int roomNumber, String contents) {
+    public void sendMessage(WebSocketSession session, int roomNumber, String contents) {
         List<WebSocketSession> roomSessions = roomSessionRepository.findAllByRoomNumber(roomNumber);
         for (WebSocketSession roomSession : roomSessions) {
-            sendMessage(roomSession, contents);
+            sendMessage(roomSession, generateChatMessage(session, contents));
         }
     }
 
@@ -32,8 +34,9 @@ public class WebSocketService {
         sendMessage(session, generateConnectMessage(session));
     }
 
-    public void removeRoomSession(WebSocketSession session) {
+    public void exitFromRoom(WebSocketSession session) {
         roomSessionRepository.delete(session);
+        userRepository.deleteBySessionId(session.getId());
     }
 
     private void sendMessage(WebSocketSession session, String message) {
@@ -52,9 +55,12 @@ public class WebSocketService {
     }
 
     private String generateChatMessage(WebSocketSession session, String contents) {
+        User user = userRepository.findBySessionId(session.getId());
+
         Map<String, Object> payloadMap = new HashMap<>();
         payloadMap.put("type", "message");
-        payloadMap.put("sessionId", session.getId());
+        payloadMap.put("sessionId", user.getSessionId());
+        payloadMap.put("username", user.getName());
         payloadMap.put("contents", contents);
         return JsonUtils.writeValue(payloadMap);
     }

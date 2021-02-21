@@ -7,14 +7,17 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
-@RestController("/api/rooms")
+@RestController
+@RequestMapping("/api/rooms")
 @RequiredArgsConstructor
 public class RoomApiController {
     private final RoomService roomService;
 
     @PostMapping
-    public List<Room> makeRoom(@RequestParam("roomName") String name) {
+    public List<Room> makeRoom(@RequestBody Map<String, Object> bodyMap) {
+        String name = String.valueOf(bodyMap.get("roomName"));
         if (StringUtils.hasText(name)) {
             roomService.makeRoom(name);
         }

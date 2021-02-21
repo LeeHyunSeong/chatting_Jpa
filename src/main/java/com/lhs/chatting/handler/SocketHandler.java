@@ -22,9 +22,9 @@ public class SocketHandler extends TextWebSocketHandler {
         Map<String, String> payloadMap = JsonUtils.readValue(message.getPayload(), new TypeReference<Map<String, String>>() {
         }).orElseThrow(() -> new RuntimeException("Fail to parse json to map"));
         int roomNumber = Integer.parseInt(payloadMap.get("roomNumber"));
-        String contents = payloadMap.get("payload");
+        String contents = payloadMap.get("contents");
 
-        webSocketService.sendMessage(roomNumber, contents);
+        webSocketService.sendMessage(session, roomNumber, contents);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        webSocketService.removeRoomSession(session);
+        webSocketService.exitFromRoom(session);
         super.afterConnectionClosed(session, status);
     }
 }
