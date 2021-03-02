@@ -31,7 +31,7 @@
 			$("#createRoom").click(() => {
 				var data = { roomName: $('#roomName').val() };
 
-				commonAjax('/api/rooms', 'POST', data, (rooms) => {
+				commonAjax(`/api/rooms/${data}`, 'POST', null, (rooms) => {
 					createChatRoom(rooms);
 				});
 				$("#roomName").val("");
