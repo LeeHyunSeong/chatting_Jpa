@@ -38,4 +38,11 @@ public class Friend {
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="friend_id")
     private User friend;
+    
+    public Friend(User user, User friend) {
+    	relationType = "NORMAL";
+    	createdTime = new Timestamp(System.currentTimeMillis());
+    	this.user = user;
+    	this.friend = friend;
+    }
 }

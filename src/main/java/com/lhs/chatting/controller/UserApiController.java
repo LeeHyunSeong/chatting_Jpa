@@ -1,6 +1,6 @@
 package com.lhs.chatting.controller;
 
-import com.lhs.chatting.model.User;
+import com.lhs.chatting.entity.User;
 import com.lhs.chatting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,5 +18,4 @@ public class UserApiController {
     public void registerUser(@RequestBody User user) {
         userService.registerUser(user);
     }
-
 }

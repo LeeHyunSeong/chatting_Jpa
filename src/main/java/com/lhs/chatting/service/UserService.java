@@ -1,6 +1,6 @@
 package com.lhs.chatting.service;
 
-import com.lhs.chatting.model.User;
+import com.lhs.chatting.entity.User;
 import com.lhs.chatting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
