@@ -1,6 +1,6 @@
 package com.lhs.chatting.service;
 
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +42,4 @@ public class RoomService {
     public boolean isRoomExist(Long id) {
         return roomRepository.getOne(id) != null;
     }
-
 }
