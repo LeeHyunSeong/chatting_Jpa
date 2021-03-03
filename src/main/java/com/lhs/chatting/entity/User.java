@@ -18,26 +18,26 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "USER")
 public class User {
-    @Id
-    @GeneratedValue
-    @Column(name="id", length=45, nullable=false)
-    private long id;
-    
-    @Column(name="email", length=45, nullable=false)
-    private String email;
-    
-    @Column(name="passward", length=45, nullable=false)
-    private String passward;
-    
-    @Column(name="username", length=30, nullable=false)
-    private String username;
-    
-    @Column(name="nickname", length=45, nullable=false)
-    private String nickname;
-    
-    @Column(name="profile_image", length=50)
-    private String profileImage;
-    
-    @Column(name="signed_time")
-    private Timestamp signedTime;
+	@Id
+	@GeneratedValue
+	@Column(name = "id", length = 45, nullable = false)
+	private long id;
+
+	@Column(name = "email", length = 45)
+	private String email;
+
+	@Column(name = "password", length = 45)
+	private String password;
+
+	@Column(name = "username", length = 30)
+	private String username;
+
+	@Column(name = "nickname", length = 45, nullable = false)
+	private String nickname;
+
+	@Column(name = "profile_image", length = 50)
+	private String profileImage;
+
+	@Column(name = "signed_time")
+	private Timestamp signedTime;
 }
