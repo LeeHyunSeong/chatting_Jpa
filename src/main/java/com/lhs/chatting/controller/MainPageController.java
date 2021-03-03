@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequiredArgsConstructor
 public class MainPageController {
-    private final RoomService roomService;
+	private final RoomService roomService;
 
-    @GetMapping("/chat")
-    public String chatPage() {
-        return "chat.html";
-    }
+	@GetMapping("/chat")
+	public String chatPage() {
+		return "chat.html";
+	}
 
-    @GetMapping("/room")
-    public String roomPage() {
-        return "room.html";
-    }
+	@GetMapping("/room")
+	public String roomPage() {
+		return "room.html";
+	}
 
-    @RequestMapping("/chatting")
-    public String chatting(@RequestParam("roomNumber") Long roomId) {
-        return roomService.isRoomExist(roomId) ? "chat.html" : "room.html";
-    }
+	@RequestMapping("/chatting")
+	public String chatting(@RequestParam("roomNumber") Long roomId) {
+		return roomService.isRoomExist(roomId) ? "chat.html" : "room.html";
+	}
 }

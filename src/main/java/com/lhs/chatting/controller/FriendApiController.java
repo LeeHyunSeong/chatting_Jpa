@@ -17,25 +17,25 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/friends")
 @RequiredArgsConstructor
 public class FriendApiController {
-    private final FriendService friendService;
+	private final FriendService friendService;
 
-    @PostMapping
-    public void registerFriend(@RequestBody Map<String, Object> friendMap) {
-    	User user = (User)friendMap.get("user");
-    	User friend = (User)friendMap.get("friend");
-        friendService.registerFriend(user, friend);
-    }
-    
-    @PostMapping(path = "/change")
-    public void changeRelation(@RequestBody Map<String, Object> friendMap) {
-    	Friend friend = (Friend)friendMap.get("friend");
-    	String relation = String.valueOf(friendMap.get("relation"));
-    	friendService.changeRelation(friend, relation);
-    }
-    
-    @PostMapping(path = "/delete")
-    public void deleteFriend(@RequestBody Map<String, Object> friendMap) {
-    	Friend friend = (Friend)friendMap.get("friend");
-    	friendService.deleteFriend(friend);
-    }
+	@PostMapping
+	public void registerFriend(@RequestBody Map<String, Object> friendMap) {
+		User user = (User) friendMap.get("user");
+		User friend = (User) friendMap.get("friend");
+		friendService.registerFriend(user, friend);
+	}
+
+	@PostMapping(path = "/change")
+	public void changeRelation(@RequestBody Map<String, Object> friendMap) {
+		Friend friend = (Friend) friendMap.get("friend");
+		String relation = String.valueOf(friendMap.get("relation"));
+		friendService.changeRelation(friend, relation);
+	}
+
+	@PostMapping(path = "/delete")
+	public void deleteFriend(@RequestBody Map<String, Object> friendMap) {
+		Friend friend = (Friend) friendMap.get("friend");
+		friendService.deleteFriend(friend);
+	}
 }

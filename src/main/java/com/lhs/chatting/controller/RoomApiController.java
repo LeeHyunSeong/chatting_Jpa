@@ -19,29 +19,29 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class RoomApiController {
-    private final RoomService roomService;
-    
-    @MessageMapping("/rooms/{bodyMap}")
-    @SendTo("/topic/public")
-    public List<Room> makeRoom(@DestinationVariable Map<String, Object> bodyMap) {
-        String name = String.valueOf(bodyMap.get("roomName"));
-        List<User> users = new ArrayList();
-        if (StringUtils.hasText(name)) {
-            roomService.makeRoom(name, users);
-        }
-        return roomService.getRooms();
-    }
+	private final RoomService roomService;
 
-    @MessageMapping("/rooms")
-    @SendTo("/topic/public")
-    public List<Room> getRooms() {
-        return roomService.getRooms();
-    }
+	@MessageMapping("/rooms/{bodyMap}")
+	@SendTo("/topic/public")
+	public List<Room> makeRoom(@DestinationVariable Map<String, Object> bodyMap) {
+		String name = String.valueOf(bodyMap.get("roomName"));
+		List<User> users = new ArrayList();
+		if (StringUtils.hasText(name)) {
+			roomService.makeRoom(name, users);
+		}
+		return roomService.getRooms();
+	}
 
-    @MessageMapping("/rooms/{roomMap}")
-    @SendTo("/topic/public")
-    public Room getRoom(@DestinationVariable Map<String, Object> roomMap) {
-    	Room room = (Room)roomMap.get("room");
-        return roomService.getRoom(room);
-    }
+	@MessageMapping("/rooms")
+	@SendTo("/topic/public")
+	public List<Room> getRooms() {
+		return roomService.getRooms();
+	}
+
+	@MessageMapping("/rooms/{roomMap}")
+	@SendTo("/topic/public")
+	public Room getRoom(@DestinationVariable Map<String, Object> roomMap) {
+		Room room = (Room) roomMap.get("room");
+		return roomService.getRoom(room);
+	}
 }

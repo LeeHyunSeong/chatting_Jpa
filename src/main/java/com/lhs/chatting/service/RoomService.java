@@ -18,28 +18,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoomService {
 	@Autowired
-    private final RoomRepository roomRepository;
+	private final RoomRepository roomRepository;
 	private final MemberRepository memberRepository;
 
-    public List<Room> getRooms() {
-        return roomRepository.findAll();
-    }
+	public List<Room> getRooms() {
+		return roomRepository.findAll();
+	}
 
-    public Room getRoom(Room room) {
-        return roomRepository.getOne(room.getId());
-    }
+	public Room getRoom(Room room) {
+		return roomRepository.getOne(room.getId());
+	}
 
-    public void makeRoom(String name, List<User> users) {
-    	Room room = new Room();
-    	for(User user : users) {
-    		Member member = new Member(name, user, room);
-    		memberRepository.save(member);
-    	}
-    	
-        roomRepository.save(room);
-    }
+	public void makeRoom(String name, List<User> users) {
+		Room room = new Room();
+		for (User user : users) {
+			Member member = new Member(name, user, room);
+			memberRepository.save(member);
+		}
 
-    public boolean isRoomExist(Long id) {
-        return roomRepository.getOne(id) != null;
-    }
+		roomRepository.save(room);
+	}
+
+	public boolean isRoomExist(Long id) {
+		return roomRepository.getOne(id) != null;
+	}
 }

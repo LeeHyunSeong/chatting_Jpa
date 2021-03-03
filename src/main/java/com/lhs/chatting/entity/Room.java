@@ -18,19 +18,19 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "room")
 public class Room {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="id")
-    private long id;
-        
-    @Column(name="created_time")
-    private Timestamp createdTime;
-    
-    @Column(name="last_msg_id")
-    private Message lastMsgId;
-    
-    public Room() {
-    	createdTime = new Timestamp(System.currentTimeMillis());
-    	lastMsgId = null;
-    }
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private long id;
+
+	@Column(name = "created_time")
+	private Timestamp createdTime;
+
+	@Column(name = "last_msg_id")
+	private Message lastMsgId;
+
+	public Room() {
+		createdTime = new Timestamp(System.currentTimeMillis());
+		lastMsgId = null;
+	}
 }

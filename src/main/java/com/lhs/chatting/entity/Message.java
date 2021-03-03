@@ -20,25 +20,25 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "message")
 public class Message {
-    @Id
-    @GeneratedValue
-    @Column(name="id")
-    private long id;
-    
-    @Column(name="contents", length=21844, nullable=false)
-    private String contents;
+	@Id
+	@GeneratedValue
+	@Column(name = "id")
+	private long id;
 
-    @Column(name="type", length=20, nullable=false)
-    private String type;
-    
-    @Column(name="created_time")
-    private Timestamp createdTime;
-    
-    @ManyToOne(targetEntity=Room.class)
-    @Column(name="room_id")
-    private Room room;
-    
-    @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id")
-    private User user;
+	@Column(name = "contents", length = 21844, nullable = false)
+	private String contents;
+
+	@Column(name = "type", length = 20, nullable = false)
+	private String type;
+
+	@Column(name = "created_time")
+	private Timestamp createdTime;
+
+	@ManyToOne(targetEntity = Room.class)
+	@Column(name = "room_id")
+	private Room room;
+
+	@ManyToOne(targetEntity = User.class)
+	@JoinColumn(name = "user_id")
+	private User user;
 }
