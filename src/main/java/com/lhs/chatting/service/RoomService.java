@@ -18,8 +18,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoomService {
 	@Autowired
-	private final RoomRepository roomRepository;
-	private final MemberRepository memberRepository;
+	private RoomRepository roomRepository;
+	@Autowired
+	private MemberRepository memberRepository;
 
 	public List<Room> getRooms() {
 		return roomRepository.findAll();

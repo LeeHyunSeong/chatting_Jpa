@@ -1,5 +1,6 @@
 package com.lhs.chatting.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.Friend;
@@ -11,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FriendService {
-	private final FriendRepository repository;
+	@Autowired
+	private FriendRepository repository;
 
 	public void registerFriend(User selfUser, User friendUser) {
 		Friend friend = new Friend(selfUser, friendUser);

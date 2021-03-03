@@ -2,6 +2,7 @@ package com.lhs.chatting.service;
 
 import java.sql.Timestamp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.Member;
@@ -14,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-	MemberRepository memberRepository;
-	RoomRepository roomRepository;
+	@Autowired
+	private MemberRepository memberRepository;
+	@Autowired
+	private RoomRepository roomRepository;
 
 	public void changeRoomAlias(Member member, String name) {
 		Member targetMember = memberRepository.getOne(member.getId());
