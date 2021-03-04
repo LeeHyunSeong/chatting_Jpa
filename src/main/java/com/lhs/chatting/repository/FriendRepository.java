@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lhs.chatting.entity.Friend;
 
-public interface FriendRepository extends JpaRepository<Friend, Long>{ }
+public interface FriendRepository extends JpaRepository<Friend, Long> {
+}

@@ -4,4 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.lhs.chatting.entity.Room;
 
-public interface RoomRepository extends JpaRepository<Room, Long>{ }
+public interface RoomRepository extends JpaRepository<Room, Long> {
+}
