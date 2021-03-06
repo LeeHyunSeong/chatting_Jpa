@@ -40,15 +40,9 @@ public class User {
 
     @Column(name = "signed_time")
     private Timestamp signedTime;
-    
-	public static User of(String email, String password, String username, String nickname) {
-		return User.builder()
-				.email(email)
-				.password(password)
-				.username(username)
-				.nickname(nickname)
-				.profileImage(null)
-				.signedTime(new Timestamp(System.currentTimeMillis()))
-				.build();
-	}
+
+    public static User of(String email, String password, String username, String nickname) {
+        return User.builder().email(email).password(password).username(username).nickname(nickname).profileImage(null)
+                .signedTime(new Timestamp(System.currentTimeMillis())).build();
+    }
 }

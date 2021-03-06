@@ -22,25 +22,25 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberApiController {
-	MemberService memberService;
+    MemberService memberService;
 
-	@PostMapping("/{userId}")
-	public void inviteFriend(@RequestBody InviteUserRequest request, @PathVariable Long userId) {
-		memberService.inviteFriend(userId, request.getRoomId(), request.getRoomAlias());
-	}
+    @PostMapping("/{userId}")
+    public void inviteFriend(@RequestBody InviteUserRequest request, @PathVariable Long userId) {
+        memberService.inviteFriend(userId, request.getRoomId(), request.getRoomAlias());
+    }
 
-	@PutMapping("/{memberId}")
-	public void changeRoomAlias(@RequestBody ChangeRoomSettingRequest request, @PathVariable Long memberId) {
-		String roomAlias = request.getRoomAlias();
-		String roomSetting = request.getSetting();
-		if(roomAlias != null && roomSetting == null)
-			memberService.changeRoomAlias(memberId, roomAlias);
-		else if(roomAlias == null && roomSetting != null)
-			memberService.changeSetting(memberId, roomSetting);
-	}
+    @PutMapping("/{memberId}")
+    public void changeRoomAlias(@RequestBody ChangeRoomSettingRequest request, @PathVariable Long memberId) {
+        String roomAlias = request.getRoomAlias();
+        String roomSetting = request.getSetting();
+        if (roomAlias != null && roomSetting == null)
+            memberService.changeRoomAlias(memberId, roomAlias);
+        else if (roomAlias == null && roomSetting != null)
+            memberService.changeSetting(memberId, roomSetting);
+    }
 
-	@DeleteMapping("/{memberId}")
-	public void leaveRoom(@RequestBody MemberRequest request) {
-		memberService.leaveRoom(request.getMemberId());
-	}
+    @DeleteMapping("/{memberId}")
+    public void leaveRoom(@RequestBody MemberRequest request) {
+        memberService.leaveRoom(request.getMemberId());
+    }
 }

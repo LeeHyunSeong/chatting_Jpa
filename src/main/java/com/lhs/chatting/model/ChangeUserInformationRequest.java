@@ -6,7 +6,7 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ChangeUserInformationRequest {
-	String password;
-	String nickname;
-	String profileImage;
+    String password;
+    String nickname;
+    String profileImage;
 }

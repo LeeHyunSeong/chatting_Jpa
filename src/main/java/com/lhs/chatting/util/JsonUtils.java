@@ -28,7 +28,6 @@ public class JsonUtils {
         }
     }
 
-
     public <T> String writeValue(Object value) {
         try {
             return MAPPER.writeValueAsString(value);

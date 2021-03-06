@@ -8,6 +8,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class InviteUserRequest {
-	Long roomId;
-	String roomAlias;
+    Long roomId;
+    String roomAlias;
 }

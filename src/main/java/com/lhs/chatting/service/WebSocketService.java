@@ -27,58 +27,58 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class WebSocketService {
-	@Autowired
-	private UserRepository userRepository;
-	private final RoomSessionRepository roomSessionRepository;
-	@Autowired
-	private MemberRepository memberRepository;
-	@Autowired
-	private MessageRepository messageRepository;
-	@Autowired
-	private RoomRepository roomRepository;
+    @Autowired
+    private UserRepository userRepository;
+    private final RoomSessionRepository roomSessionRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private MessageRepository messageRepository;
+    @Autowired
+    private RoomRepository roomRepository;
 
-	public void sendMessage(WebSocketSession session, Long roomId, Long userId, String contents) {
-		List<WebSocketSession> roomSessions = roomSessionRepository.findAllByRoomId(roomId);
-		Message message = generateMessage(roomId, userId, contents);
-		messageRepository.save(message);
-		Room targetRoom = roomRepository.findById(roomId)
-				.orElseThrow(() -> new RuntimeException("Can not found Room entity"));
-		targetRoom.setLastMsgId(message);
-		roomRepository.save(targetRoom);
-		for (WebSocketSession roomSession : roomSessions) {
-			sendMessage(roomSession, mappingChatMessage(session, message));
-		}
-	}
+    public void sendMessage(WebSocketSession session, Long roomId, Long userId, String contents) {
+        List<WebSocketSession> roomSessions = roomSessionRepository.findAllByRoomId(roomId);
+        Message message = generateMessage(roomId, userId, contents);
+        messageRepository.save(message);
+        Room targetRoom = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Can not found Room entity"));
+        targetRoom.setLastMsgId(message);
+        roomRepository.save(targetRoom);
+        for (WebSocketSession roomSession : roomSessions) {
+            sendMessage(roomSession, mappingChatMessage(session, message));
+        }
+    }
 
-	public void connectToRoom(WebSocketSession session) {
-		roomSessionRepository.save(session);
-	}
+    public void connectToRoom(WebSocketSession session) {
+        roomSessionRepository.save(session);
+    }
 
-	public void closeRoom(WebSocketSession session) {
-		roomSessionRepository.delete(session);
-	}
+    public void closeRoom(WebSocketSession session) {
+        roomSessionRepository.delete(session);
+    }
 
-	private void sendMessage(WebSocketSession session, String message) {
-		try {
-			session.sendMessage(new TextMessage(message));
-		} catch (IOException e) {
-			log.error("Fail to send message to session ({},{})", session, message);
-		}
-	}
+    private void sendMessage(WebSocketSession session, String message) {
+        try {
+            session.sendMessage(new TextMessage(message));
+        } catch (IOException e) {
+            log.error("Fail to send message to session ({},{})", session, message);
+        }
+    }
 
-	private String mappingChatMessage(WebSocketSession session, Message message) {
-		Map<String, Object> payloadMap = new HashMap<>();
-		payloadMap.put("type", "message");
-		payloadMap.put("messageId", message.getId());
-		payloadMap.put("username", message.getUser().getNickname());
-		payloadMap.put("contents", message.getContents());
-		payloadMap.put("createdtime", message.getCreatedTime());
-		return JsonUtils.writeValue(payloadMap);
-	}
+    private String mappingChatMessage(WebSocketSession session, Message message) {
+        Map<String, Object> payloadMap = new HashMap<>();
+        payloadMap.put("type", "message");
+        payloadMap.put("messageId", message.getId());
+        payloadMap.put("username", message.getUser().getNickname());
+        payloadMap.put("contents", message.getContents());
+        payloadMap.put("createdtime", message.getCreatedTime());
+        return JsonUtils.writeValue(payloadMap);
+    }
 
-	private Message generateMessage(Long roomId, Long userId, String contents) {
-		Message message = Message.of(contents, MessageType.MESSAGE, roomId, userId);
+    private Message generateMessage(Long roomId, Long userId, String contents) {
+        Message message = Message.of(contents, MessageType.MESSAGE, roomId, userId);
 
-		return message;
-	}
+        return message;
+    }
 }

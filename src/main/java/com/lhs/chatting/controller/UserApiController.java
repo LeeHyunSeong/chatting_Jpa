@@ -17,31 +17,32 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserApiController {
-	private final UserService userService;
+    private final UserService userService;
 
-	@PostMapping
-	public void registerUser(@RequestBody RegisterUserRequest request) {
-		userService.registerUser(request.getEmail(), request.getPassword(), request.getUsername(), request.getNickname());
-	}
+    @PostMapping
+    public void registerUser(@RequestBody RegisterUserRequest request) {
+        userService.registerUser(request.getEmail(), request.getPassword(), request.getUsername(),
+                request.getNickname());
+    }
 
-	@PostMapping("/{userId}")
-	public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
-		String password = request.getPassword();
-		String nickname = request.getNickname();
-		String profileImage = request.getProfileImage();
-		if(password != null) {
-			userService.changePassword(userId, password);
-		}
-		if(nickname != null) {
-			userService.changeNickname(userId, nickname);
-		}
-		if(profileImage != null) {
-			userService.changeProfile(userId, profileImage);
-		}
-	}
+    @PostMapping("/{userId}")
+    public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
+        String password = request.getPassword();
+        String nickname = request.getNickname();
+        String profileImage = request.getProfileImage();
+        if (password != null) {
+            userService.changePassword(userId, password);
+        }
+        if (nickname != null) {
+            userService.changeNickname(userId, nickname);
+        }
+        if (profileImage != null) {
+            userService.changeProfile(userId, profileImage);
+        }
+    }
 
-	@DeleteMapping("/{userId}")
-	public void deleteUser(@PathVariable Long userId) {
-		userService.deleteUser(userId);
-	}
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+    }
 }

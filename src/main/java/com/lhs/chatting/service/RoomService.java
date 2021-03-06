@@ -17,32 +17,32 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class RoomService {
-	@Autowired
-	private RoomRepository roomRepository;
-	@Autowired
-	private MemberRepository memberRepository;
+    @Autowired
+    private RoomRepository roomRepository;
+    @Autowired
+    private MemberRepository memberRepository;
 
-	public List<Member> getRooms(Long userId) {
-		List<Member> members = memberRepository.findAll();
-		List<Member> targetMembers = new ArrayList<>();
-		for(Member member : members) {
-			if(member.getId() == userId)
-				targetMembers.add(member);
-		}
-		return targetMembers;
-	}
+    public List<Member> getRooms(Long userId) {
+        List<Member> members = memberRepository.findAll();
+        List<Member> targetMembers = new ArrayList<>();
+        for (Member member : members) {
+            if (member.getId() == userId)
+                targetMembers.add(member);
+        }
+        return targetMembers;
+    }
 
-	public void makeRoom(String name, List<Long> userIds) {
-		Room room = Room.of();
-		for (Long userId : userIds) {
-			Member member = Member.of(userId, room.getId(), name);
-			memberRepository.save(member);
-		}
+    public void makeRoom(String name, List<Long> userIds) {
+        Room room = Room.of();
+        for (Long userId : userIds) {
+            Member member = Member.of(userId, room.getId(), name);
+            memberRepository.save(member);
+        }
 
-		roomRepository.save(room);
-	}
+        roomRepository.save(room);
+    }
 
-	public boolean isRoomExist(Long id) {
-		return roomRepository.getOne(id) != null;
-	}
+    public boolean isRoomExist(Long id) {
+        return roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Can not found User entity")) != null;
+    }
 }

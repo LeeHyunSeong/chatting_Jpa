@@ -15,29 +15,29 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class SocketHandler extends TextWebSocketHandler {
-	private final WebSocketService webSocketService;
+    private final WebSocketService webSocketService;
 
-	@Override
-	public void handleTextMessage(WebSocketSession session, TextMessage message) {
-		Map<String, String> payloadMap = JsonUtils
-				.readValue(message.getPayload(), new TypeReference<Map<String, String>>() {
-				}).orElseThrow(() -> new RuntimeException("Fail to parse json to map"));
-		Long roomId = Long.parseLong(payloadMap.get("roomId"));
-		Long userId = Long.parseLong(payloadMap.get("userId"));
-		String contents = payloadMap.get("contents");
+    @Override
+    public void handleTextMessage(WebSocketSession session, TextMessage message) {
+        Map<String, String> payloadMap = JsonUtils
+                .readValue(message.getPayload(), new TypeReference<Map<String, String>>() {
+                }).orElseThrow(() -> new RuntimeException("Fail to parse json to map"));
+        Long roomId = Long.parseLong(payloadMap.get("roomId"));
+        Long userId = Long.parseLong(payloadMap.get("userId"));
+        String contents = payloadMap.get("contents");
 
-		webSocketService.sendMessage(session, roomId, userId, contents);
-	}
+        webSocketService.sendMessage(session, roomId, userId, contents);
+    }
 
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		super.afterConnectionEstablished(session);
-		webSocketService.connectToRoom(session);
-	}
+    @Override
+    public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        super.afterConnectionEstablished(session);
+        webSocketService.connectToRoom(session);
+    }
 
-	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		webSocketService.closeRoom(session);
-		super.afterConnectionClosed(session, status);
-	}
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        webSocketService.closeRoom(session);
+        super.afterConnectionClosed(session, status);
+    }
 }

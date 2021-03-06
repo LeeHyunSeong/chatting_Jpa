@@ -16,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor
 public class MessageApiController {
-	private MessageService messageService;
+    private MessageService messageService;
 
-	@PostMapping(path = "/search")
-	public void searchMessage(@RequestBody Map<String, Object> textMap) {
-		String contents = String.valueOf(textMap.get("text"));
-		messageService.searchMessage(contents);
-	}
+    @PostMapping(path = "/search")
+    public void searchMessage(@RequestBody Map<String, Object> textMap) {
+        String contents = String.valueOf(textMap.get("text"));
+        messageService.searchMessage(contents);
+    }
 }

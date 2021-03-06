@@ -6,6 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ChangeRoomSettingRequest {
-	String roomAlias;
-	String setting;
+    String roomAlias;
+    String setting;
 }

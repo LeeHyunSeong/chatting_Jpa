@@ -1,6 +1,5 @@
 package com.lhs.chatting.model;
 
-
 import com.lhs.chatting.entity.FriendRelationType;
 import lombok.Builder;
 import lombok.Getter;

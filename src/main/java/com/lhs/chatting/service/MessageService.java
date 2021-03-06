@@ -11,15 +11,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MessageService {
-	@Autowired
-	private MessageRepository messageRepository;
+    @Autowired
+    private MessageRepository messageRepository;
 
-	public void createMessage(Message message) {
-		messageRepository.save(message);
-		// type 별로 세분화하기
-	}
+    public void createMessage(Message message) {
+        messageRepository.save(message);
+        // type 별로 세분화하기
+    }
 
-	public void searchMessage(String contents) {
-		// 내용으로 검색
-	}
+    public void searchMessage(String contents) {
+        // 내용으로 검색
+    }
 }

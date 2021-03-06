@@ -25,7 +25,8 @@ public class FriendApiController {
     }
 
     @PutMapping("/{friendId}")
-    public ResponseEntity<Object> changeFriendRelation(@RequestBody ChangeFriendRelationRequest request, @PathVariable Long friendId) {
+    public ResponseEntity<Object> changeFriendRelation(@RequestBody ChangeFriendRelationRequest request,
+            @PathVariable Long friendId) {
         friendService.changeRelation(request.getUserId(), friendId, request.getRelationType());
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -12,12 +12,12 @@ import com.lhs.chatting.handler.SocketHandler;
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
 
-	@Autowired
-	SocketHandler socketHandler;
+    @Autowired
+    SocketHandler socketHandler;
 
-	@Override
-	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(socketHandler, "/chatting/{roomNumber}");
-	}
+    @Override
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(socketHandler, "/chatting/{roomNumber}");
+    }
 
 }
