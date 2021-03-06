@@ -30,4 +30,11 @@ public class Room {
 
 	@Column(name = "last_msg_id")
 	private Message lastMsgId;
+	
+	public static Room of() {
+		return Room.builder()
+				.createdTime(new Timestamp(System.currentTimeMillis()))
+				.lastMsgId(null)
+				.build();
+	}
 }

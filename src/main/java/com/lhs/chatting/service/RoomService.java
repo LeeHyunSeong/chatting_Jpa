@@ -1,6 +1,6 @@
 package com.lhs.chatting.service;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +22,20 @@ public class RoomService {
 	@Autowired
 	private MemberRepository memberRepository;
 
-	public List<Room> getRooms() {
-		return roomRepository.findAll();
+	public List<Member> getRooms(Long userId) {
+		List<Member> members = memberRepository.findAll();
+		List<Member> targetMembers = new ArrayList<>();
+		for(Member member : members) {
+			if(member.getId() == userId)
+				targetMembers.add(member);
+		}
+		return targetMembers;
 	}
 
-	public Room getRoom(Room room) {
-		return roomRepository.getOne(room.getId());
-	}
-
-	public void makeRoom(String name, List<User> users) {
-		Room room = new Room();
-		for (User user : users) {
-			Member member = new Member(name, user, room);
+	public void makeRoom(String name, List<Long> userIds) {
+		Room room = Room.of();
+		for (Long userId : userIds) {
+			Member member = Member.of(userId, room.getId(), name);
 			memberRepository.save(member);
 		}
 
