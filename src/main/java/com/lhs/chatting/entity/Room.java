@@ -9,11 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "room")
@@ -28,6 +26,7 @@ public class Room {
 	@Column(name = "created_time")
 	private Timestamp createdTime;
 
+	@Setter
 	@Column(name = "last_msg_id")
 	private Message lastMsgId;
 	

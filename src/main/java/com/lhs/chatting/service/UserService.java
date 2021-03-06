@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.Member;
 import com.lhs.chatting.entity.Message;
-import com.lhs.chatting.entity.MessageNoticeType;
+import com.lhs.chatting.entity.MessageType;
 import com.lhs.chatting.entity.Room;
 import com.lhs.chatting.entity.User;
 import com.lhs.chatting.repository.MemberRepository;
@@ -67,7 +67,7 @@ public class UserService {
 
 	private Message makeExitMessage(Long roomId) {
 		String contents = "(알수없음)님이 퇴장하였습니다.";
-		Message inviteMessage = Message.of(contents, MessageNoticeType.NOTICE, roomId, null);
+		Message inviteMessage = Message.of(contents, MessageType.NOTICE, roomId, null);
 
 		return inviteMessage;
 	}

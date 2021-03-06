@@ -30,7 +30,7 @@ public class Message {
 	private String contents;
 
 	@Column(name = "type", nullable = false)
-	private MessageNoticeType type;
+	private MessageType type;
 
 	@Column(name = "created_time")
 	private Timestamp createdTime;
@@ -43,7 +43,7 @@ public class Message {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	public static Message of(String contents, MessageNoticeType type, Long roomId, Long userId) {
+	public static Message of(String contents, MessageType type, Long roomId, Long userId) {
 		return Message.builder()
 				.contents(contents)
 				.type(type)

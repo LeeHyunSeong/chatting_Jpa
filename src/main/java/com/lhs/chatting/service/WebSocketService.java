@@ -1,7 +1,6 @@
 package com.lhs.chatting.service;
 
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
-import com.lhs.chatting.entity.Member;
 import com.lhs.chatting.entity.Message;
+import com.lhs.chatting.entity.MessageType;
 import com.lhs.chatting.entity.Room;
 import com.lhs.chatting.repository.MemberRepository;
 import com.lhs.chatting.repository.MessageRepository;
@@ -42,8 +41,10 @@ public class WebSocketService {
 		List<WebSocketSession> roomSessions = roomSessionRepository.findAllByRoomId(roomId);
 		Message message = generateMessage(roomId, userId, contents);
 		messageRepository.save(message);
-		Room targetRoom = roomRepository.getOne(roomId);
+		Room targetRoom = roomRepository.findById(roomId)
+				.orElseThrow(() -> new RuntimeException("Can not found Room entity"));
 		targetRoom.setLastMsgId(message);
+		roomRepository.save(targetRoom);
 		for (WebSocketSession roomSession : roomSessions) {
 			sendMessage(roomSession, mappingChatMessage(session, message));
 		}
@@ -76,12 +77,8 @@ public class WebSocketService {
 	}
 
 	private Message generateMessage(Long roomId, Long userId, String contents) {
-		Message message = new Message();
-		message.setContents(contents);
-		message.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-		message.setRoom(roomRepository.getOne(roomId));
-		message.setType("Message");
-		message.setUser(userRepository.getOne(userId));
+		Message message = Message.of(contents, MessageType.MESSAGE, roomId, userId);
+
 		return message;
 	}
 }
