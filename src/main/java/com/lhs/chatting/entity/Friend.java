@@ -2,47 +2,42 @@ package com.lhs.chatting.entity;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "friend")
+@Builder
+@Getter
 public class Friend {
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private long id;
+    @Id
+    @GeneratedValue
+    @Column(name = "id")
+    private long id;
 
-	@Column(name = "relation_type", length = 30, nullable = false)
-	private String relationType;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-	@Column(name = "created_time")
-	private Timestamp createdTime;
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "friend_id")
+    private User friend;
 
-	@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name = "user_id")
-	private User user;
+    @Setter
+    @Column(name = "relation_type", length = 30, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private FriendRelationType relationType;
 
-	@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name = "friend_id")
-	private User friend;
+    @Column(name = "created_time")
+    private Timestamp createdTime;
 
-	public Friend(User user, User friend) {
-		relationType = "NORMAL";
-		createdTime = new Timestamp(System.currentTimeMillis());
-		this.user = user;
-		this.friend = friend;
-	}
+    public static Friend of(Long userId, Long friendId, FriendRelationType relationType) {
+        return Friend.builder()
+                .relationType(relationType)
+                .user(User.builder().id(userId).build())
+                .friend(User.builder().id(friendId).build())
+                .createdTime(new Timestamp(System.currentTimeMillis()))
+                .build();
+    }
 }

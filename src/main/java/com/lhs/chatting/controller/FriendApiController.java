@@ -2,13 +2,13 @@ package com.lhs.chatting.controller;
 
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.lhs.chatting.model.ChangeFriendRelationRequest;
+import com.lhs.chatting.model.FriendRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.lhs.chatting.entity.Friend;
-import com.lhs.chatting.entity.User;
 import com.lhs.chatting.service.FriendService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,25 +17,21 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/friends")
 @RequiredArgsConstructor
 public class FriendApiController {
-	private final FriendService friendService;
+    private final FriendService friendService;
 
-	@PostMapping
-	public void registerFriend(@RequestBody Map<String, Object> friendMap) {
-		User user = (User) friendMap.get("user");
-		User friend = (User) friendMap.get("friend");
-		friendService.registerFriend(user, friend);
-	}
+    @PostMapping
+    public void registerFriend(@RequestBody FriendRequest request) {
+        friendService.registerFriend(request.getUserId(), request.getFriendId());
+    }
 
-	@PostMapping(path = "/change")
-	public void changeRelation(@RequestBody Map<String, Object> friendMap) {
-		Friend friend = (Friend) friendMap.get("friend");
-		String relation = String.valueOf(friendMap.get("relation"));
-		friendService.changeRelation(friend, relation);
-	}
+    @PutMapping("/{friendId}")
+    public ResponseEntity<Object> changeFriendRelation(@RequestBody ChangeFriendRelationRequest request, @PathVariable Long friendId) {
+        friendService.changeRelation(request.getUserId(), friendId, request.getRelationType());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
-	@PostMapping(path = "/delete")
-	public void deleteFriend(@RequestBody Map<String, Object> friendMap) {
-		Friend friend = (Friend) friendMap.get("friend");
-		friendService.deleteFriend(friend);
-	}
+    @DeleteMapping("/{friendId}")
+    public void deleteFriend(@RequestBody FriendRequest request) {
+        friendService.deleteFriend(request.getUserId(), request.getFriendId());
+    }
 }

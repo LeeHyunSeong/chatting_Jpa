@@ -8,36 +8,33 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "USER")
+@Builder
+@Getter
 public class User {
-	@Id
-	@GeneratedValue
-	@Column(name = "id", length = 45, nullable = false)
-	private long id;
+    @Id
+    @GeneratedValue
+    @Column(name = "id", length = 45, nullable = false)
+    private long id;
 
-	@Column(name = "email", length = 45)
-	private String email;
+    @Column(name = "email", length = 45)
+    private String email;
 
-	@Column(name = "password", length = 45)
-	private String password;
+    @Column(name = "password", length = 45)
+    private String password;
 
-	@Column(name = "username", length = 30)
-	private String username;
+    @Column(name = "username", length = 30)
+    private String username;
 
-	@Column(name = "nickname", length = 45, nullable = false)
-	private String nickname;
+    @Column(name = "nickname", length = 45, nullable = false)
+    private String nickname;
 
-	@Column(name = "profile_image", length = 50)
-	private String profileImage;
+    @Column(name = "profile_image", length = 50)
+    private String profileImage;
 
-	@Column(name = "signed_time")
-	private Timestamp signedTime;
+    @Column(name = "signed_time")
+    private Timestamp signedTime;
 }
