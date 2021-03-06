@@ -11,14 +11,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "message")
+@Builder
+@Getter
 public class Message {
 	@Id
 	@GeneratedValue
@@ -28,8 +29,8 @@ public class Message {
 	@Column(name = "contents", length = 21844, nullable = false)
 	private String contents;
 
-	@Column(name = "type", length = 20, nullable = false)
-	private String type;
+	@Column(name = "type", nullable = false)
+	private MessageNoticeType type;
 
 	@Column(name = "created_time")
 	private Timestamp createdTime;
@@ -41,4 +42,14 @@ public class Message {
 	@ManyToOne(targetEntity = User.class)
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	public static Message of(String contents, MessageNoticeType type, Long roomId, Long userId) {
+		return Message.builder()
+				.contents(contents)
+				.type(type)
+				.createdTime(new Timestamp(System.currentTimeMillis()))
+				.room(Room.builder().id(roomId).build())
+				.user(User.builder().id(userId).build())
+				.build();
+	}
 }

@@ -10,13 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
-@AllArgsConstructor
 @Entity
 @Table(name = "room")
+@Builder
+@Getter
 public class Room {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,9 +30,4 @@ public class Room {
 
 	@Column(name = "last_msg_id")
 	private Message lastMsgId;
-
-	public Room() {
-		createdTime = new Timestamp(System.currentTimeMillis());
-		lastMsgId = null;
-	}
 }
