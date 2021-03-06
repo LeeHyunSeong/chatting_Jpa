@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.Member;
 import com.lhs.chatting.entity.Message;
+import com.lhs.chatting.entity.MessageNoticeType;
 import com.lhs.chatting.entity.Room;
 import com.lhs.chatting.entity.User;
 import com.lhs.chatting.repository.MemberRepository;
@@ -26,44 +27,47 @@ public class UserService {
 	@Autowired
 	private MessageRepository messageRepository;
 
-	public void registerUser(User user) {
+	public void registerUser(String email, String password, String username, String nickname) {
+		User user = User.of(email, password, username, nickname);
 		userRepository.save(user);
 	}
 
-	public void changePassword(User user, String password) {
-		User targetUser = userRepository.getOne(user.getId());
+	public void changePassword(Long userId, String password) {
+		User targetUser = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("Can not found User entity"));
 		targetUser.setPassword(password);
+		userRepository.save(targetUser);
 	}
 
-	public void changeNickname(User user, String nickname) {
-		User targetUser = userRepository.getOne(user.getId());
+	public void changeNickname(Long userId, String nickname) {
+		User targetUser = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("Can not found User entity"));
 		targetUser.setNickname(nickname);
+		userRepository.save(targetUser);
 	}
 
-	public void changeProfile(User user, String profile) {
-		User targetUser = userRepository.getOne(user.getId());
+	public void changeProfile(Long userId, String profile) {
+		User targetUser = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("Can not found User entity"));
 		targetUser.setProfileImage(profile);
+		userRepository.save(targetUser);
 	}
 
-	public void deleteUser(User user) {
-		Long targetUserId = user.getId();
+	public void deleteUser(Long userId) {
 		List<Member> members = memberRepository.findAll();
 		for (Member member : members) {
-			if (member.getUser().getId() == targetUserId) {
-				Message message = makeExitMessage(member.getRoom());
+			if (member.getUser().getId() == userId) {
+				Message message = makeExitMessage(member.getRoom().getId());
 				messageRepository.save(message);
 				memberRepository.delete(member);
 			}
 		}
-		userRepository.deleteById(targetUserId);
+		userRepository.deleteById(userId);
 	}
 
-	private Message makeExitMessage(Room room) {
-		Message inviteMessage = new Message();
-		inviteMessage.setContents("(알수없음)님이 퇴장하였습니다.");
-		inviteMessage.setCreatedTime(new Timestamp(System.currentTimeMillis()));
-		inviteMessage.setRoom(room);
-		inviteMessage.setType("NOTICE");
+	private Message makeExitMessage(Long roomId) {
+		String contents = "(알수없음)님이 퇴장하였습니다.";
+		Message inviteMessage = Message.of(contents, MessageNoticeType.NOTICE, roomId, null);
 
 		return inviteMessage;
 	}

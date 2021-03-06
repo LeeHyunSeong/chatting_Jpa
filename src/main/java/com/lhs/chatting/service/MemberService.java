@@ -54,7 +54,7 @@ public class MemberService {
 		Member targetMember = memberRepository.findById(memberId)
 				.orElseThrow(() -> new RuntimeException("Can not found Member entity"));
 		Room targetRoom = roomRepository.findById(targetMember.getRoom().getId())
-				.orElseThrow(() -> new RuntimeException("Can not found Member entity"));
+				.orElseThrow(() -> new RuntimeException("Can not found Room entity"));
 		Message exitMessage = makeNoticeMessage("INVITE", targetMember.getUser().getId(), targetMember.getRoom().getId());
 		messageRepository.save(exitMessage);
 		memberRepository.delete(targetMember);

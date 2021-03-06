@@ -1,16 +1,17 @@
 package com.lhs.chatting.controller;
 
-import com.lhs.chatting.entity.Friend;
-import com.lhs.chatting.entity.User;
-import com.lhs.chatting.service.UserService;
-import lombok.RequiredArgsConstructor;
-
-import java.util.Map;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.lhs.chatting.model.ChangeUserInformationRequest;
+import com.lhs.chatting.model.RegisterUserRequest;
+import com.lhs.chatting.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/users")
@@ -19,34 +20,28 @@ public class UserApiController {
 	private final UserService userService;
 
 	@PostMapping
-	public void registerUser(@RequestBody User user) {
-		userService.registerUser(user);
+	public void registerUser(@RequestBody RegisterUserRequest request) {
+		userService.registerUser(request.getEmail(), request.getPassword(), request.getUsername(), request.getNickname());
 	}
 
-	@PostMapping(path = "/password")
-	public void changePassword(@RequestBody Map<String, Object> passwordMap) {
-		User user = (User) passwordMap.get("user");
-		String password = String.valueOf(passwordMap.get("password"));
-		userService.changePassword(user, password);
+	@PostMapping("/{userId}")
+	public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
+		String password = request.getPassword();
+		String nickname = request.getNickname();
+		String profileImage = request.getProfileImage();
+		if(password != null) {
+			userService.changePassword(userId, password);
+		}
+		if(nickname != null) {
+			userService.changeNickname(userId, nickname);
+		}
+		if(profileImage != null) {
+			userService.changeProfile(userId, profileImage);
+		}
 	}
 
-	@PostMapping(path = "/nickname")
-	public void changeNickname(@RequestBody Map<String, Object> nicknameMap) {
-		User user = (User) nicknameMap.get("user");
-		String nickname = String.valueOf(nicknameMap.get("nickname"));
-		userService.changeNickname(user, nickname);
-	}
-
-	@PostMapping(path = "/profile")
-	public void changeProfile(@RequestBody Map<String, Object> profileMap) {
-		User user = (User) profileMap.get("user");
-		String image = String.valueOf(profileMap.get("image"));
-		userService.changeProfile(user, image);
-	}
-
-	@PostMapping(path = "/delete")
-	public void deleteUser(@RequestBody Map<String, Object> userMap) {
-		User user = (User) userMap.get("user");
-		userService.deleteUser(user);
+	@DeleteMapping("/{userId}")
+	public void deleteUser(@PathVariable Long userId) {
+		userService.deleteUser(userId);
 	}
 }
