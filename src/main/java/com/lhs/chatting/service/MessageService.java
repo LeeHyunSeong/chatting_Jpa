@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MessageService {
     @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     public void createMessage(Message message) {
         messageRepository.save(message);

@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/messages")
 @RequiredArgsConstructor
 public class MessageApiController {
-    private MessageService messageService;
+    private final MessageService messageService;
 
     @PostMapping(path = "/search")
     public void searchMessage(@RequestBody Map<String, Object> textMap) {

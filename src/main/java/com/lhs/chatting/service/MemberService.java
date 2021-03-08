@@ -21,13 +21,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService {
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     @Autowired
-    private RoomRepository roomRepository;
+    private final RoomRepository roomRepository;
     @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     public void inviteFriend(Long userId, Long roomId, String roomAlias) {
         Member member = Member.of(userId, roomId, roomAlias);

@@ -22,7 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberApiController {
-    MemberService memberService;
+    private final MemberService memberService;
 
     @PostMapping("/{userId}")
     public void inviteFriend(@RequestBody InviteUserRequest request, @PathVariable Long userId) {

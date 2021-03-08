@@ -21,11 +21,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
     @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
 
     public void registerUser(String email, String password, String username, String nickname) {
         User user = User.of(email, password, username, nickname);

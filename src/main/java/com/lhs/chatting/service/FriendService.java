@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FriendService {
     @Autowired
-    private FriendRepository repository;
+    private final FriendRepository repository;
 
     public void registerFriend(Long userId, Long friendId) {
         Friend friend = Friend.of(userId, friendId, FriendRelationType.NORMAL);

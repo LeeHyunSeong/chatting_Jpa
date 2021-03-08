@@ -27,15 +27,15 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class WebSocketService {
-    @Autowired
-    private UserRepository userRepository;
     private final RoomSessionRepository roomSessionRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private final UserRepository userRepository;
     @Autowired
-    private MessageRepository messageRepository;
+    private final MemberRepository memberRepository;
     @Autowired
-    private RoomRepository roomRepository;
+    private final MessageRepository messageRepository;
+    @Autowired
+    private final RoomRepository roomRepository;
 
     public void sendMessage(WebSocketSession session, Long roomId, Long userId, String contents) {
         List<WebSocketSession> roomSessions = roomSessionRepository.findAllByRoomId(roomId);
