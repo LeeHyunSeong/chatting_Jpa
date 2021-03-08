@@ -30,13 +30,10 @@ public class MemberApiController {
     }
 
     @PutMapping("/{memberId}")
-    public void changeRoomAlias(@RequestBody ChangeRoomSettingRequest request, @PathVariable Long memberId) {
+    public void changeRoomSetting(@RequestBody ChangeRoomSettingRequest request, @PathVariable Long memberId) {
         String roomAlias = request.getRoomAlias();
         String roomSetting = request.getSetting();
-        if (roomAlias != null && roomSetting == null)
-            memberService.changeRoomAlias(memberId, roomAlias);
-        else if (roomAlias == null && roomSetting != null)
-            memberService.changeSetting(memberId, roomSetting);
+        memberService.changeRoomSetting(memberId, roomAlias, roomSetting);
     }
 
     @DeleteMapping("/{memberId}")

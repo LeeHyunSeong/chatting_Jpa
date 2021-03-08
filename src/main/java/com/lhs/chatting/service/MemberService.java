@@ -36,17 +36,13 @@ public class MemberService {
         messageRepository.save(inviteMessage);
     }
 
-    public void changeRoomAlias(Long memberId, String roomAlias) {
+    public void changeRoomSetting(Long memberId, String roomAlias, String roomSetting) {
         Member targetMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Can not found Member entity"));
-        targetMember.setRoomAlias(roomAlias);
-        memberRepository.save(targetMember);
-    }
-
-    public void changeSetting(Long memberId, String roomSetting) {
-        Member targetMember = memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("Can not found Member entity"));
-        targetMember.setSettingMeta(roomSetting);
+        if(roomAlias != null)
+            targetMember.setRoomAlias(roomAlias);
+        if(roomSetting != null)
+            targetMember.setSettingMeta(roomSetting);
         memberRepository.save(targetMember);
     }
 

@@ -32,24 +32,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changePassword(Long userId, String password) {
+    public void changeUserInfo(Long userId, String nickname, String password, String profileImage) {
         User targetUser = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Can not found User entity"));
-        targetUser.setPassword(password);
-        userRepository.save(targetUser);
-    }
-
-    public void changeNickname(Long userId, String nickname) {
-        User targetUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Can not found User entity"));
-        targetUser.setNickname(nickname);
-        userRepository.save(targetUser);
-    }
-
-    public void changeProfile(Long userId, String profile) {
-        User targetUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Can not found User entity"));
-        targetUser.setProfileImage(profile);
+        if(nickname != null)
+            targetUser.setNickname(nickname);
+        if(password != null)
+            targetUser.setPassword(password);
+        if(profileImage != null)
+            targetUser.setProfileImage(profileImage);
         userRepository.save(targetUser);
     }
 

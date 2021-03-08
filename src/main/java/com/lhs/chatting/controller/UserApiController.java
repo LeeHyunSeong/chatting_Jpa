@@ -30,15 +30,7 @@ public class UserApiController {
         String password = request.getPassword();
         String nickname = request.getNickname();
         String profileImage = request.getProfileImage();
-        if (password != null) {
-            userService.changePassword(userId, password);
-        }
-        if (nickname != null) {
-            userService.changeNickname(userId, nickname);
-        }
-        if (profileImage != null) {
-            userService.changeProfile(userId, profileImage);
-        }
+        userService.changeUserInfo(userId, nickname, password, profileImage);
     }
 
     @DeleteMapping("/{userId}")
