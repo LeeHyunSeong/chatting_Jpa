@@ -32,7 +32,7 @@ public class RoomService {
         return targetMembers;
     }
 
-    public void makeRoom(String name, List<Long> userIds) {
+    public void makeRoom(List<Long> userIds, String name) {
         Room room = Room.builder()
                 .createdTime(new Timestamp(System.currentTimeMillis()))
                 .lastMsgId(null)

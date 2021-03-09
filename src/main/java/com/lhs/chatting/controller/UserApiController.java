@@ -21,8 +21,7 @@ public class UserApiController {
 
     @PostMapping
     public void registerUser(@RequestBody RegisterUserRequest request) {
-        userService.registerUser(request.getEmail(), request.getPassword(), request.getUsername(),
-                request.getNickname());
+        userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail(), request.getNickname());
     }
 
     @PostMapping("/{userId}")

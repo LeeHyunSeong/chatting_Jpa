@@ -24,7 +24,7 @@ public class RoomApiController {
 
     @PostMapping("/{userId}")
     public List<Member> makeRoom(@RequestBody RoomRequest request, @PathVariable Long userId) {
-        roomService.makeRoom(request.getRoomName(), request.getUserIds());
+        roomService.makeRoom(request.getUserIds(), request.getRoomName());
 
         return roomService.getRooms(userId);
     }

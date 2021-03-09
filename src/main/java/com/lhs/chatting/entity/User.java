@@ -20,16 +20,16 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "email", columnDefinition="TEXT")
-    private String email;
+    @Column(name = "username", columnDefinition="TEXT")
+    private String username;
 
     @Setter
     @Column(name = "password", columnDefinition="TEXT")
     private String password;
-
-    @Column(name = "username", columnDefinition="TEXT")
-    private String username;
     
+    @Column(name = "email", columnDefinition="TEXT")
+    private String email;
+
     @Setter
     @Column(name = "nickname", columnDefinition="TEXT")
     private String nickname;
@@ -43,9 +43,9 @@ public class User {
 
     public static User of(String username, String password, String email, String nickname) {
         return User.builder()
-                .email(email)
-                .password(password)
                 .username(username)
+                .password(password)
+                .email(email)
                 .nickname(nickname)
                 .profileImage(null)
                 .signedTime(new Timestamp(System.currentTimeMillis()))

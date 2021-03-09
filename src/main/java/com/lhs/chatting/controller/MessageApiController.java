@@ -19,7 +19,7 @@ public class MessageApiController {
     private final MessageService messageService;
 
     @PostMapping(path = "{content}/rooms/{roomId}")
-    public List<Message> searchMessage(@PathVariable String content, @PathVariable Long roomId) {
-        return messageService.searchMessage(content, roomId);
+    public List<Message> searchMessage(@PathVariable Long roomId, @PathVariable String content) {
+        return messageService.searchMessage(roomId, content);
     }
 }

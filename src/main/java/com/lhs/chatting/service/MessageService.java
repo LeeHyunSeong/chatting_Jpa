@@ -17,7 +17,7 @@ public class MessageService {
     @Autowired
     private final MessageRepository messageRepository;
 
-    public List<Message> searchMessage(String content, Long roomId) {
+    public List<Message> searchMessage(Long roomId, String content) {
         List<Message> targetMessages = messageRepository.findAllByRoomId(roomId);
         List<Message> resultMessages = new ArrayList<>();
         

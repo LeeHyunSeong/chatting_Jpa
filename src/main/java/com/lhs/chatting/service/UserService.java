@@ -27,8 +27,8 @@ public class UserService {
     @Autowired
     private final MessageRepository messageRepository;
 
-    public void registerUser(String email, String password, String username, String nickname) {
-        User user = User.of(email, password, username, nickname);
+    public void registerUser(String username, String password, String email, String nickname) {
+        User user = User.of(username, password, email, nickname);
         userRepository.save(user);
     }
 
