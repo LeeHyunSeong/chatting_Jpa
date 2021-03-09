@@ -31,13 +31,13 @@ public class Member {
     @ManyToOne(targetEntity = Room.class)
     @JoinColumn(name = "room_id")
     private Room room;
-    
+
     @Setter
-    @Column(name = "room_alias", columnDefinition="TEXT", nullable = false)
+    @Column(name = "room_alias", columnDefinition = "TEXT", nullable = false)
     private String roomAlias;
 
     @Setter
-    @Column(name = "setting_meta", columnDefinition="TEXT", nullable = false)
+    @Column(name = "setting_meta", columnDefinition = "TEXT", nullable = false)
     private String settingMeta;
 
     @Setter
@@ -46,9 +46,11 @@ public class Member {
 
     @Column(name = "joined_time")
     private Timestamp joinedTime;
-    
+
     public static Member of(Long userId, Long roomId, String roomAlias) {
-        return Member.builder().roomAlias(roomAlias).settingMeta("NORMAL")
+        return Member.builder()
+                .roomAlias(roomAlias)
+                .settingMeta("NORMAL")
                 .user(User.builder().id(userId).build())
                 .room(Room.builder().id(roomId).build())
                 .joinedTime(new Timestamp(System.currentTimeMillis()))

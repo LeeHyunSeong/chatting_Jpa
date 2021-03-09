@@ -32,6 +32,12 @@ public class RoomService {
         return targetMembers;
     }
 
+    public Member getRoom(Long roomId, Long userId) {
+        Member targetMember = memberRepository.findByRoomIdAndUserId(roomId, userId)
+                .orElseThrow(() -> new RuntimeException("Can not found Member entity"));
+        return targetMember;
+    }
+
     public void makeRoom(List<Long> userIds, String name) {
         Room room = Room.builder()
                 .createdTime(new Timestamp(System.currentTimeMillis()))

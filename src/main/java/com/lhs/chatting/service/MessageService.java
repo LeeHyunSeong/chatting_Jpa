@@ -20,9 +20,9 @@ public class MessageService {
     public List<Message> searchMessageByText(Long roomId, String content) {
         List<Message> targetMessages = messageRepository.findAllByRoomId(roomId);
         List<Message> resultMessages = new ArrayList<>();
-        
-        for(Message message : targetMessages)
-            if(message.getContents().contains(content))
+
+        for (Message message : targetMessages)
+            if (message.getContents().contains(content))
                 resultMessages.add(message);
 
         return resultMessages;

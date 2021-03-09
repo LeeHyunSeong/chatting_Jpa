@@ -2,8 +2,8 @@ package com.lhs.chatting.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class MessageApiController {
     private final MessageService messageService;
 
-    @PostMapping(path = "{content}/rooms/{roomId}")
+    @GetMapping("{content}/rooms/{roomId}")
     public List<Message> searchMessageByText(@PathVariable Long roomId, @PathVariable String content) {
         return messageService.searchMessageByText(roomId, content);
     }

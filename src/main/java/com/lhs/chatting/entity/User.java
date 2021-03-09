@@ -20,22 +20,22 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "username", columnDefinition="TEXT")
+    @Column(name = "username", columnDefinition = "TEXT")
     private String username;
 
     @Setter
-    @Column(name = "password", columnDefinition="TEXT")
+    @Column(name = "password", columnDefinition = "TEXT")
     private String password;
-    
-    @Column(name = "email", columnDefinition="TEXT")
+
+    @Column(name = "email", columnDefinition = "TEXT")
     private String email;
 
     @Setter
-    @Column(name = "nickname", columnDefinition="TEXT")
+    @Column(name = "nickname", columnDefinition = "TEXT")
     private String nickname;
 
     @Setter
-    @Column(name = "profile_image", columnDefinition="TEXT")
+    @Column(name = "profile_image", columnDefinition = "TEXT")
     private String profileImage;
 
     @Column(name = "signed_time")

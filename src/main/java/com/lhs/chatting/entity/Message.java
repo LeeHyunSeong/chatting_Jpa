@@ -25,7 +25,7 @@ public class Message {
     @GeneratedValue
     @Column(name = "id")
     private long id;
-    
+
     @ManyToOne(targetEntity = Room.class)
     @Column(name = "room_id")
     private Room room;
@@ -34,7 +34,7 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "contents", columnDefinition="TEXT", nullable = false)
+    @Column(name = "contents", columnDefinition = "TEXT", nullable = false)
     private String contents;
 
     @Column(name = "type", nullable = false)

@@ -26,7 +26,7 @@ public class Room {
     @Setter
     @Column(name = "last_msg_id")
     private Message lastMsgId;
-    
+
     @Column(name = "created_time")
     private Timestamp createdTime;
 }

@@ -39,9 +39,9 @@ public class MemberService {
     public void changeRoomSetting(Long memberId, String roomAlias, String roomSetting) {
         Member targetMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new RuntimeException("Can not found Member entity"));
-        if(roomAlias != null)
+        if (roomAlias != null)
             targetMember.setRoomAlias(roomAlias);
-        if(roomSetting != null)
+        if (roomSetting != null)
             targetMember.setSettingMeta(roomSetting);
         memberRepository.save(targetMember);
     }

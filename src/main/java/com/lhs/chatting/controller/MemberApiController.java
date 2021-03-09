@@ -1,16 +1,14 @@
 package com.lhs.chatting.controller;
 
-import java.util.Map;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.entity.Member;
 import com.lhs.chatting.model.ChangeRoomSettingRequest;
 import com.lhs.chatting.model.InviteUserRequest;
 import com.lhs.chatting.model.MemberRequest;
@@ -24,8 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberApiController {
     private final MemberService memberService;
 
-    @PostMapping("/{userId}")
-    public void inviteFriendToRoom(@RequestBody InviteUserRequest request, @PathVariable Long userId) {
+    @PostMapping
+    public void inviteFriendToRoom(@RequestParam("request") InviteUserRequest request, @RequestParam("userId") Long userId) {
         memberService.inviteFriendToRoom(userId, request.getRoomId(), request.getRoomAlias());
     }
 
@@ -36,7 +34,7 @@ public class MemberApiController {
         memberService.changeRoomSetting(memberId, roomAlias, roomSetting);
     }
 
-    @DeleteMapping("/{memberId}")
+    @DeleteMapping
     public void leaveRoom(@RequestBody MemberRequest request) {
         memberService.leaveRoom(request.getMemberId());
     }
