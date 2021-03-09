@@ -33,7 +33,7 @@ public class MainPageController {
 
     @RequestMapping("/list")
     public String listPage(@RequestParam("memberId") Long memberId) {
-        memberService.updateLastEntrance(memberId);
+        memberService.updateLastEntranceTime(memberId);
         return "room.html";
     }
 }

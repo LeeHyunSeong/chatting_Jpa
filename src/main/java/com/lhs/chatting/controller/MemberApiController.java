@@ -25,8 +25,8 @@ public class MemberApiController {
     private final MemberService memberService;
 
     @PostMapping("/{userId}")
-    public void inviteFriend(@RequestBody InviteUserRequest request, @PathVariable Long userId) {
-        memberService.inviteFriend(userId, request.getRoomId(), request.getRoomAlias());
+    public void inviteFriendToRoom(@RequestBody InviteUserRequest request, @PathVariable Long userId) {
+        memberService.inviteFriendToRoom(userId, request.getRoomId(), request.getRoomAlias());
     }
 
     @PutMapping("/{memberId}")

@@ -29,7 +29,7 @@ public class MemberService {
     @Autowired
     private final MessageRepository messageRepository;
 
-    public void inviteFriend(Long userId, Long roomId, String roomAlias) {
+    public void inviteFriendToRoom(Long userId, Long roomId, String roomAlias) {
         Member member = Member.of(userId, roomId, roomAlias);
         memberRepository.save(member);
         Message inviteMessage = makeNoticeMessage("INVITE", userId, roomId);
@@ -57,7 +57,7 @@ public class MemberService {
         memberRepository.delete(targetMember);
     }
 
-    public void updateLastEntrance(Long id) {
+    public void updateLastEntranceTime(Long id) {
         Member targetMember = memberRepository.getOne(id);
         Timestamp current = new Timestamp(System.currentTimeMillis());
         targetMember.setLastEntranceTime(current);
