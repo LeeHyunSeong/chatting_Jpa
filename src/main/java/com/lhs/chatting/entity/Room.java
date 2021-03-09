@@ -23,14 +23,10 @@ public class Room {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "created_time")
-    private Timestamp createdTime;
-
     @Setter
     @Column(name = "last_msg_id")
     private Message lastMsgId;
-
-    public static Room of() {
-        return Room.builder().createdTime(new Timestamp(System.currentTimeMillis())).lastMsgId(null).build();
-    }
+    
+    @Column(name = "created_time")
+    private Timestamp createdTime;
 }

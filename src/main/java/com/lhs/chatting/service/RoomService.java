@@ -1,5 +1,6 @@
 package com.lhs.chatting.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.Member;
 import com.lhs.chatting.entity.Room;
-import com.lhs.chatting.entity.User;
 import com.lhs.chatting.repository.MemberRepository;
 import com.lhs.chatting.repository.RoomRepository;
 
@@ -33,7 +33,10 @@ public class RoomService {
     }
 
     public void makeRoom(String name, List<Long> userIds) {
-        Room room = Room.of();
+        Room room = Room.builder()
+                .createdTime(new Timestamp(System.currentTimeMillis()))
+                .lastMsgId(null)
+                .build();
         for (Long userId : userIds) {
             Member member = Member.of(userId, room.getId(), name);
             memberRepository.save(member);

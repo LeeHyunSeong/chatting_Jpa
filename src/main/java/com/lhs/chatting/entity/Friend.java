@@ -33,8 +33,11 @@ public class Friend {
     private Timestamp createdTime;
 
     public static Friend of(Long userId, Long friendId, FriendRelationType relationType) {
-        return Friend.builder().relationType(relationType).user(User.builder().id(userId).build())
-                .friend(User.builder().id(friendId).build()).createdTime(new Timestamp(System.currentTimeMillis()))
+        return Friend.builder()
+                .user(User.builder().id(userId).build())
+                .friend(User.builder().id(friendId).build())
+                .relationType(relationType)
+                .createdTime(new Timestamp(System.currentTimeMillis()))
                 .build();
     }
 }

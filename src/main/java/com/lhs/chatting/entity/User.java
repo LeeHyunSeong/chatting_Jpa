@@ -20,9 +20,6 @@ public class User {
     @Column(name = "id", length = 45, nullable = false)
     private long id;
 
-    @Column(name = "username", length = 30)
-    private String username;
-
     @Column(name = "email", length = 45)
     private String email;
 
@@ -30,6 +27,9 @@ public class User {
     @Column(name = "password", length = 45)
     private String password;
 
+    @Column(name = "username", length = 30)
+    private String username;
+    
     @Setter
     @Column(name = "nickname", length = 45, nullable = false)
     private String nickname;
@@ -41,7 +41,7 @@ public class User {
     @Column(name = "signed_time")
     private Timestamp signedTime;
 
-    public static User of(String email, String password, String username, String nickname) {
+    public static User of(String username, String password, String email, String nickname) {
         return User.builder()
                 .email(email)
                 .password(password)

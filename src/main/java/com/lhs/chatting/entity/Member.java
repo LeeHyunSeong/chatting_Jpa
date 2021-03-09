@@ -24,6 +24,14 @@ public class Member {
     @Column(name = "id")
     private long id;
 
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne(targetEntity = Room.class)
+    @JoinColumn(name = "room_id")
+    private Room room;
+    
     @Setter
     @Column(name = "room_alias", length = 45, nullable = false)
     private String roomAlias;
@@ -32,25 +40,19 @@ public class Member {
     @Column(name = "setting_meta", length = 45, nullable = false)
     private String settingMeta;
 
-    @Column(name = "joined_time")
-    private Timestamp joinedTime;
-
     @Setter
     @Column(name = "last_entrance_time")
     private Timestamp lastEntranceTime;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(targetEntity = Room.class)
-    @JoinColumn(name = "room_id")
-    private Room room;
-
+    @Column(name = "joined_time")
+    private Timestamp joinedTime;
+    
     public static Member of(Long userId, Long roomId, String roomAlias) {
         return Member.builder().roomAlias(roomAlias).settingMeta("NORMAL")
+                .user(User.builder().id(userId).build())
+                .room(Room.builder().id(roomId).build())
                 .joinedTime(new Timestamp(System.currentTimeMillis()))
-                .lastEntranceTime(new Timestamp(System.currentTimeMillis())).user(User.builder().id(userId).build())
-                .room(Room.builder().id(roomId).build()).build();
+                .lastEntranceTime(new Timestamp(System.currentTimeMillis()))
+                .build();
     }
 }

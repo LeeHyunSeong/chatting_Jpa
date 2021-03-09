@@ -25,6 +25,14 @@ public class Message {
     @GeneratedValue
     @Column(name = "id")
     private long id;
+    
+    @ManyToOne(targetEntity = Room.class)
+    @Column(name = "room_id")
+    private Room room;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "contents", length = 21844, nullable = false)
     private String contents;
@@ -35,16 +43,13 @@ public class Message {
     @Column(name = "created_time")
     private Timestamp createdTime;
 
-    @ManyToOne(targetEntity = Room.class)
-    @Column(name = "room_id")
-    private Room room;
-
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public static Message of(String contents, MessageType type, Long roomId, Long userId) {
-        return Message.builder().contents(contents).type(type).createdTime(new Timestamp(System.currentTimeMillis()))
-                .room(Room.builder().id(roomId).build()).user(User.builder().id(userId).build()).build();
+    public static Message of(Long roomId, Long userId, String contents, MessageType type) {
+        return Message.builder()
+                .room(Room.builder().id(roomId).build())
+                .user(User.builder().id(userId).build())
+                .contents(contents)
+                .type(type)
+                .createdTime(new Timestamp(System.currentTimeMillis()))
+                .build();
     }
 }

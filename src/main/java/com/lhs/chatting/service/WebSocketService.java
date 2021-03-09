@@ -77,7 +77,7 @@ public class WebSocketService {
     }
 
     private Message generateMessage(Long roomId, Long userId, String contents) {
-        Message message = Message.of(contents, MessageType.MESSAGE, roomId, userId);
+        Message message = Message.of(roomId, userId, contents, MessageType.MESSAGE);
 
         return message;
     }

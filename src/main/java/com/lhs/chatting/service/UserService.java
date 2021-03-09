@@ -58,7 +58,7 @@ public class UserService {
 
     private Message makeExitMessage(Long roomId) {
         String contents = "(알수없음)님이 퇴장하였습니다.";
-        Message inviteMessage = Message.of(contents, MessageType.NOTICE, roomId, null);
+        Message inviteMessage = Message.of(roomId, null, contents, MessageType.NOTICE);
 
         return inviteMessage;
     }

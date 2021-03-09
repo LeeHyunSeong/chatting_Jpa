@@ -72,7 +72,7 @@ public class MemberService {
         else if (type == "EXIT")
             contents = user.getNickname() + "님이 퇴장하였습니다.";
 
-        Message inviteMessage = Message.of(contents, MessageType.NOTICE, roomId, userId);
+        Message inviteMessage = Message.of(roomId, userId, contents, MessageType.NOTICE);
 
         return inviteMessage;
     }
