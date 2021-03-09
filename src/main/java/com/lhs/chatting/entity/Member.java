@@ -33,11 +33,11 @@ public class Member {
     private Room room;
     
     @Setter
-    @Column(name = "room_alias", length = 45, nullable = false)
+    @Column(name = "room_alias", columnDefinition="TEXT", nullable = false)
     private String roomAlias;
 
     @Setter
-    @Column(name = "setting_meta", length = 45, nullable = false)
+    @Column(name = "setting_meta", columnDefinition="TEXT", nullable = false)
     private String settingMeta;
 
     @Setter

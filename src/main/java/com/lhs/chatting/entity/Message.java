@@ -34,7 +34,7 @@ public class Message {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "contents", length = 21844, nullable = false)
+    @Column(name = "contents", columnDefinition="TEXT", nullable = false)
     private String contents;
 
     @Column(name = "type", nullable = false)

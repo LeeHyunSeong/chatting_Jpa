@@ -25,7 +25,7 @@ public class Friend {
     private User friend;
 
     @Setter
-    @Column(name = "relation_type", length = 30, nullable = false)
+    @Column(name = "relation_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private FriendRelationType relationType;
 

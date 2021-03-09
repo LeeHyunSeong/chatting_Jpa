@@ -17,25 +17,25 @@ import lombok.*;
 public class User {
     @Id
     @GeneratedValue
-    @Column(name = "id", length = 45, nullable = false)
+    @Column(name = "id")
     private long id;
 
-    @Column(name = "email", length = 45)
+    @Column(name = "email", columnDefinition="TEXT")
     private String email;
 
     @Setter
-    @Column(name = "password", length = 45)
+    @Column(name = "password", columnDefinition="TEXT")
     private String password;
 
-    @Column(name = "username", length = 30)
+    @Column(name = "username", columnDefinition="TEXT")
     private String username;
     
     @Setter
-    @Column(name = "nickname", length = 45, nullable = false)
+    @Column(name = "nickname", columnDefinition="TEXT")
     private String nickname;
 
     @Setter
-    @Column(name = "profile_image", length = 50)
+    @Column(name = "profile_image", columnDefinition="TEXT")
     private String profileImage;
 
     @Column(name = "signed_time")
