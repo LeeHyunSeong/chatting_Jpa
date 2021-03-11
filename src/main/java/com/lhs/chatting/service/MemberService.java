@@ -20,13 +20,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final MemberRepository memberRepository;
-    @Autowired
     private final RoomRepository roomRepository;
-    @Autowired
     private final MessageRepository messageRepository;
 
     public void inviteFriendToRoom(Long userId, Long roomId, String roomAlias) {

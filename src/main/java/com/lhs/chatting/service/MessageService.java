@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class MessageService {
-    @Autowired
     private final MessageRepository messageRepository;
 
     public List<Message> searchMessageByText(Long roomId, String content) {

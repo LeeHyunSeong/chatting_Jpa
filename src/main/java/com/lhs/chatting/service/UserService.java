@@ -20,11 +20,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final MemberRepository memberRepository;
-    @Autowired
     private final MessageRepository messageRepository;
 
     public void registerUser(String username, String password, String email, String nickname) {

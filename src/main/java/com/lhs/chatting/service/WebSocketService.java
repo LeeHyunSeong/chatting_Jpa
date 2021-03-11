@@ -28,13 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class WebSocketService {
     private final RoomSessionRepository roomSessionRepository;
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final MemberRepository memberRepository;
-    @Autowired
     private final MessageRepository messageRepository;
-    @Autowired
     private final RoomRepository roomRepository;
 
     public void sendMessage(WebSocketSession session, Long roomId, Long userId, String contents) {

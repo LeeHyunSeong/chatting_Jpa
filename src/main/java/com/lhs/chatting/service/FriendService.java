@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class FriendService {
-    @Autowired
     private final FriendRepository repository;
 
     public void registerFriend(Long userId, Long friendId) {
