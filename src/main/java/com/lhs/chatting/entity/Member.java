@@ -33,7 +33,7 @@ public class Member {
     private Room room;
 
     @Setter
-    @Column(name = "room_alias", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "room_alias", length = 20, nullable = false)
     private String roomAlias;
 
     @Setter

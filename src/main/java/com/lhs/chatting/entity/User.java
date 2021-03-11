@@ -22,18 +22,18 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "username", columnDefinition = "TEXT")
+    @Column(name = "username", length = 10)
     private String username;
 
     @Setter
-    @Column(name = "password", columnDefinition = "TEXT")
+    @Column(name = "password", length = 15)
     private String password;
 
     @Column(name = "email", columnDefinition = "TEXT")
     private String email;
 
     @Setter
-    @Column(name = "nickname", columnDefinition = "TEXT")
+    @Column(name = "nickname", length = 20)
     private String nickname;
 
     @Setter
