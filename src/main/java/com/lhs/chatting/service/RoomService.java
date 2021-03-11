@@ -1,6 +1,6 @@
 package com.lhs.chatting.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class RoomService {
 
     public void makeRoom(List<Long> userIds, String name) {
         Room room = Room.builder()
-                .createdTime(new Timestamp(System.currentTimeMillis()))
+                .createdTime(LocalDateTime.now())
                 .lastMsgId(null)
                 .build();
         for (Long userId : userIds) {

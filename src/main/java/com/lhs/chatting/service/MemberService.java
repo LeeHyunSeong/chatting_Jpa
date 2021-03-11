@@ -1,6 +1,6 @@
 package com.lhs.chatting.service;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class MemberService {
 
     public void updateLastEntranceTime(Long id) {
         Member targetMember = memberRepository.getOne(id);
-        Timestamp current = new Timestamp(System.currentTimeMillis());
+        LocalDateTime current = LocalDateTime.now();
         targetMember.setLastEntranceTime(current);
     }
 

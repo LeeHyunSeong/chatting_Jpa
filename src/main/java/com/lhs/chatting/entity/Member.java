@@ -1,6 +1,6 @@
 package com.lhs.chatting.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,10 +42,10 @@ public class Member {
 
     @Setter
     @Column(name = "last_entrance_time")
-    private Timestamp lastEntranceTime;
+    private LocalDateTime lastEntranceTime;
 
     @Column(name = "joined_time")
-    private Timestamp joinedTime;
+    private LocalDateTime joinedTime;
 
     public static Member of(Long userId, Long roomId, String roomAlias) {
         return Member.builder()
@@ -53,8 +53,8 @@ public class Member {
                 .settingMeta("NORMAL")
                 .user(User.builder().id(userId).build())
                 .room(Room.builder().id(roomId).build())
-                .joinedTime(new Timestamp(System.currentTimeMillis()))
-                .lastEntranceTime(new Timestamp(System.currentTimeMillis()))
+                .joinedTime(LocalDateTime.now())
+                .lastEntranceTime(LocalDateTime.now())
                 .build();
     }
 }

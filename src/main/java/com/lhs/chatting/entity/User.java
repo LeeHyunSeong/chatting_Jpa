@@ -1,6 +1,6 @@
 package com.lhs.chatting.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "USER")
@@ -39,7 +41,7 @@ public class User {
     private String profileImage;
 
     @Column(name = "signed_time")
-    private Timestamp signedTime;
+    private LocalDateTime signedTime;
 
     public static User of(String username, String password, String email, String nickname) {
         return User.builder()
@@ -48,7 +50,7 @@ public class User {
                 .email(email)
                 .nickname(nickname)
                 .profileImage(null)
-                .signedTime(new Timestamp(System.currentTimeMillis()))
+                .signedTime(LocalDateTime.now())
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.lhs.chatting.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,11 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "message")
@@ -41,7 +38,7 @@ public class Message {
     private MessageType type;
 
     @Column(name = "created_time")
-    private Timestamp createdTime;
+    private LocalDateTime createdTime;
 
     public static Message of(Long roomId, Long userId, String contents, MessageType type) {
         return Message.builder()
@@ -49,7 +46,7 @@ public class Message {
                 .user(User.builder().id(userId).build())
                 .contents(contents)
                 .type(type)
-                .createdTime(new Timestamp(System.currentTimeMillis()))
+                .createdTime(LocalDateTime.now())
                 .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.lhs.chatting.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,5 +28,5 @@ public class Room {
     private Message lastMsgId;
 
     @Column(name = "created_time")
-    private Timestamp createdTime;
+    private LocalDateTime createdTime;
 }
