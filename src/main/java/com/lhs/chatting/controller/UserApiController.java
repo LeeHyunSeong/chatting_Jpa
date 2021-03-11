@@ -44,8 +44,8 @@ public class UserApiController {
         return roomService.getRooms(userId);
     }
 
-    @DeleteMapping
-    public void deleteUser(@RequestBody Long userId) {
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
     }
 }

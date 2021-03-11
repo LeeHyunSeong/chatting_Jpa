@@ -30,8 +30,8 @@ public class FriendApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public void deleteFriend(@RequestBody FriendRequest request) {
-        friendService.deleteFriend(request.getUserId(), request.getFriendId());
+    @DeleteMapping("/{friendId}/users/{userId}")
+    public void deleteFriend(@PathVariable Long friendId, @PathVariable Long userId) {
+        friendService.deleteFriend(userId, friendId);
     }
 }

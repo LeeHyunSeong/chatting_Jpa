@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lhs.chatting.model.ChangeRoomSettingRequest;
 import com.lhs.chatting.model.InviteUserRequest;
-import com.lhs.chatting.model.MemberRequest;
 import com.lhs.chatting.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,8 +33,8 @@ public class MemberApiController {
         memberService.changeRoomSetting(memberId, roomAlias, roomSetting);
     }
 
-    @DeleteMapping
-    public void leaveRoom(@RequestBody MemberRequest request) {
-        memberService.leaveRoom(request.getMemberId());
+    @DeleteMapping("/{memberId}")
+    public void leaveRoom(@PathVariable Long memberId) {
+        memberService.leaveRoom(memberId);
     }
 }
