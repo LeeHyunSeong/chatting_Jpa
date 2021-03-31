@@ -1,6 +1,6 @@
 package com.lhs.chatting;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +20,16 @@ public class UserRepositoryTests {
 
     //@Test
     public void insert() {
-//        User user = User.of("Lee", "@@math2230", "eldkf4006@naver.com", "Lee");
-//        Long userId = user.getId();
-//        userRepository.save(user);
+        User user = User.of("LHS", "@@math2230", "eldkf4006@naver.com", "Lee");
+        Long userId = user.getId();
+        userRepository.save(user);
     }
-
+    
     @Test
-    public void delete() {
-        userRepository.deleteAll();
+    public void search() {
+        Optional<User> user = userRepository.findById(6L);
+        user.ifPresent(seletedUser -> {
+            System.out.println(seletedUser);
+        });
     }
 }
