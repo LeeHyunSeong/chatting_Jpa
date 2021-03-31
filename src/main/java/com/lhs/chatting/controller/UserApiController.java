@@ -1,7 +1,5 @@
 package com.lhs.chatting.controller;
 
-import java.util.List;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,10 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.entity.Member;
+import com.lhs.chatting.entity.User;
 import com.lhs.chatting.model.ChangeUserInformationRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
-import com.lhs.chatting.service.RoomService;
 import com.lhs.chatting.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
-    private final RoomService roomService;
 
     @PostMapping
     public void registerUser(@RequestBody RegisterUserRequest request) {
@@ -38,12 +34,13 @@ public class UserApiController {
         String profileImage = request.getProfileImage();
         userService.changeUserInfo(userId, nickname, password, profileImage);
     }
-    
-    @GetMapping("/{userId}/Rooms")
-    public List<Member> getRooms(@PathVariable Long userId) {
-        return roomService.getRooms(userId);
+
+    @GetMapping("/{userName}")
+    public User getUser(@PathVariable("userName") String userName) {
+        return userService.getUserByUserName(userName);
     }
 
+    
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
