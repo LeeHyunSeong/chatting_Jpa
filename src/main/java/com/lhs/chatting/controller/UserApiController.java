@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.entity.User;
+import com.lhs.chatting.entity.UserInfoType;
 import com.lhs.chatting.model.ChangeUserInformationRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
 import com.lhs.chatting.service.UserService;
@@ -29,15 +29,14 @@ public class UserApiController {
 
     @PutMapping("/{userId}")
     public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
-        String password = request.getPassword();
-        String nickname = request.getNickname();
-        String profileImage = request.getProfileImage();
-        userService.changeUserInfo(userId, nickname, password, profileImage);
+        UserInfoType userInfoType = request.getUserInfoType();
+        String contents = request.getContents();
+        userService.changeUserInfo(userId, userInfoType, contents);
     }
 
-    @GetMapping("/{userName}")
-    public User getUser(@PathVariable("userName") String userName) {
-        return userService.getUserByUserName(userName);
+    @GetMapping
+    public Long getUserId(@RequestBody String email) {
+        return userService.getUserIdByEmail(email);
     }
 
     

@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lhs.chatting.controller.UserApiController;
 import com.lhs.chatting.model.RegisterUserRequest;
+import com.lhs.chatting.repository.UserRepository;
 import com.lhs.chatting.service.UserService;
 
 @RunWith(SpringRunner.class)
@@ -31,16 +32,21 @@ class ChatApplicationTests {
     @MockBean
     private UserService userService;
     
-    //@Test
-    public void 유저_생성() throws Exception {
+    @MockBean
+    private UserRepository userRepository;
+    
+    @Test
+    public void 유저_저장() throws Exception {
+        String email = "eldkf4006@naver.com";
+        String password = "@@math2230";
+        String username = "Lee-HyunSeong";
+        String nickname = "hs._0118";
         RegisterUserRequest userRequest = RegisterUserRequest.builder()
-                .email("email1@domain.com")
-                .password("1234")
-                .username("Hong-gildong")
-                .nickname("Hong")
-                .profileImage(null)
+                .email(email)
+                .password(password)
+                .username(username)
+                .nickname(nickname)
                 .build();
-        
         String content = objectMapper.writeValueAsString(userRequest);
         mockMvc.perform(post("/api/users")
                 .content(content)
@@ -48,9 +54,9 @@ class ChatApplicationTests {
                 .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andDo(print());
-     }
+    }
     
-    @Test
+    //@Test
     public void 유저_불러오기() throws Exception {
         String name = "Hong-gildong";
         mockMvc.perform(get("/api/users/{userName}", name)

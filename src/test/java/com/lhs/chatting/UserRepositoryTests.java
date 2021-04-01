@@ -18,18 +18,32 @@ public class UserRepositoryTests {
     @Autowired
     UserRepository userRepository;
 
-    //@Test
+//    @Test
     public void insert() {
         User user = User.of("LHS", "@@math2230", "eldkf4006@naver.com", "Lee");
         Long userId = user.getId();
         userRepository.save(user);
     }
     
-    @Test
+//    @Test
     public void search() {
         Optional<User> user = userRepository.findById(6L);
         user.ifPresent(seletedUser -> {
-            System.out.println(seletedUser);
+            System.out.println(seletedUser.getUsername());
+        });
+    }
+    
+//    @Test
+    public void delete() {
+        userRepository.deleteById(6L);
+    }
+    
+//    @Test
+    public void update() {
+        Optional<User> user = userRepository.findById(8L);
+        user.ifPresent(selectedUser -> {
+            selectedUser.setNickname("HS._l18");
+            userRepository.save(selectedUser);
         });
     }
 }

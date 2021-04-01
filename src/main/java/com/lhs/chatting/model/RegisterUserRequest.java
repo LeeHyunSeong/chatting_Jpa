@@ -6,9 +6,8 @@ import lombok.Getter;
 @Builder
 @Getter
 public class RegisterUserRequest {
-    String email;
-    String password;
     String username;
+    String password;
+    String email;
     String nickname;
-    String profileImage;
 }

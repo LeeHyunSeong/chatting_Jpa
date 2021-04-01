@@ -1,10 +1,11 @@
 package com.lhs.chatting.service;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.User;
+import com.lhs.chatting.entity.UserInfoType;
 import com.lhs.chatting.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,32 +20,39 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeUserInfo(Long userId, String nickname, String password, String profileImage) {
-        User targetUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Can not found User entity"));
-        if (nickname != null)
-            targetUser.setNickname(nickname);
-        if (password != null)
-            targetUser.setPassword(password);
-        if (profileImage != null)
-            targetUser.setProfileImage(profileImage);
-        userRepository.save(targetUser);
+    public Long getUserIdByEmail(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        Long targetUserId;
+        if(optionalUser.isPresent()) {
+            targetUserId = optionalUser.get().getId();
+        }
+        else {
+            targetUserId = -1L;
+        }
+        
+        return targetUserId;
+    }
+    
+    public void changeUserInfo(Long userId, UserInfoType userInfoType, String contents) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        optionalUser.ifPresent(targetUser -> {
+            switch(userInfoType) {
+                case NICKNAME :
+                    targetUser.setNickname(contents);
+                    break;
+                case PASSWORD :
+                    targetUser.setPassword(contents);
+                    break;
+                case PROFILEIMAGE :
+                    targetUser.setProfileImage(contents);
+                    break;
+                default :
+            }
+            userRepository.save(targetUser);
+        });
     }
 
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
-    
-    public User getUserByUserName(String userName) {
-        List<User> users = userRepository.findAll();
-        User targetUser = null;
-        for (User user : users) {
-            if (user.getUsername() == userName) {
-                targetUser = user;
-                break;
-            }
-        }
-        return targetUser;
-    }
-
 }

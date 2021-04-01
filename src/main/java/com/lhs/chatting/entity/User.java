@@ -26,7 +26,7 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    @Column(name = "username", length = 10)
+    @Column(name = "username", columnDefinition = "TEXT")
     private String username;
 
     @Setter
