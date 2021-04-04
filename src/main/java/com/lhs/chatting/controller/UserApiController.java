@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lhs.chatting.entity.User;
 import com.lhs.chatting.entity.UserInfoType;
 import com.lhs.chatting.exception.NotExistedUserException;
 import com.lhs.chatting.model.ChangeUserInformationRequest;
@@ -38,12 +39,14 @@ public class UserApiController {
     @GetMapping
     public Long getUserIdByEmail(@RequestBody String email) {
         Long userId = userService.getUserIdByEmail(email);
-        if(userId == -1) {
-            throw new NotExistedUserException();
-        }
         return userId;
     }
 
+    @GetMapping("/{userId}")
+    public User getUserByUserId(@PathVariable Long userId) {
+        User user = userService.getUserByUserId(userId);
+        return user;
+    }
     
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {

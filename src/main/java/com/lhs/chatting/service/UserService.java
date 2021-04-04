@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.User;
 import com.lhs.chatting.entity.UserInfoType;
+import com.lhs.chatting.exception.NotExistedUserException;
 import com.lhs.chatting.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -21,16 +22,16 @@ public class UserService {
     }
 
     public Long getUserIdByEmail(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        Long targetUserId;
-        if(optionalUser.isPresent()) {
-            targetUserId = optionalUser.get().getId();
-        }
-        else {
-            targetUserId = -1L;
-        }
+        User targetUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NotExistedUserException());;
         
-        return targetUserId;
+        return targetUser.getId();
+    }
+    
+    public User getUserByUserId(Long userId) {
+        User targetUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotExistedUserException());
+        return targetUser;
     }
     
     public void changeUserInfo(Long userId, UserInfoType userInfoType, String contents) {

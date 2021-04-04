@@ -53,7 +53,12 @@ public class UserServiceTests {
         assertEquals(userService.getUserIdByEmail("eldkf4006@naver.com"), 15L);
     }
 
-    @Test   
+    @Test
+    public void getUser() {
+        assertEquals(userService.getUserByUserId(32L).getPassword(), "5070");
+    }
+    
+//    @Test   
     public void deleteUser() {
         userService.deleteUser(15L);
     }
