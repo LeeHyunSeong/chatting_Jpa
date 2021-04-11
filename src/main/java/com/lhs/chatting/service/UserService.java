@@ -2,11 +2,12 @@ package com.lhs.chatting.service;
 
 import java.util.Optional;
 
+import com.lhs.chatting.model.ChangeUserInfoRequest;
+import com.lhs.chatting.model.RegisterUserRequest;
 import org.springframework.stereotype.Service;
 
-import com.lhs.chatting.entity.User;
-import com.lhs.chatting.entity.UserInfoType;
-import com.lhs.chatting.exception.NotExistedUserException;
+import com.lhs.chatting.model.entity.User;
+import com.lhs.chatting.exception.NotExistUserException;
 import com.lhs.chatting.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,44 +17,33 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
     private final UserRepository userRepository;
 
-    public void registerUser(String username, String password, String email, String nickname) {
-        User user = User.of(username, password, email, nickname);
+    public boolean registerUser(RegisterUserRequest request) {
+        User user = User.of(request);
         userRepository.save(user);
+        return true;
     }
 
     public Long getUserIdByEmail(String email) {
         User targetUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotExistedUserException());;
-        
+                .orElseThrow(() -> new NotExistUserException(email));
         return targetUser.getId();
     }
-    
+
     public User getUserByUserId(Long userId) {
-        User targetUser = userRepository.findById(userId)
-                .orElseThrow(() -> new NotExistedUserException());
-        return targetUser;
-    }
-    
-    public void changeUserInfo(Long userId, UserInfoType userInfoType, String contents) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        optionalUser.ifPresent(targetUser -> {
-            switch(userInfoType) {
-                case NICKNAME :
-                    targetUser.setNickname(contents);
-                    break;
-                case PASSWORD :
-                    targetUser.setPassword(contents);
-                    break;
-                case PROFILEIMAGE :
-                    targetUser.setProfileImage(contents);
-                    break;
-                default :
-            }
-            userRepository.save(targetUser);
-        });
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotExistUserException(userId));
     }
 
-    public void deleteUser(Long userId) {
+    // 유저의 여러 정보를 바꾸지 못하는 비효율적인 코드 (한 번에 하나의 정보만 변경이 가능하다.)
+    public boolean changeUserInfo(Long userId, ChangeUserInfoRequest request) {
+        User user = getUserByUserId(userId);
+        user.changeWith(request);
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean deleteUser(Long userId) {
         userRepository.deleteById(userId);
+        return true;
     }
 }

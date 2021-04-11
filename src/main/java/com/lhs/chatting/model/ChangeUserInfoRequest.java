@@ -5,9 +5,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class RegisterUserRequest {
-
-    private final String username;
+public class ChangeUserInfoRequest {
 
     private final String password;
 
