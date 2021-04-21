@@ -11,33 +11,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lhs.chatting.entity.User;
 import com.lhs.chatting.entity.UserInfoType;
-import com.lhs.chatting.exception.NotExistedUserException;
 import com.lhs.chatting.model.ChangeUserInformationRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
 import com.lhs.chatting.service.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/users")
+@Api(value = "UserApiController")
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
+    @ApiOperation(value = "user", notes = "유저 API입니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "OK !!"),
+            @ApiResponse(code = 500, message = "Internal Server Error !!"),
+            @ApiResponse(code = 404, message = "Not Found !!")
+    })
 
     @PostMapping
-    public void registerUser(@RequestBody RegisterUserRequest request) {
+    public void registerUser(@ApiParam(value = "유저정보", required = true, example = "1") @RequestBody RegisterUserRequest request) {
         userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail(), request.getNickname());
     }
 
     @PutMapping("/{userId}")
-    public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
+    public void changeUserInfo(@ApiParam(value = "수정정보", required = true, example = "1") @RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
         UserInfoType userInfoType = request.getUserInfoType();
         String contents = request.getContents();
         userService.changeUserInfo(userId, userInfoType, contents);
     }
 
     @GetMapping
-    public Long getUserIdByEmail(@RequestBody String email) {
+    public Long getUserIdByEmail(@ApiParam(value = "이메일정보", required = true, example = "email@domain.com") @RequestBody String email) {
         Long userId = userService.getUserIdByEmail(email);
         return userId;
     }
