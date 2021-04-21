@@ -24,31 +24,23 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/users")
-@Api(value = "UserApiController")
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
-    @ApiOperation(value = "user", notes = "유저 API입니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK !!"),
-            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-            @ApiResponse(code = 404, message = "Not Found !!")
-    })
-
     @PostMapping
-    public void registerUser(@ApiParam(value = "유저정보", required = true, example = "1") @RequestBody RegisterUserRequest request) {
+    public void registerUser(@RequestBody RegisterUserRequest request) {
         userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail(), request.getNickname());
     }
 
     @PutMapping("/{userId}")
-    public void changeUserInfo(@ApiParam(value = "수정정보", required = true, example = "1") @RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
+    public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
         UserInfoType userInfoType = request.getUserInfoType();
         String contents = request.getContents();
         userService.changeUserInfo(userId, userInfoType, contents);
     }
 
     @GetMapping
-    public Long getUserIdByEmail(@ApiParam(value = "이메일정보", required = true, example = "email@domain.com") @RequestBody String email) {
+    public Long getUserIdByEmail(@RequestBody String email) {
         Long userId = userService.getUserIdByEmail(email);
         return userId;
     }
