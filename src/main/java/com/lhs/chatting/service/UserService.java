@@ -2,6 +2,7 @@ package com.lhs.chatting.service;
 
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.entity.User;
@@ -23,14 +24,14 @@ public class UserService {
 
     public Long getUserIdByEmail(String email) {
         User targetUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new NotExistedUserException());;
+                .orElseThrow(() -> new NotExistedUserException(HttpStatus.NOT_FOUND, "Not found user"));;
         
         return targetUser.getId();
     }
     
     public User getUserByUserId(Long userId) {
         User targetUser = userRepository.findById(userId)
-                .orElseThrow(() -> new NotExistedUserException());
+                .orElseThrow(() -> new NotExistedUserException(HttpStatus.NOT_FOUND, "Not found user"));
         return targetUser;
     }
     
