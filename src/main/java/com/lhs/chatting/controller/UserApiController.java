@@ -1,5 +1,6 @@
 package com.lhs.chatting.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,17 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.entity.User;
-import com.lhs.chatting.entity.UserInfoType;
-import com.lhs.chatting.model.ChangeUserInformationRequest;
+import com.lhs.chatting.model.ChangeUserInfoRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
+import com.lhs.chatting.model.entity.User;
 import com.lhs.chatting.service.UserService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -28,31 +23,32 @@ import lombok.RequiredArgsConstructor;
 public class UserApiController {
     private final UserService userService;
     @PostMapping
-    public void registerUser(@RequestBody RegisterUserRequest request) {
-        userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail(), request.getNickname());
+    public ResponseEntity<Boolean> registerUser(@RequestBody RegisterUserRequest request) {
+        boolean success = userService.registerUser(request);
+        return ResponseEntity.ok(success);
     }
 
     @PutMapping("/{userId}")
-    public void changeUserInfo(@RequestBody ChangeUserInformationRequest request, @PathVariable Long userId) {
-        UserInfoType userInfoType = request.getUserInfoType();
-        String contents = request.getContents();
-        userService.changeUserInfo(userId, userInfoType, contents);
+    public ResponseEntity<Boolean> changeUserInfo(@PathVariable Long userId, @RequestBody ChangeUserInfoRequest request) {
+        boolean success = userService.changeUserInfo(userId, request);
+        return ResponseEntity.ok(success);
     }
 
     @GetMapping
-    public Long getUserIdByEmail(@RequestBody String email) {
+    public ResponseEntity<Long> getUserIdByEmail(@RequestBody String email) {
         Long userId = userService.getUserIdByEmail(email);
-        return userId;
+        return ResponseEntity.ok(userId);
     }
 
     @GetMapping("/{userId}")
-    public User getUserByUserId(@PathVariable Long userId) {
+    public ResponseEntity<User> getUserByUserId(@PathVariable Long userId) {
         User user = userService.getUserByUserId(userId);
-        return user;
+        return ResponseEntity.ok(user);
     }
-    
+
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+    public ResponseEntity<Boolean> deleteUser(@PathVariable Long userId) {
+        boolean success = userService.deleteUser(userId);
+        return ResponseEntity.ok(success);
     }
 }

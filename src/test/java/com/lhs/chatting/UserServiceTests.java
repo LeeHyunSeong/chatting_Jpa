@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.lhs.chatting.entity.UserInfoType;
-import com.lhs.chatting.model.ChangeUserInformationRequest;
+import com.lhs.chatting.model.ChangeUserInfoRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
 import com.lhs.chatting.service.UserService;
 
@@ -20,7 +19,7 @@ public class UserServiceTests {
     @Autowired
     UserService userService;
 
-//    @Test
+    //    @Test
     public void registerUser() {
         String email = "eldkf4006@naver.com";
         String password = "@@math2230";
@@ -32,23 +31,21 @@ public class UserServiceTests {
                 .email(email)
                 .nickname(nickname)
                 .build();
-        
-        userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail(), request.getNickname());
+
+        userService.registerUser(request);
     }
-    
-//    @Test
+
+    //    @Test
     public void changeUserInfo() {
-        UserInfoType userInfoType = UserInfoType.NICKNAME;
-        String contents = "LeeHS";
-        ChangeUserInformationRequest informationRequest = ChangeUserInformationRequest.builder()
-                .userInfoType(userInfoType)
-                .contents(contents)
+        String nickname = "LeeHS";
+        ChangeUserInfoRequest request = ChangeUserInfoRequest.builder()
+                .nickname(nickname)
                 .build();
 
-        userService.changeUserInfo(15L, informationRequest.getUserInfoType(), informationRequest.getContents());
+        userService.changeUserInfo(15L, request);
     }
 
-//    @Test
+    //    @Test
     public void getUserId() {
         assertEquals(userService.getUserIdByEmail("eldkf4006@naver.com"), 15L);
     }
@@ -57,8 +54,8 @@ public class UserServiceTests {
     public void getUser() {
         assertEquals(userService.getUserByUserId(32L).getPassword(), "5070");
     }
-    
-//    @Test   
+
+    //    @Test
     public void deleteUser() {
         userService.deleteUser(15L);
     }
