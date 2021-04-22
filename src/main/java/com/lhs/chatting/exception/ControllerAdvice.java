@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class ControllerAdvice {
-    @ExceptionHandler(NotExistedUserException.class)
-    public ResponseEntity<Map<String, Object>> handler(NotExistedUserException e) {
+    @ExceptionHandler(NotExistUserException.class)
+    public ResponseEntity<Map<String, Object>> handler(NotExistUserException e) {
         Map<String, Object> resBody = new HashMap<>();
         resBody.put("message", e.getMessage());
         
