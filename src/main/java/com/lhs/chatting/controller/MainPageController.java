@@ -10,7 +10,8 @@ import lombok.RequiredArgsConstructor;
 public class MainPageController {
 
     @GetMapping("/signup")
-    public String chatPage() {
+    public String signUpPage() {
         return "signup.html";
     }
+
 }
