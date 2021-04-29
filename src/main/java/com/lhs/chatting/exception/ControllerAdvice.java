@@ -16,4 +16,12 @@ public class ControllerAdvice {
         
         return new ResponseEntity<>(resBody, e.getStatus());
     }
+    
+    @ExceptionHandler(NotExistFriendException.class)
+    public ResponseEntity<Map<String, Object>> handler(NotExistFriendException e) {
+        Map<String, Object> resBody = new HashMap<>();
+        resBody.put("message", e.getMessage());
+        
+        return new ResponseEntity<>(resBody, e.getStatus());
+    }
 }
