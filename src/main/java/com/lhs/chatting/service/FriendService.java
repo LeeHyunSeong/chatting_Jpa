@@ -1,8 +1,11 @@
 package com.lhs.chatting.service;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.lhs.chatting.model.FriendRequest;
+import com.lhs.chatting.exception.NotExistFriendException;
 import com.lhs.chatting.model.entity.Friend;
 import com.lhs.chatting.model.type.FriendRelationType;
 import com.lhs.chatting.repository.FriendRepository;
@@ -20,6 +23,26 @@ public class FriendService {
         return true;
     }
 
+    public boolean changeRelation(Long friendId, FriendRelationType relationType) {
+        Friend exitedFriend = repository.findById(friendId)
+                .orElseThrow(() -> new NotExistFriendException(HttpStatus.NOT_FOUND, friendId));
+        exitedFriend.setRelationType(relationType);
+        repository.save(exitedFriend);
+        return true;
+    }
+    
+    public List<Friend> getAllFriends(Long userId){
+        return repository.findAllByUserId(userId);
+    }
+    
+    public List<Friend> getHideFriends(Long userId){
+        return repository.findAllByUserIdAndFriendRelationType(userId, FriendRelationType.HIDE);
+    }
+    
+    public List<Friend> getBlockFriends(Long userId){
+        return repository.findAllByUserIdAndFriendRelationType(userId, FriendRelationType.BLOCK);
+    }
+    
     public boolean deleteFriend(Long friendId) {
         repository.deleteById(friendId);
         return true;
