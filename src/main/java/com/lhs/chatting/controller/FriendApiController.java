@@ -20,7 +20,7 @@ public class FriendApiController {
     private final FriendService friendService;
     @PostMapping
     public ResponseEntity<Boolean> registerFriend(@RequestBody FriendRequest request) {
-        boolean success = friendService.registerFriend(request);
+        boolean success = friendService.registerFriend(request.getUserId(), request.getTargetUserId());
         return ResponseEntity.ok(success);
     }
 

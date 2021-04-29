@@ -14,8 +14,8 @@ import lombok.RequiredArgsConstructor;
 public class FriendService {
     private final FriendRepository repository;
 
-    public boolean registerFriend(FriendRequest request) {
-        Friend friend = Friend.of(request.getUserId(), request.getTargetUserId(), FriendRelationType.NORMAL);
+    public boolean registerFriend(Long userId, Long targetUserId) {
+        Friend friend = Friend.of(userId, targetUserId, FriendRelationType.NORMAL);
         repository.save(friend);
         return true;
     }
