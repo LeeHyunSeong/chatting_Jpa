@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lhs.chatting.model.ChangeFriendRelationRequest;
 import com.lhs.chatting.model.FriendRequest;
+import com.lhs.chatting.model.GetAllFriendResponse;
 import com.lhs.chatting.model.entity.Friend;
 import com.lhs.chatting.model.type.FriendRelationType;
 import com.lhs.chatting.service.FriendService;
@@ -39,9 +40,12 @@ public class FriendApiController {
     }
     
     @GetMapping
-    public ResponseEntity<List<Friend>> getAllFriends(@RequestParam("userId") Long userId, @RequestParam("relationType") FriendRelationType relationType){
+    public ResponseEntity<String> getAllFriends(@RequestParam("userId") Long userId, @RequestParam("relationType") FriendRelationType relationType){
         List<Friend> friends = friendService.getAllFriends(userId, relationType);
-        return ResponseEntity.ok(friends);
+        GetAllFriendResponse response = GetAllFriendResponse.builder()
+                                            .friends(friends)
+                                            .build();
+        return ResponseEntity.ok(response.toString());
     }
 
     @DeleteMapping("/{friendId}")
