@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.lhs.chatting.exception.NotExistFriendException;
+import com.lhs.chatting.exception.NotFoundException;
 import com.lhs.chatting.model.entity.Friend;
 import com.lhs.chatting.model.type.FriendRelationType;
 import com.lhs.chatting.repository.FriendRepository;
@@ -25,7 +25,7 @@ public class FriendService {
 
     public boolean changeRelation(Long friendId, FriendRelationType relationType) {
         Friend exitedFriend = repository.findById(friendId)
-                .orElseThrow(() -> new NotExistFriendException(HttpStatus.NOT_FOUND, friendId));
+                .orElseThrow(() -> new NotFoundException(HttpStatus.NOT_FOUND, "friend", friendId));
         exitedFriend.setRelationType(relationType);
         repository.save(exitedFriend);
         return true;
