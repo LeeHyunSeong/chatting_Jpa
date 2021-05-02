@@ -31,16 +31,8 @@ public class FriendService {
         return true;
     }
     
-    public List<Friend> getAllFriends(Long userId){
-        return repository.findAllByUserId(userId);
-    }
-    
-    public List<Friend> getHideFriends(Long userId){
-        return repository.findAllByUserIdAndFriendRelationType(userId, FriendRelationType.HIDE);
-    }
-    
-    public List<Friend> getBlockFriends(Long userId){
-        return repository.findAllByUserIdAndFriendRelationType(userId, FriendRelationType.BLOCK);
+    public List<Friend> getAllFriends(Long userId, FriendRelationType relationType){
+        return repository.findAllByUserIdAndFriendRelationType(userId, relationType);
     }
     
     public boolean deleteFriend(Long friendId) {

@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lhs.chatting.model.ChangeFriendRelationRequest;
 import com.lhs.chatting.model.FriendRequest;
 import com.lhs.chatting.model.entity.Friend;
+import com.lhs.chatting.model.type.FriendRelationType;
 import com.lhs.chatting.service.FriendService;
 
 import lombok.RequiredArgsConstructor;
@@ -37,21 +39,9 @@ public class FriendApiController {
     }
     
     @GetMapping
-    public ResponseEntity<List<Friend>> getAllFriends(@RequestBody Long userId){
-        List<Friend> friends = friendService.getAllFriends(userId);
+    public ResponseEntity<List<Friend>> getAllFriends(@RequestParam("userId") Long userId, @RequestParam("relationType") FriendRelationType relationType){
+        List<Friend> friends = friendService.getAllFriends(userId, relationType);
         return ResponseEntity.ok(friends);
-    }
-    
-    @GetMapping("/hide")
-    public ResponseEntity<List<Friend>> getHideFriends(@RequestBody Long userId){
-        List<Friend> hideFriends = friendService.getHideFriends(userId);
-        return ResponseEntity.ok(hideFriends);
-    }
-    
-    @GetMapping("/block")
-    public ResponseEntity<List<Friend>> getBlockFriends(@RequestBody Long userId){
-        List<Friend> blockFriends = friendService.getBlockFriends(userId);
-        return ResponseEntity.ok(blockFriends);
     }
 
     @DeleteMapping("/{friendId}")
