@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,7 +20,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "FRIEND")
+@Table(name = "FRIEND",
+       indexes = @Index(name = "i_friend", unique = true, columnList = "id, relation_type"))
 @Builder
 @Getter
 public class Friend {
