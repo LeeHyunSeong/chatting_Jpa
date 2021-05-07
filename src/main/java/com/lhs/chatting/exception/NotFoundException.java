@@ -2,20 +2,21 @@ package com.lhs.chatting.exception;
 
 import org.springframework.http.HttpStatus;
 
+import com.lhs.chatting.model.type.EntityType;
+
 import lombok.Getter;
 
 @Getter
-public class NotFoundException extends RuntimeException {
+public class NotFoundException extends RuntimeException{
     private HttpStatus status;
     
-    public NotFoundException(HttpStatus status, String type, Long userId) {
-        super(String.format("Can not fount %s entity (userId = %d)", type, userId));
-        this.status = status;
+    public NotFoundException(EntityType type, Long Id) {
+        super(String.format("Can not fount %s entity (Id = %d)", type, Id));
+        this.status = HttpStatus.NOT_FOUND;
     }
 
-    public NotFoundException(HttpStatus status, String type, String email) {
+    public NotFoundException(EntityType type, String email) {
         super(String.format("Can not fount %s entity (email = %s)", type, email));
-        this.status = status;
+        this.status = HttpStatus.NOT_FOUND;
     }
-
 }
