@@ -21,7 +21,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "FRIEND",
-       indexes = @Index(name = "i_friend", unique = true, columnList = "id, relation_type"))
+       indexes = @Index(name = "idx_userId_relationType", unique = true, columnList = "user_id, relation_type"))
 @Builder
 @Getter
 public class Friend {
