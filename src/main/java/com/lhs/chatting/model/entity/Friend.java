@@ -23,7 +23,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "FRIEND",
-       indexes = @Index(name = "idx_user_id_relation_type", unique = true, columnList = "user_id, friend_relation_type"))
+       indexes = @Index(name = "idx_user_id_friend_relation_type", unique = true, columnList = "user_id, friend_relation_type"))
 @Builder
 @Getter
 @NoArgsConstructor
