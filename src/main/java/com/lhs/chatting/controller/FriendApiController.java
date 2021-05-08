@@ -40,7 +40,7 @@ public class FriendApiController {
     }
     
     @GetMapping
-    public ResponseEntity<String> getAllFriends(@RequestParam Long userId, @RequestParam(required=false, defaultValue="NORMAL") FriendRelationType relationType){
+    public ResponseEntity<String> getAllFriends(@RequestParam Long userId, @RequestParam(required=false, defaultValue=FriendRelationType.DEFAULT) FriendRelationType relationType){
         List<Friend> friends = friendService.getAllFriends(userId, relationType);
         GetAllFriendResponse response = GetAllFriendResponse.builder()
                                             .friends(friends)
