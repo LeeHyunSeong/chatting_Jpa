@@ -1,6 +1,5 @@
 package com.lhs.chatting.service;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.exception.UserNotFoundException;
@@ -29,14 +28,13 @@ public class UserService {
         return targetUser.getId();
     }
 
-    public User getUserByUserId(Long userId) {
+    public User getUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
     }
 
-    // 유저의 여러 정보를 바꾸지 못하는 비효율적인 코드 (한 번에 하나의 정보만 변경이 가능하다.)
     public boolean changeUserInfo(Long userId, ChangeUserInfoRequest request) {
-        User user = getUserByUserId(userId);
+        User user = getUser(userId);
         user.changeWith(request);
         userRepository.save(user);
         return true;

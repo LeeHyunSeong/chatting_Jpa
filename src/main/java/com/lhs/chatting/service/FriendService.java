@@ -29,11 +29,11 @@ public class FriendService {
         repository.save(exitedFriend);
         return true;
     }
-    
-    public List<Friend> getAllFriends(Long userId, FriendRelationType relationType){
-        return repository.findAllByUserIdAndFriendRelationType(userId, relationType);
+
+    public List<Friend> getAllFriends(Long userId, FriendRelationType relationType) {
+        return repository.findAllByUserIdAndRelationType(userId, relationType);
     }
-    
+
     public boolean deleteFriend(Long friendId) {
         repository.deleteById(friendId);
         return true;

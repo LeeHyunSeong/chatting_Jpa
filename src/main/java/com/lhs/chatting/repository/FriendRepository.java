@@ -13,6 +13,6 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     
     List<Friend> findAllByUserId(Long userId);
     
-    List<Friend> findAllByUserIdAndFriendRelationType(Long userId, FriendRelationType type);
+    List<Friend> findAllByUserIdAndRelationType(Long userId, FriendRelationType relationType);
 
 }

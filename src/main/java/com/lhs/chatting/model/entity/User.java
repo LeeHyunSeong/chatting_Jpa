@@ -2,11 +2,7 @@ package com.lhs.chatting.model.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.lhs.chatting.model.ChangeUserInfoRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
@@ -17,7 +13,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USER")
+@Table(
+        name = "USER",
+        indexes = @Index(name = "idx_email", unique = true, columnList = "email")
+)
 @Builder
 @Getter
 @NoArgsConstructor
@@ -55,7 +54,6 @@ public class User {
                 .password(request.getPassword())
                 .email(request.getEmail())
                 .nickname(request.getNickname())
-                .profileImage(null)
                 .signedTime(LocalDateTime.now())
                 .build();
     }
