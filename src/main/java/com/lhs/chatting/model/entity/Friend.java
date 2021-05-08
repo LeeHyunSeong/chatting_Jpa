@@ -15,15 +15,19 @@ import javax.persistence.Table;
 
 import com.lhs.chatting.model.type.FriendRelationType;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "FRIEND",
-       indexes = @Index(name = "idx_user_id_relation_type", unique = true, columnList = "user_id, relation_type"))
+       indexes = @Index(name = "idx_user_id_relation_type", unique = true, columnList = "user_id, friend_relation_type"))
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Friend {
     @Id
     @GeneratedValue
@@ -39,18 +43,18 @@ public class Friend {
     private User targetUser;
 
     @Setter
-    @Column(name = "relation_type", nullable = false)
+    @Column(name = "friend_relation_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private FriendRelationType relationType;
+    private FriendRelationType friendRelationType;
 
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    public static Friend of(Long userId, Long targetUserId, FriendRelationType relationType) {
+    public static Friend of(Long userId, Long targetUserId, FriendRelationType friendRelationType) {
         return Friend.builder()
                 .user(User.builder().id(userId).build())
                 .targetUser(User.builder().id(targetUserId).build())
-                .relationType(relationType)
+                .friendRelationType(friendRelationType)
                 .createdTime(LocalDateTime.now())
                 .build();
     }
