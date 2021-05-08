@@ -8,8 +8,8 @@ import lombok.Getter;
 public class NotFoundException extends RuntimeException {
     private HttpStatus status;
 
-    public NotFoundException(Object type, String paramMsg) {
-        super(String.format("Can not found %s entity (%s)", type.getClass().getSimpleName(), paramMsg));
+    public NotFoundException(Class clazz, String paramMsg) {
+        super(String.format("Can not found %s entity (%s)", clazz.getSimpleName(), paramMsg));
         this.status = HttpStatus.NOT_FOUND;
     }
 }

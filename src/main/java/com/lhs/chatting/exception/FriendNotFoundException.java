@@ -4,6 +4,6 @@ import com.lhs.chatting.model.entity.Friend;
 
 public class FriendNotFoundException extends NotFoundException {
     public FriendNotFoundException(Object id) {
-        super(Friend.builder().build(), String.format("Id = %s", String.valueOf(id)));
+        super(Friend.builder().build().getClass(), String.format("Id = %s", String.valueOf(id)));
     }
 }
