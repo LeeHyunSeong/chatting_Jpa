@@ -2,7 +2,7 @@ package com.lhs.chatting;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +19,7 @@ public class UserServiceTests {
     @Autowired
     UserService userService;
 
-    //    @Test
+//    @Test
     public void registerUser() {
         String email = "eldkf4006@naver.com";
         String password = "@@math2230";
@@ -35,28 +35,28 @@ public class UserServiceTests {
         userService.registerUser(request);
     }
 
-    //    @Test
+//    @Test
     public void changeUserInfo() {
         String nickname = "LeeHS";
         ChangeUserInfoRequest request = ChangeUserInfoRequest.builder()
                 .nickname(nickname)
                 .build();
 
-        userService.changeUserInfo(15L, request);
+        userService.changeUserInfo(44L, request);
     }
 
-    //    @Test
+//    @Test
     public void getUserId() {
-        assertEquals(userService.getUserIdByEmail("eldkf4006@naver.com"), 15L);
+        assertEquals(userService.getUserIdByEmail("eldkf4006@naver.com"), 44L);
     }
 
-    @Test
+//    @Test
     public void getUser() {
-        assertEquals(userService.getUserByUserId(32L).getPassword(), "5070");
+        assertEquals(userService.getUserByUserId(44L).getPassword(), "@@math2230");
     }
 
-    //    @Test
+//    @Test
     public void deleteUser() {
-        userService.deleteUser(15L);
+        userService.deleteUser(44L);
     }
 }

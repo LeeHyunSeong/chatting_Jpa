@@ -35,7 +35,7 @@ class ChatApplicationTests {
     @MockBean
     private UserRepository userRepository;
     
-    @Test
+//    @Test
     public void 유저_저장() throws Exception {
         String email = "eldkf4006@naver.com";
         String password = "@@math2230";

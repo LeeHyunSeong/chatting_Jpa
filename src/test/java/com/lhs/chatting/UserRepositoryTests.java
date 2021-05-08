@@ -1,7 +1,9 @@
 package com.lhs.chatting;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,31 +19,32 @@ public class UserRepositoryTests {
     @Autowired
     UserRepository userRepository;
 
-    //    @Test
+//    @Test
     public void insert() {
         User user = User.builder()
-                .username("LHS")
-                .password("@@math2230")
-                .email("eldkf4006@naver.com")
-                .nickname("Lee")
+                .username("eraise")
+                .password("5070")
+                .email("lhs980118@naver.com")
+                .nickname("HS")
+                .signedTime(LocalDateTime.now())
                 .build();
         userRepository.save(user);
     }
 
-    //    @Test
+//    @Test
     public void search() {
-        Optional<User> user = userRepository.findById(6L);
+        Optional<User> user = userRepository.findById(43L);
         user.ifPresent(selectedUser -> System.out.println(selectedUser.getUsername()));
     }
 
-    //    @Test
+//    @Test
     public void delete() {
-        userRepository.deleteById(6L);
+        userRepository.deleteById(43L);
     }
 
-    //    @Test
+//    @Test
     public void update() {
-        Optional<User> user = userRepository.findById(8L);
+        Optional<User> user = userRepository.findById(43L);
         user.ifPresent(selectedUser -> {
             selectedUser.setNickname("HS._l18");
             userRepository.save(selectedUser);
