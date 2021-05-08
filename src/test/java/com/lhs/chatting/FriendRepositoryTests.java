@@ -1,9 +1,7 @@
 package com.lhs.chatting;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +25,7 @@ public class FriendRepositoryTests {
         Friend friend = Friend.builder()
                 .user(User.builder().id(45L).build())
                 .targetUser(User.builder().id(46L).build())
-                .friendRelationType(FriendRelationType.NORMAL)
+                .relationType(FriendRelationType.NORMAL)
                 .createdTime(LocalDateTime.now())
                 .build();
         friendRepository.save(friend);
@@ -37,7 +35,7 @@ public class FriendRepositoryTests {
     public void search() {
         Friend friend = friendRepository.findById(47L)
                 .orElseThrow(() -> new FriendNotFoundException(47L));
-        System.out.println(friend.getFriendRelationType());
+        System.out.println(friend.getRelationType());
     }
 
 //    @Test
@@ -49,7 +47,7 @@ public class FriendRepositoryTests {
     public void update() {
         Friend friend = friendRepository.findById(47L)
                 .orElseThrow(() -> new FriendNotFoundException(47L));
-        friend.setFriendRelationType(FriendRelationType.BLOCK);
+        friend.setRelationType(FriendRelationType.BLOCK);
         friendRepository.save(friend);
     }
 }

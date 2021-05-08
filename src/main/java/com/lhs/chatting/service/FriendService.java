@@ -25,7 +25,7 @@ public class FriendService {
     public boolean changeRelation(Long friendId, FriendRelationType relationType) {
         Friend exitedFriend = repository.findById(friendId)
                 .orElseThrow(() -> new FriendNotFoundException(friendId));
-        exitedFriend.setFriendRelationType(relationType);
+        exitedFriend.setRelationType(relationType);
         repository.save(exitedFriend);
         return true;
     }

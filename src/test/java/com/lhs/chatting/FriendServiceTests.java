@@ -2,7 +2,6 @@ package com.lhs.chatting;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,7 +32,7 @@ public class FriendServiceTests {
     public void getAllFriends() {
         List<Friend> friends = friendService.getAllFriends(45L,FriendRelationType.BLOCK);
         for(Friend i : friends) {
-            System.out.println(i.getFriendRelationType());
+            System.out.println(i.getRelationType());
         }
     }
 
