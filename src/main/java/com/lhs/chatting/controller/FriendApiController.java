@@ -27,24 +27,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FriendApiController {
     private final FriendService friendService;
+
     @PostMapping
     public ResponseEntity<Boolean> registerFriend(@RequestBody FriendRequest request) {
         boolean success = friendService.registerFriend(request.getUserId(), request.getTargetUserId());
         return ResponseEntity.ok(success);
     }
-    
+
     @PatchMapping("/{friendId}")
     public ResponseEntity<Boolean> changeFriendRelation(@RequestBody ChangeFriendRelationRequest request, @PathVariable Long friendId) {
         boolean success = friendService.changeRelation(friendId, request.getRelationType());
         return ResponseEntity.ok(success);
     }
-    
+
     @GetMapping
-    public ResponseEntity<String> getAllFriends(@RequestParam Long userId, @RequestParam(required=false, defaultValue=FriendRelationType.DEFAULT) FriendRelationType relationType){
+    public ResponseEntity<String> getAllFriends(
+            @RequestParam Long userId,
+            @RequestParam(required = false, defaultValue = FriendRelationType.DEFAULT) FriendRelationType relationType
+    ) {
         List<Friend> friends = friendService.getAllFriends(userId, relationType);
         GetAllFriendResponse response = GetAllFriendResponse.builder()
-                                            .friends(friends)
-                                            .build();
+                .friends(friends)
+                .build();
         return ResponseEntity.ok(response.toString());
     }
 

@@ -3,11 +3,11 @@ package com.lhs.chatting.exception;
 import com.lhs.chatting.model.entity.User;
 
 public class UserNotFoundException extends NotFoundException {
-    public UserNotFoundException(Object id) {
-        super(User.builder().build().getClass(), String.format("Id = %s", String.valueOf(id)));
+    public UserNotFoundException(Long userId) {
+        super(User.class, String.format("Id = %d", userId));
     }
 
     public UserNotFoundException(String email) {
-        super(User.builder().build().getClass(), String.format("Email = %s", email));
+        super(User.class, String.format("Email = %s", email));
     }
 }

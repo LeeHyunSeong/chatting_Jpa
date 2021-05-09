@@ -13,7 +13,7 @@ public class ControllerAdvice {
     public ResponseEntity<Map<String, Object>> handler(NotFoundException e) {
         Map<String, Object> resBody = new HashMap<>();
         resBody.put("message", e.getMessage());
-        
+
         return new ResponseEntity<>(resBody, e.getStatus());
     }
 }

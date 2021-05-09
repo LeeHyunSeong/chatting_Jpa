@@ -25,15 +25,15 @@ public class FriendService {
     public boolean changeRelation(Long friendId, FriendRelationType relationType) {
         Friend exitedFriend = repository.findById(friendId)
                 .orElseThrow(() -> new FriendNotFoundException(friendId));
-        exitedFriend.setFriendRelationType(relationType);
+        exitedFriend.setRelationType(relationType);
         repository.save(exitedFriend);
         return true;
     }
-    
-    public List<Friend> getAllFriends(Long userId, FriendRelationType relationType){
-        return repository.findAllByUserIdAndFriendRelationType(userId, relationType);
+
+    public List<Friend> getAllFriends(Long userId, FriendRelationType relationType) {
+        return repository.findAllByUserIdAndRelationType(userId, relationType);
     }
-    
+
     public boolean deleteFriend(Long friendId) {
         repository.deleteById(friendId);
         return true;

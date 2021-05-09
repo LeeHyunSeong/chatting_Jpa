@@ -22,8 +22,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "FRIEND",
-       indexes = @Index(name = "idx_user_id_friend_relation_type", unique = true, columnList = "user_id, friend_relation_type"))
+@Table(
+        name = "FRIEND",
+        indexes = @Index(name = "idx_user_id_relation_type", unique = true, columnList = "user_id, relation_type")
+)
 @Builder
 @Getter
 @NoArgsConstructor
@@ -43,18 +45,18 @@ public class Friend {
     private User targetUser;
 
     @Setter
-    @Column(name = "friend_relation_type", nullable = false)
+    @Column(name = "relation_type", nullable = false)
     @Enumerated(EnumType.STRING)
-    private FriendRelationType friendRelationType;
+    private FriendRelationType relationType;
 
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    public static Friend of(Long userId, Long targetUserId, FriendRelationType friendRelationType) {
+    public static Friend of(Long userId, Long targetUserId, FriendRelationType relationType) {
         return Friend.builder()
                 .user(User.builder().id(userId).build())
                 .targetUser(User.builder().id(targetUserId).build())
-                .friendRelationType(friendRelationType)
+                .relationType(relationType)
                 .createdTime(LocalDateTime.now())
                 .build();
     }
