@@ -1,29 +1,34 @@
 package com.lhs.chatting;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import com.lhs.chatting.model.ChangeUserInfoRequest;
+import com.lhs.chatting.model.RegisterUserRequest;
+import com.lhs.chatting.model.entity.User;
+import com.lhs.chatting.service.UserService;
+import org.junit.Assert;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.lhs.chatting.model.ChangeUserInfoRequest;
-import com.lhs.chatting.model.RegisterUserRequest;
-import com.lhs.chatting.service.UserService;
 
 @RunWith(SpringRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @SpringBootTest
 public class UserServiceTests {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    //    @Test
-    public void registerUser() {
-        String email = "eldkf4006@naver.com";
-        String password = "@@math2230";
+    private static final long TEST_USER_ID = 1L;
+
+    @Test
+    public void t1_registerUser() {
         String username = "LeeHS";
+        String password = "@@math2230";
+        String email = "eldkf4006@naver.com";
         String nickname = "hs._0118";
         RegisterUserRequest request = RegisterUserRequest.builder()
                 .username(username)
@@ -32,31 +37,40 @@ public class UserServiceTests {
                 .nickname(nickname)
                 .build();
 
-        userService.registerUser(request);
+        boolean success = userService.registerUser(request);
+        Assert.assertTrue(success);
     }
 
-    //    @Test
-    public void changeUserInfo() {
+    @Test
+    public void t2_changeUserInfo() {
         String nickname = "LeeHS";
         ChangeUserInfoRequest request = ChangeUserInfoRequest.builder()
                 .nickname(nickname)
                 .build();
 
-        userService.changeUserInfo(15L, request);
-    }
-
-    //    @Test
-    public void getUserId() {
-        assertEquals(userService.getUserIdByEmail("eldkf4006@naver.com"), 15L);
+        boolean success = userService.changeUserInfo(TEST_USER_ID, request);
+        Assert.assertTrue(success);
     }
 
     @Test
-    public void getUser() {
-        assertEquals(userService.getUserByUserId(32L).getPassword(), "5070");
+    public void t3_getUserId() {
+        long userId = userService.getUserIdByEmail("eldkf4006@naver.com");
+        Assert.assertEquals(TEST_USER_ID, userId);
     }
 
-    //    @Test
-    public void deleteUser() {
-        userService.deleteUser(15L);
+    @Test
+    public void t4_getUser() {
+        User user = userService.getUser(TEST_USER_ID);
+
+        Assert.assertEquals("LeeHS", user.getUsername());
+        Assert.assertEquals("@@math2230", user.getPassword());
+        Assert.assertEquals("eldkf4006@naver.com", user.getEmail());
+        Assert.assertEquals("LeeHS", user.getNickname());
+    }
+
+    @Test
+    public void t5_deleteUser() {
+        boolean success = userService.deleteUser(TEST_USER_ID);
+        Assert.assertTrue(success);
     }
 }
