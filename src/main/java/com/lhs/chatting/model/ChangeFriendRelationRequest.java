@@ -1,5 +1,7 @@
 package com.lhs.chatting.model;
 
+import com.lhs.chatting.model.type.FriendRelationType;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,12 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ChangeUserInfoRequest {
+public class ChangeFriendRelationRequest {
 
-    private String password;
-
-    private String email;
-
-    private String nickname;
+    private FriendRelationType relationType;
 
 }

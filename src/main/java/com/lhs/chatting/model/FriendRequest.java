@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ChangeUserInfoRequest {
+public class FriendRequest {
 
-    private String password;
+    private Long userId;
 
-    private String email;
-
-    private String nickname;
+    private Long targetUserId;
 
 }

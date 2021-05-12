@@ -1,18 +1,22 @@
 package com.lhs.chatting.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class RegisterUserRequest {
 
-    private final String username;
+    private String username;
 
-    private final String password;
+    private String password;
 
-    private final String email;
+    private String email;
 
-    private final String nickname;
+    private String nickname;
 
 }

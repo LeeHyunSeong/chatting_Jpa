@@ -1,14 +1,7 @@
 package com.lhs.chatting.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.lhs.chatting.model.ChangeUserInfoRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
@@ -22,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
+
     @PostMapping
     public ResponseEntity<Boolean> registerUser(@RequestBody RegisterUserRequest request) {
         boolean success = userService.registerUser(request);
@@ -34,15 +28,15 @@ public class UserApiController {
         return ResponseEntity.ok(success);
     }
 
-    @GetMapping
-    public ResponseEntity<Long> getUserIdByEmail(@RequestBody String email) {
+    @GetMapping("/user-id")
+    public ResponseEntity<Long> getUserIdByEmail(@RequestParam String email) {
         Long userId = userService.getUserIdByEmail(email);
         return ResponseEntity.ok(userId);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserByUserId(@PathVariable Long userId) {
-        User user = userService.getUserByUserId(userId);
+    public ResponseEntity<User> getUser(@PathVariable Long userId) {
+        User user = userService.getUser(userId);
         return ResponseEntity.ok(user);
     }
 

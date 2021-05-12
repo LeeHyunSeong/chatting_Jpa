@@ -2,11 +2,7 @@ package com.lhs.chatting.model.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.lhs.chatting.model.ChangeUserInfoRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
@@ -17,7 +13,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USER")
+@Table(
+        name = "USER",
+        indexes = @Index(name = "idx_email", unique = true, columnList = "email")
+)
 @Builder
 @Getter
 @NoArgsConstructor
@@ -28,7 +27,6 @@ public class User {
     @Column(name = "id")
     private long id;
 
-    // username, nickname은 대부분 255자 미만이므로 TEXT를 쓸 필요가 없을 거 같다.
     @Column(name = "username")
     private String username;
 
@@ -50,16 +48,12 @@ public class User {
     @Column(name = "signed_time")
     private LocalDateTime signedTime;
 
-    // String 연속 of로 객체 생성 시 순서 유의점 때문에 객체로 받는게 훨씬 안전
-    // 예를 들어, username과 password의 순서를 잘못 알아서 바꿔서 대입한다 하더라도 에러가 발생하지 않는다. (안전하지 않은 코드)
-    // 밖에서 빌더를 쓰던지 그냥 of 생성자에는 객체를 넘겨주는게 안전!
     public static User of(RegisterUserRequest request) {
         return User.builder()
                 .username(request.getUsername())
                 .password(request.getPassword())
                 .email(request.getEmail())
                 .nickname(request.getNickname())
-                .profileImage(null)
                 .signedTime(LocalDateTime.now())
                 .build();
     }
