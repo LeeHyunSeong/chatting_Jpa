@@ -20,10 +20,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(
-        name = "MESSAGE",
-        indexes = @Index(name = "idx_room_id", unique = true, columnList = "room_id")
-)
+@Table(name = "MESSAGE")
 @Builder
 @Getter
 @NoArgsConstructor
