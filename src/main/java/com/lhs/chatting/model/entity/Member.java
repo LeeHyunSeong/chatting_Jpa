@@ -51,13 +51,13 @@ public class Member {
     @Column(name = "joined_time")
     private LocalDateTime joinedTime;
 
-    public static Member of(Long userId, Long roomId) {
+    public static Member of(Long userId, Long roomId, String userName, LocalDateTime createTime) {
         return Member.builder()
-                .roomAlias("new Room")
+                .roomAlias(userName)
                 .user(User.builder().id(userId).build())
                 .room(Room.builder().id(roomId).build())
-                .joinedTime(LocalDateTime.now())
-                .lastEntranceTime(LocalDateTime.now())
+                .joinedTime(createTime)
+                .lastEntranceTime(createTime)
                 .build();
     }
 }

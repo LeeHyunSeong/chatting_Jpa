@@ -1,5 +1,6 @@
 package com.lhs.chatting.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,6 +11,8 @@ import com.lhs.chatting.model.entity.Member;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     
-    Optional<Member> findByRoomIdAndUserId(Long roomId, Long userId);
+    Optional<Member> findByUserIdAndRoomId(Long userId, Long roomId);
+    
+    List<Member> findAllByUserId(Long userId);
     
 }

@@ -3,10 +3,9 @@ package com.lhs.chatting.model;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
-public class InviteUserRequest {
+@Builder
+public class GetMemberRequest {
     Long userId;
-    Long targetUserId;
     Long roomId;
 }
