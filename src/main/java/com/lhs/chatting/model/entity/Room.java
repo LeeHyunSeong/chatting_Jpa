@@ -7,10 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.lhs.chatting.model.type.FriendRelationType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,8 +37,9 @@ public class Room {
     private long id;
 
     @Setter
-    @Column(name = "last_msg_id")
-    private Message lastMsgId;
+    @OneToOne(targetEntity = Message.class)
+    @JoinColumn(name = "last_msg_id")
+    private Message lastMsg;
 
     @Column(name = "created_time")
     private LocalDateTime createdTime;

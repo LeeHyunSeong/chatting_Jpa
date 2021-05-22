@@ -43,7 +43,7 @@ public class Message {
     private long id;
 
     @ManyToOne(targetEntity = Room.class)
-    @Column(name = "room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @ManyToOne(targetEntity = User.class)
