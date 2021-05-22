@@ -6,10 +6,12 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.lhs.chatting.model.type.MessageType;
@@ -20,6 +22,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@SequenceGenerator(
+        name = "MESSAGE_SEQ_GENERATOR",
+        sequenceName = "MESSAGE_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Table(
         name = "MESSAGE",
         indexes = @Index(name = "idx_room_id", unique = true, columnList = "room_id")
@@ -30,7 +38,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Message {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MESSAGE_SEQ_GENERATOR")
     @Column(name = "id")
     private long id;
 

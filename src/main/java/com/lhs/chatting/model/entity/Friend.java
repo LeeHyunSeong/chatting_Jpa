@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.lhs.chatting.model.type.FriendRelationType;
@@ -22,6 +24,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@SequenceGenerator(
+        name = "FRIEND_SEQ_GENERATOR",
+        sequenceName = "FRIEND_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Table(
         name = "FRIEND",
         indexes = @Index(name = "idx_user_id_relation_type", unique = true, columnList = "user_id, relation_type")
@@ -32,7 +40,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Friend {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FRIEND_SEQ_GENERATOR")
     @Column(name = "id")
     private long id;
 

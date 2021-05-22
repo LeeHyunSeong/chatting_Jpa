@@ -13,6 +13,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@SequenceGenerator(
+        name = "USER_SEQ_GENERATOR",
+        sequenceName = "USER_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Table(
         name = "USER",
         indexes = @Index(name = "idx_email", unique = true, columnList = "email")
@@ -23,7 +29,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ_GENERATOR")
     @Column(name = "id")
     private long id;
 

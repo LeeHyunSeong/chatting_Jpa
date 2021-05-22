@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.lhs.chatting.model.type.FriendRelationType;
@@ -18,6 +19,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@SequenceGenerator(
+        name = "ROOM_SEQ_GENERATOR",
+        sequenceName = "ROOM_SEQ",
+        initialValue = 1,
+        allocationSize = 1
+)
 @Table(name = "ROOM")
 @Builder
 @Getter
@@ -25,7 +32,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Room {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROOM_SEQ_GENERATOR")
     @Column(name = "id")
     private long id;
 
