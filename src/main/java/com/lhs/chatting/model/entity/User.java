@@ -57,6 +57,12 @@ public class User {
                 .signedTime(LocalDateTime.now())
                 .build();
     }
+    
+    public static User pseudo(Long id) {
+        return User.builder()
+                .id(id)
+                .build();
+    }
 
     public void changeWith(ChangeUserInfoRequest request) {
         if (request.getNickname() != null) {

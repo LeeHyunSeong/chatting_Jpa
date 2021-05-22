@@ -53,8 +53,8 @@ public class Message {
 
     public static Message of(Long roomId, Long userId, String contents, MessageType msgType) {
         return Message.builder()
-                .room(Room.builder().id(roomId).build())
-                .user(User.builder().id(userId).build())
+                .room(Room.pseudo(roomId))
+                .user(User.pseudo(userId))
                 .contents(contents)
                 .msgType(msgType)
                 .createdTime(LocalDateTime.now())

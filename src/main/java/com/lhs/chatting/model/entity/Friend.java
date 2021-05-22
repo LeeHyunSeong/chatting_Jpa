@@ -54,8 +54,8 @@ public class Friend {
 
     public static Friend of(Long userId, Long targetUserId, FriendRelationType relationType) {
         return Friend.builder()
-                .user(User.builder().id(userId).build())
-                .targetUser(User.builder().id(targetUserId).build())
+                .user(User.pseudo(userId))
+                .targetUser(User.pseudo(targetUserId))
                 .relationType(relationType)
                 .createdTime(LocalDateTime.now())
                 .build();

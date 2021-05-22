@@ -54,8 +54,8 @@ public class Member {
     public static Member of(Long userId, Long roomId, String userName, LocalDateTime createTime) {
         return Member.builder()
                 .roomAlias(userName)
-                .user(User.builder().id(userId).build())
-                .room(Room.builder().id(roomId).build())
+                .user(User.pseudo(userId))
+                .room(Room.pseudo(roomId))
                 .joinedTime(createTime)
                 .lastEntranceTime(createTime)
                 .build();
