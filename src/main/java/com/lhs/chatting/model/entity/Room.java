@@ -2,6 +2,7 @@ package com.lhs.chatting.model.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class Room {
     private long id;
 
     @Setter
-    @OneToOne(targetEntity = Message.class)
+    @OneToOne(targetEntity = Message.class, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "last_msg_id")
     private Message lastMsg;
 

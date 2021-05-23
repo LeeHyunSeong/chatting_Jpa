@@ -68,4 +68,10 @@ public class Message {
                 .createdTime(LocalDateTime.now())
                 .build();
     }
+    
+    public static Message pseudo(Long id) {
+        return Message.builder()
+                .id(id)
+                .build();
+    }
 }
