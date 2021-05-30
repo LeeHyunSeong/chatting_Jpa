@@ -32,7 +32,7 @@ public class FriendRepositoryTests {
 
     private static final long TEST_USER1_ID = 1L;
     private static final long TEST_USER2_ID = 2L;
-    private static final long TEST_FRIEND_ID = 3L;
+    private static final long TEST_FRIEND_ID = 1L;
 
     @Test
     public void t1_users_insert() {
