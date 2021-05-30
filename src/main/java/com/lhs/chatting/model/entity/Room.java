@@ -45,6 +45,13 @@ public class Room {
     @Column(name = "created_time")
     private LocalDateTime createdTime;
     
+    public static Room of(LocalDateTime createdTime) {
+        return Room.builder()
+                .lastMsg(null)
+                .createdTime(createdTime)
+                .build();
+    }
+    
     public static Room pseudo(Long id) {
         return Room.builder()
                 .id(id)
