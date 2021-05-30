@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class RoomRequest {
-    String roomName;
+public class CreateRoomRequest {
     List<Long> userIds;
 }
