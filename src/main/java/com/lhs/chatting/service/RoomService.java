@@ -22,7 +22,7 @@ public class RoomService {
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
 
-    public boolean makeRoom(List<Long> userIds, String name) {
+    public boolean makeRoom(List<Long> userIds) {
         LocalDateTime createTime = LocalDateTime.now();
         Room room = Room.of(createTime);
         String roomName = makeDefaultRoomName(userIds);
