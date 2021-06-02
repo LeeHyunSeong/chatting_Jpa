@@ -40,12 +40,6 @@ public class RoomService {
                     .build();
             memberRepository.save(member);
         }
-        roomRepository.save(room);
-        return true;
-    }
-
-    public boolean deleteRoom(Long roomId) {
-        roomRepository.deleteById(roomId);
         return true;
     }
 

@@ -7,4 +7,7 @@ import com.lhs.chatting.model.entity.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
+    
+    void deleteRoomById(Long id);
+    
 }

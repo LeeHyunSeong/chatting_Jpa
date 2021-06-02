@@ -24,10 +24,4 @@ public class RoomApiController {
         boolean success = roomService.makeRoom(request.getUserIds());
         return ResponseEntity.ok(success);
     }
-    
-    @DeleteMapping("/{roomId}")
-    public ResponseEntity<Boolean> deleteRoom(@PathVariable Long roomId) {
-        boolean success = roomService.deleteRoom(roomId);
-        return ResponseEntity.ok(success);
-    }
 }
