@@ -1,6 +1,7 @@
 package com.lhs.chatting.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,12 +25,18 @@ public class RoomService {
 
     public boolean makeRoom(List<Long> userIds) {
         LocalDateTime createTime = LocalDateTime.now();
-        Room room = Room.of(createTime);
+        Room room = Room.newInstance();
         String roomName = makeDefaultRoomName(userIds);
         for (Long userId : userIds) {
-            User user = userRepository.findById(userId)
+            User user = userRepository.findUserById(userId)
                     .orElseThrow(() -> new UserNotFoundException(userId));
-            Member member = Member.of(userId, room.getId(), roomName, createTime);
+            Member member = Member.builder()
+                    .user(User.pseudo(userId))
+                    .room(Room.pseudo(room.getId()))
+                    .roomAlias(roomName)
+                    .joinedTime(createTime)
+                    .lastEntranceTime(createTime)
+                    .build();
             memberRepository.save(member);
         }
         roomRepository.save(room);
@@ -42,15 +49,12 @@ public class RoomService {
     }
 
     private String makeDefaultRoomName(List<Long> userIds) {
-        String roomName = "";
+        ArrayList<String> nameArrayList = new ArrayList<>();
         for (Long userId : userIds) {
-            User user = userRepository.findById(userId)
+            User user = userRepository.findUserById(userId)
                     .orElseThrow(() -> new UserNotFoundException(userId));
-            if (userIds.indexOf(userId) != userIds.size() - 1)
-                roomName += user.getNickname() + ", ";
-            else
-                roomName += user.getNickname();
+            nameArrayList.add(user.getNickname());
         }
-        return roomName;
+        return String.join(", ", nameArrayList);
     }
 }

@@ -45,10 +45,10 @@ public class Room {
     @Column(name = "created_time")
     private LocalDateTime createdTime;
     
-    public static Room of(LocalDateTime createdTime) {
+    public static Room newInstance() {
         return Room.builder()
                 .lastMsg(null)
-                .createdTime(createdTime)
+                .createdTime(LocalDateTime.now())
                 .build();
     }
     
