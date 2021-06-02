@@ -26,6 +26,7 @@ public class RoomService {
     public boolean makeRoom(List<Long> userIds) {
         LocalDateTime createTime = LocalDateTime.now();
         Room room = Room.newInstance();
+        roomRepository.save(room);
         String roomName = makeDefaultRoomName(userIds);
         for (Long userId : userIds) {
             User user = userRepository.findUserById(userId)
