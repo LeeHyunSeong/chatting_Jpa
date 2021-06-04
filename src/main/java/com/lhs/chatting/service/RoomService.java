@@ -50,7 +50,7 @@ public class RoomService {
 
     private void inviteUsersToRoom(Room room, List<User> users) {
         for (User user : users) {
-            String defaultRoomAlias = getJoinedMemberNameWithoutUser(users, user);
+            String defaultRoomAlias = makeJoinedMemberNameWithoutUser(users, user);
 
             Member member = Member.builder()
                     .room(room)
@@ -63,7 +63,7 @@ public class RoomService {
         }
     }
 
-    private String getJoinedMemberNameWithoutUser(List<User> memberUsers, User user) {
+    private String makeJoinedMemberNameWithoutUser(List<User> memberUsers, User user) {
         List<String> memberNamesWithoutUser = memberUsers.stream()
                 .filter(memberUser -> memberUser != user)
                 .map(User::getNickname)
