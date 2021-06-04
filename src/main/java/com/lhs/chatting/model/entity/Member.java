@@ -23,7 +23,6 @@ import lombok.Setter;
 @SequenceGenerator(
         name = "MEMBER_SEQ_GENERATOR",
         sequenceName = "MEMBER_SEQ",
-        initialValue = 1,
         allocationSize = 1
 )
 @Table(
@@ -40,32 +39,22 @@ public class Member {
     @Column(name = "id")
     private long id;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @ManyToOne(targetEntity = Room.class)
     @JoinColumn(name = "room_id")
     private Room room;
+
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Setter
     @Column(name = "room_alias", length = 20, nullable = false)
     private String roomAlias;
 
-    @Setter
-    @Column(name = "last_entrance_time")
-    private LocalDateTime lastEntranceTime;
-
     @Column(name = "joined_time")
     private LocalDateTime joinedTime;
 
-    public static Member of(Long userId, Long roomId, String userName, LocalDateTime createTime) {
-        return Member.builder()
-                .user(User.pseudo(userId))
-                .room(Room.pseudo(roomId))
-                .roomAlias(userName)
-                .joinedTime(createTime)
-                .lastEntranceTime(createTime)
-                .build();
-    }
+    @Setter
+    @Column(name = "last_entrance_time")
+    private LocalDateTime lastEntranceTime;
 }
