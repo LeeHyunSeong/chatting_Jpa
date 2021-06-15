@@ -23,9 +23,6 @@ public class RoomService {
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
 
-    // 기존의 makeRoom은 N명 초대 시 userRepository.findById를 2N번 호출
-    // connection 리소스 비용이 심하고 불필요한 호출이 있다.
-    // TODO : 확인 후에는 주석 지울 것
     @Transactional
     public boolean makeRoom(List<Long> userIds) {
         Room room = Room.newInstance();
