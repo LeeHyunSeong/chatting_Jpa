@@ -1,5 +1,14 @@
 package com.lhs.chatting.service;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.lhs.chatting.exception.UserNotFoundException;
 import com.lhs.chatting.model.entity.Member;
 import com.lhs.chatting.model.entity.Room;
@@ -7,14 +16,8 @@ import com.lhs.chatting.model.entity.User;
 import com.lhs.chatting.repository.MemberRepository;
 import com.lhs.chatting.repository.RoomRepository;
 import com.lhs.chatting.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -41,23 +44,23 @@ public class RoomService {
         if (!unselectedUserIds.isEmpty()) {
             throw new UserNotFoundException(unselectedUserIds);
         }
-
         return users;
     }
 
     private void inviteUsersToRoom(Room room, List<User> users) {
-        for (User user : users) {
-            String defaultRoomAlias = makeJoinedMemberNameWithoutUser(users, user);
-
-            Member member = Member.builder()
-                    .room(room)
-                    .user(user)
-                    .roomAlias(defaultRoomAlias)
-                    .joinedTime(room.getCreatedTime())
-                    .lastEntranceTime(room.getCreatedTime())
-                    .build();
-            memberRepository.save(member);
-        }
+        List<Member> members = users.stream()
+                .map(user -> {
+                    String defaultRoomAlias = makeJoinedMemberNameWithoutUser(users, user);
+                    return Member.builder()
+                            .room(room)
+                            .user(user)
+                            .roomAlias(defaultRoomAlias)
+                            .joinedTime(room.getCreatedTime())
+                            .lastEntranceTime(room.getCreatedTime())
+                            .build();
+                })
+                .collect(Collectors.toList());
+        memberRepository.saveAll(members);
     }
 
     private String makeJoinedMemberNameWithoutUser(List<User> memberUsers, User user) {
