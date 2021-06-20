@@ -23,7 +23,6 @@ import lombok.Setter;
 @SequenceGenerator(
         name = "ROOM_SEQ_GENERATOR",
         sequenceName = "ROOM_SEQ",
-        initialValue = 1,
         allocationSize = 1
 )
 @Table(name = "ROOM")
@@ -44,7 +43,14 @@ public class Room {
 
     @Column(name = "created_time")
     private LocalDateTime createdTime;
-    
+
+    public static Room newInstance() {
+        return Room.builder()
+                .lastMsg(null)
+                .createdTime(LocalDateTime.now())
+                .build();
+    }
+
     public static Room pseudo(Long id) {
         return Room.builder()
                 .id(id)
