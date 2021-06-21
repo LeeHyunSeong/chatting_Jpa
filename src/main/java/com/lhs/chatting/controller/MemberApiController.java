@@ -41,7 +41,7 @@ public class MemberApiController {
         return ResponseEntity.ok(response.toString());
     }
     
-    @GetMapping
+    @GetMapping("/member-id")
     public ResponseEntity<Member> getMember(@RequestParam GetMemberRequest request){
         Member member = memberService.getMember(request.getUserId(), request.getRoomId());
         return ResponseEntity.ok(member);
