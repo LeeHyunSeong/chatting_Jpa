@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lhs.chatting.model.GetAllMemberResponse;
-import com.lhs.chatting.model.GetMemberRequest;
 import com.lhs.chatting.model.InviteUserRequest;
 import com.lhs.chatting.model.entity.Member;
 import com.lhs.chatting.service.MemberService;
@@ -33,18 +32,24 @@ public class MemberApiController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getMembers(@RequestParam Long userId){
+    public ResponseEntity<GetAllMemberResponse> getMembers(@RequestParam Long userId){
         List<Member> members = memberService.getMembers(userId);
         GetAllMemberResponse response = GetAllMemberResponse.builder()
                 .members(members)
                 .build();
-        return ResponseEntity.ok(response.toString());
+        return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/member-id")
-    public ResponseEntity<Member> getMember(@RequestParam GetMemberRequest request){
-        Member member = memberService.getMember(request.getUserId(), request.getRoomId());
+    @GetMapping("/{userId}/rooms/{roomId}")
+    public ResponseEntity<Member> getMember(@PathVariable Long userId, @PathVariable Long roomId){
+        Member member = memberService.getMember(userId, roomId);
         return ResponseEntity.ok(member);
+    }
+    
+    @PatchMapping("/{memberId}/roomAlias")
+    public ResponseEntity<Boolean> changeRoomAlias(@PathVariable Long memberId, @RequestParam String roomAlias){
+        boolean success = memberService.changeRoomAlias(memberId, roomAlias);
+        return ResponseEntity.ok(success);
     }
     
     @PatchMapping("/{memberId}")

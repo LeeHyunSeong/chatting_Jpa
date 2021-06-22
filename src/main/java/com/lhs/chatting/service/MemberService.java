@@ -31,8 +31,8 @@ public class MemberService {
         Member hostUserMember = memberRepository.findByUserIdAndRoomId(hostUserId, roomId)
                 .orElseThrow(() -> new MemberNotFoundException(hostUserId, roomId));
         Member targetUserMember = Member.builder()
-                .user(getUserById(targetUserId))
-                .room(getRoomById(roomId))
+                .user(User.pseudo(targetUserId))
+                .room(hostUserMember.getRoom())
                 .roomAlias(hostUserMember.getRoomAlias())
                 .joinedTime(now)
                 .lastEntranceTime(now)
@@ -50,6 +50,14 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException(userId, roomId));
     }
     
+    public boolean changeRoomAlias(Long memberId, String roomAlias) {
+        Member existedMember = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+        existedMember.setRoomAlias(roomAlias);
+        memberRepository.save(existedMember);
+        return true;
+    }
+    
     public boolean updateLastEntranceTime(Long memberId) {
         Member existedMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
@@ -59,19 +67,7 @@ public class MemberService {
     }
     
     public boolean leaveRoom(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
-        memberRepository.delete(member);
+        memberRepository.deleteById(memberId);
         return true;
-    }
-    
-    private User getUserById(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-    }
-    
-    private Room getRoomById(Long roomId) {
-        return roomRepository.findById(roomId)
-                .orElseThrow(() -> new RoomNotFoundException(roomId));
     }
 }
