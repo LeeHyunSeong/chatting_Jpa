@@ -45,11 +45,6 @@ public class MemberService {
         return memberRepository.findAllByUserId(userId);
     }
     
-    public Member getMember(Long userId, Long roomId) {
-        return memberRepository.findByUserIdAndRoomId(userId, roomId)
-                .orElseThrow(() -> new MemberNotFoundException(userId, roomId));
-    }
-    
     public boolean changeRoomAlias(Long memberId, String roomAlias) {
         Member existedMember = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
