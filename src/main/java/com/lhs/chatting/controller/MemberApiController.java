@@ -46,7 +46,7 @@ public class MemberApiController {
         return ResponseEntity.ok(member);
     }
     
-    @PatchMapping("/{memberId}/roomAlias")
+    @PatchMapping("/{memberId}/room-alias")
     public ResponseEntity<Boolean> changeRoomAlias(@PathVariable Long memberId, @RequestParam String roomAlias){
         boolean success = memberService.changeRoomAlias(memberId, roomAlias);
         return ResponseEntity.ok(success);
