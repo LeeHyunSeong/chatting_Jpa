@@ -104,19 +104,29 @@ public class MemberServiceTests {
     }
     
     @Test
-    public void t5_getMember() {
-        Member member = memberService.getMember(TEST_USER3_ID, TEST_ROOM_ID);
-
-        Assert.assertEquals(TEST_MEMBER3_ID, member.getId());
-        Assert.assertEquals(TEST_USER3_ID, member.getUser().getId());
-        Assert.assertEquals(TEST_ROOM_ID, member.getRoom().getId());    }
+    public void t5_changeRoomAlias() {
+        boolean success = memberService.changeRoomAlias(TEST_MEMBER3_ID, "chatting");
+        List<Member> members = memberService.getMembers(TEST_USER3_ID);
+        Member firstMember = members.stream()
+                .findFirst()
+                .orElse(null);
+        
+        Assert.assertTrue(success);
+        Assert.assertEquals("chatting", firstMember.getRoomAlias());
+    }
     
     @Test
     public void t6_updateLastEntranceTime() {
-        Member beforeMember = memberService.getMember(TEST_USER3_ID, TEST_ROOM_ID);
+        List<Member> members = memberService.getMembers(TEST_USER3_ID);
+        Member beforeMember = members.stream()
+                .findFirst()
+                .orElse(null);
         boolean success = memberService.updateLastEntranceTime(TEST_MEMBER3_ID);
-        Member afterMember = memberService.getMember(TEST_USER3_ID, TEST_ROOM_ID);
-              
+        members = memberService.getMembers(TEST_USER3_ID);
+        Member afterMember = members.stream()
+                .findFirst()
+                .orElse(null);
+        
         Assert.assertTrue(success);
         Assert.assertNotEquals(beforeMember.getLastEntranceTime(), afterMember.getLastEntranceTime());
     }
