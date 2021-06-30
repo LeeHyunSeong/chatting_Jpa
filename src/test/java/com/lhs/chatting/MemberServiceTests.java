@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.lhs.chatting.model.RoomInfoResponse;
 import com.lhs.chatting.model.RegisterUserRequest;
 import com.lhs.chatting.model.entity.Member;
 import com.lhs.chatting.service.MemberService;
@@ -90,45 +91,43 @@ public class MemberServiceTests {
 
     @Test
     public void t4_getMembers() {
-        List<Member> members = memberService.getMembers(TEST_USER3_ID);
-        Member firstMember = members.stream()
+        List<RoomInfoResponse> responses = memberService.getMembers(TEST_USER3_ID);
+        RoomInfoResponse firstResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
 
 
-        Assert.assertEquals(1, members.size());
-        Assert.assertNotNull(firstMember);
-        Assert.assertEquals(TEST_MEMBER3_ID, firstMember.getId());
-        Assert.assertEquals(TEST_USER3_ID, firstMember.getUser().getId());
-        Assert.assertEquals(TEST_ROOM_ID, firstMember.getRoom().getId());
+        Assert.assertEquals(1, responses.size());
+        Assert.assertNotNull(firstResponse);
+        Assert.assertEquals(TEST_ROOM_ID, firstResponse.getRoomId());
     }
     
     @Test
     public void t5_changeRoomAlias() {
         boolean success = memberService.changeRoomAlias(TEST_MEMBER3_ID, "chatting");
-        List<Member> members = memberService.getMembers(TEST_USER3_ID);
-        Member firstMember = members.stream()
+        List<RoomInfoResponse> responses = memberService.getMembers(TEST_USER3_ID);
+        RoomInfoResponse firstResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
         
         Assert.assertTrue(success);
-        Assert.assertEquals("chatting", firstMember.getRoomAlias());
+        Assert.assertEquals("chatting", firstResponse.getRoomAlias());
     }
     
     @Test
     public void t6_updateLastEntranceTime() {
-        List<Member> members = memberService.getMembers(TEST_USER3_ID);
-        Member beforeMember = members.stream()
+        List<RoomInfoResponse> responses = memberService.getMembers(TEST_USER3_ID);
+        RoomInfoResponse beforeResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
         boolean success = memberService.updateLastEntranceTime(TEST_MEMBER3_ID);
-        members = memberService.getMembers(TEST_USER3_ID);
-        Member afterMember = members.stream()
+        responses = memberService.getMembers(TEST_USER3_ID);
+        RoomInfoResponse afterResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
         
         Assert.assertTrue(success);
-        Assert.assertNotEquals(beforeMember.getLastEntranceTime(), afterMember.getLastEntranceTime());
+        Assert.assertNotEquals(beforeResponse.getLastEntranceTime(), afterResponse.getLastEntranceTime());
     }
 
     @Test
