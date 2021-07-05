@@ -1,5 +1,6 @@
 package com.lhs.chatting.service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -9,7 +10,11 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.lhs.chatting.exception.MemberNotFoundException;
 import com.lhs.chatting.exception.UserNotFoundException;
+import com.lhs.chatting.model.HostNickname;
+import com.lhs.chatting.model.MemberRoom;
+import com.lhs.chatting.model.RoomAlias;
 import com.lhs.chatting.model.entity.Member;
 import com.lhs.chatting.model.entity.Room;
 import com.lhs.chatting.model.entity.User;
@@ -33,6 +38,44 @@ public class RoomService {
 
         List<User> users = getUsersByIds(userIds);
         inviteUsersToRoom(room, users);
+        return true;
+    }
+    
+    public boolean inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
+        LocalDateTime now = LocalDateTime.now();
+        Member targetUserMember = Member.builder()
+                .user(User.pseudo(targetUserId))
+                .room(Room.pseudo(roomId))
+                .roomAlias(makeInvitedMemberName(hostUserId, roomId))
+                .joinedTime(now)
+                .lastEntranceTime(now)
+                .build();
+        memberRepository.save(targetUserMember);
+        return true;
+    }
+    
+    public List<MemberRoom> getMembers(Long userId) {
+        return memberRepository.findAllMemberRoomByUserId(userId);
+    }
+    
+    public boolean changeRoomAlias(Long userId, Long roomId, String roomAlias) {
+        Member existedMember = memberRepository.findByUserIdAndRoomId(userId, roomId)
+                .orElseThrow(() -> new MemberNotFoundException(userId, roomId));
+        existedMember.setRoomAlias(roomAlias);
+        memberRepository.save(existedMember);
+        return true;
+    }
+    
+    public boolean updateLastEntranceTime(Long userId, Long roomId) {
+        Member existedMember = memberRepository.findByUserIdAndRoomId(userId, roomId)
+                .orElseThrow(() -> new MemberNotFoundException(userId, roomId));
+        existedMember.setLastEntranceTime(LocalDateTime.now());
+        memberRepository.save(existedMember);
+        return true;
+    }
+    
+    public boolean leaveRoom(Long userId, Long roomId) {
+        memberRepository.deleteByUserIdAndRoomId(userId, roomId);
         return true;
     }
 
@@ -69,5 +112,13 @@ public class RoomService {
                 .map(User::getNickname)
                 .collect(Collectors.toList());
         return String.join(", ", memberNamesWithoutUser);
+    }
+    
+    private String makeInvitedMemberName(Long hostUserId, Long roomId) {
+        HostNickname hostUserName = userRepository.findNicknameById(hostUserId)
+                .orElseThrow(() -> new UserNotFoundException(hostUserId));
+        RoomAlias roomAlias = memberRepository.findRoomAliasByUserIdAndRoomId(hostUserId, roomId)
+                .orElseThrow(() -> new MemberNotFoundException(hostUserId, roomId));
+        return hostUserName.getNickname() + ", " + roomAlias.getRoomAlias();
     }
 }
