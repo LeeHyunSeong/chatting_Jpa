@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.lhs.chatting.model.RegisterUserRequest;
-import com.lhs.chatting.repository.MemberRepository;
+import com.lhs.chatting.model.MemberRoom;
 import com.lhs.chatting.service.RoomService;
 import com.lhs.chatting.service.UserService;
 
@@ -70,9 +70,60 @@ public class RoomServiceTests {
         List<Long> userIds = new ArrayList<>();
         userIds.add(TEST_USER1_ID);
         userIds.add(TEST_USER2_ID);
-        userIds.add(TEST_USER3_ID);
         boolean success = roomService.makeRoom(userIds);
         Assert.assertTrue(success);
     }
 
+    @Test
+    public void t3_inviteFriend() {
+        boolean success = roomService.inviteFriend(TEST_USER1_ID, TEST_ROOM_ID, TEST_USER3_ID);
+        Assert.assertTrue(success);
+    }
+
+    @Test
+    public void t4_getMembers() {
+        List<MemberRoom> responses = roomService.getMembers(TEST_USER3_ID);
+        MemberRoom firstResponse = responses.stream()
+                .findFirst()
+                .orElse(null);
+
+
+        Assert.assertEquals(1, responses.size());
+        Assert.assertNotNull(firstResponse);
+        Assert.assertEquals(TEST_ROOM_ID, firstResponse.getRoomId());
+    }
+    
+    @Test
+    public void t5_changeRoomAlias() {
+        boolean success = roomService.changeRoomAlias(TEST_USER3_ID, TEST_ROOM_ID, "chatting");
+        List<MemberRoom> responses = roomService.getMembers(TEST_USER3_ID);
+        MemberRoom firstResponse = responses.stream()
+                .findFirst()
+                .orElse(null);
+        
+        Assert.assertTrue(success);
+        Assert.assertEquals("chatting", firstResponse.getRoomAlias());
+    }
+    
+    @Test
+    public void t6_updateLastEntranceTime() {
+        List<MemberRoom> responses = roomService.getMembers(TEST_USER3_ID);
+        MemberRoom beforeResponse = responses.stream()
+                .findFirst()
+                .orElse(null);
+        boolean success = roomService.updateLastEntranceTime(TEST_USER3_ID, TEST_ROOM_ID);
+        responses = roomService.getMembers(TEST_USER3_ID);
+        MemberRoom afterResponse = responses.stream()
+                .findFirst()
+                .orElse(null);
+        
+        Assert.assertTrue(success);
+        Assert.assertNotEquals(beforeResponse.getLastEntranceTime(), afterResponse.getLastEntranceTime());
+    }
+
+    @Test
+    public void t7_leaveRoom() {
+        boolean success = roomService.leaveRoom(TEST_USER3_ID, TEST_ROOM_ID);
+        Assert.assertTrue(success);
+    }    
 }
