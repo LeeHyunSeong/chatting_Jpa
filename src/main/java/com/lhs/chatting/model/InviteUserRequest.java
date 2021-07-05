@@ -8,5 +8,4 @@ import lombok.Getter;
 public class InviteUserRequest {
     Long userId;
     Long targetUserId;
-    Long roomId;
 }

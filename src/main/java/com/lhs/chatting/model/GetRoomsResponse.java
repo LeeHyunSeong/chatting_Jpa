@@ -9,8 +9,8 @@ import lombok.ToString;
 @Getter
 @Builder
 @ToString
-public class GetRoomListResponse {
+public class GetRoomsResponse {
     
-    private final List<RoomInfoResponse> members;
+    private final List<MemberRoom> members;
     
 }

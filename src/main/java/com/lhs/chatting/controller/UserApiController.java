@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lhs.chatting.model.ChangeUserInfoRequest;
 import com.lhs.chatting.model.RegisterUserRequest;
 import com.lhs.chatting.model.entity.User;
-import com.lhs.chatting.service.MemberService;
 import com.lhs.chatting.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserApiController {
     private final UserService userService;
-    private final MemberService memberService;
 
     @PostMapping
     public ResponseEntity<Boolean> registerUser(@RequestBody RegisterUserRequest request) {
