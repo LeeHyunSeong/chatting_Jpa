@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lhs.chatting.model.MemberRoom;
-import com.lhs.chatting.model.RoomAlias;
+import com.lhs.chatting.model.MemberUser;
 import com.lhs.chatting.model.entity.Member;
 
 @Repository
@@ -19,10 +19,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     
     List<Member> findAllByUserId(Long userId);
     
-    Optional<RoomAlias> findRoomAliasByUserIdAndRoomId(@Param("userId") Long userId, @Param("roomId") Long roomId);
-    
     List<MemberRoom> findAllMemberRoomsByUserId(@Param("userId") Long userId);
 
+    List<MemberUser> findAllMemberUsersByRoomId(@Param("roomId") Long roomId);
+    
     @Transactional
     void deleteByUserIdAndRoomId(Long userId, Long roomId);
     

@@ -12,9 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.exception.MemberNotFoundException;
 import com.lhs.chatting.exception.UserNotFoundException;
-import com.lhs.chatting.model.Nickname;
 import com.lhs.chatting.model.MemberRoom;
-import com.lhs.chatting.model.RoomAlias;
+import com.lhs.chatting.model.MemberUser;
 import com.lhs.chatting.model.entity.Member;
 import com.lhs.chatting.model.entity.Room;
 import com.lhs.chatting.model.entity.User;
@@ -43,10 +42,13 @@ public class RoomService {
     
     public boolean inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
         LocalDateTime now = LocalDateTime.now();
+        List<MemberUser> memberUsers = memberRepository.findAllMemberUsersByRoomId(roomId);
+        List<User> users = getUsersByMemberUsers(memberUsers);
+        
         Member targetUserMember = Member.builder()
                 .user(User.pseudo(targetUserId))
                 .room(Room.pseudo(roomId))
-                .roomAlias(makeInvitedMemberName(hostUserId, roomId))
+                .roomAlias(makeInvitedMemberName(users))
                 .joinedTime(now)
                 .lastEntranceTime(now)
                 .build();
@@ -114,11 +116,24 @@ public class RoomService {
         return String.join(", ", memberNamesWithoutUser);
     }
     
-    private String makeInvitedMemberName(Long hostUserId, Long roomId) {
-        Nickname hostUserName = userRepository.findNicknameById(hostUserId)
-                .orElseThrow(() -> new UserNotFoundException(hostUserId));
-        RoomAlias roomAlias = memberRepository.findRoomAliasByUserIdAndRoomId(hostUserId, roomId)
-                .orElseThrow(() -> new MemberNotFoundException(hostUserId, roomId));
-        return hostUserName.getNickname() + ", " + roomAlias.getRoomAlias();
+    private List<User> getUsersByMemberUsers(List<MemberUser> memberUsers) {
+        List<Long> userIds = memberUsers.stream()
+                .map(MemberUser::getUserId)
+                .collect(Collectors.toList());
+        List<User> users = userRepository.findAllById(userIds);
+        
+        Set<Long> unselectedUserIds = new HashSet<>(userIds);
+        users.forEach(user -> unselectedUserIds.remove(user.getId()));
+        if (!unselectedUserIds.isEmpty()) {
+            throw new UserNotFoundException(unselectedUserIds);
+        }
+        return users;
+    }
+    
+    private String makeInvitedMemberName(List<User> Users) {
+        List<String> memberNames = Users.stream()
+                .map(User::getNickname)
+                .collect(Collectors.toList());
+        return String.join(", ", memberNames);
     }
 }
