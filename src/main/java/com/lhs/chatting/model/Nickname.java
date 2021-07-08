@@ -1,5 +1,5 @@
 package com.lhs.chatting.model;
 
-public interface HostNickname {
+public interface Nickname {
     String getNickname();
 }

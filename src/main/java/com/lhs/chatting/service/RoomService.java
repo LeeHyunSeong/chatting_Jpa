@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.exception.MemberNotFoundException;
 import com.lhs.chatting.exception.UserNotFoundException;
-import com.lhs.chatting.model.HostNickname;
+import com.lhs.chatting.model.Nickname;
 import com.lhs.chatting.model.MemberRoom;
 import com.lhs.chatting.model.RoomAlias;
 import com.lhs.chatting.model.entity.Member;
@@ -54,8 +54,8 @@ public class RoomService {
         return true;
     }
     
-    public List<MemberRoom> getMembers(Long userId) {
-        return memberRepository.findAllMemberRoomByUserId(userId);
+    public List<MemberRoom> getRooms(Long userId) {
+        return memberRepository.findAllMemberRoomsByUserId(userId);
     }
     
     public boolean changeRoomAlias(Long userId, Long roomId, String roomAlias) {
@@ -115,7 +115,7 @@ public class RoomService {
     }
     
     private String makeInvitedMemberName(Long hostUserId, Long roomId) {
-        HostNickname hostUserName = userRepository.findNicknameById(hostUserId)
+        Nickname hostUserName = userRepository.findNicknameById(hostUserId)
                 .orElseThrow(() -> new UserNotFoundException(hostUserId));
         RoomAlias roomAlias = memberRepository.findRoomAliasByUserIdAndRoomId(hostUserId, roomId)
                 .orElseThrow(() -> new MemberNotFoundException(hostUserId, roomId));

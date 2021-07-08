@@ -21,7 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     
     Optional<RoomAlias> findRoomAliasByUserIdAndRoomId(@Param("userId") Long userId, @Param("roomId") Long roomId);
     
-    List<MemberRoom> findAllMemberRoomByUserId(@Param("userId") Long userId);
+    List<MemberRoom> findAllMemberRoomsByUserId(@Param("userId") Long userId);
 
     @Transactional
     void deleteByUserIdAndRoomId(Long userId, Long roomId);

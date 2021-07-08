@@ -40,7 +40,7 @@ public class RoomApiController {
     
     @GetMapping
     public ResponseEntity<GetRoomsResponse> getRooms(@RequestParam Long userId){
-        List<MemberRoom> members = roomService.getMembers(userId);
+        List<MemberRoom> members = roomService.getRooms(userId);
         GetRoomsResponse response = GetRoomsResponse.builder()
                 .members(members)
                 .build();

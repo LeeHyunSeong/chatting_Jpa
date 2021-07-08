@@ -81,8 +81,8 @@ public class RoomServiceTests {
     }
 
     @Test
-    public void t4_getMembers() {
-        List<MemberRoom> responses = roomService.getMembers(TEST_USER3_ID);
+    public void t4_getRooms() {
+        List<MemberRoom> responses = roomService.getRooms(TEST_USER3_ID);
         MemberRoom firstResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
@@ -96,7 +96,7 @@ public class RoomServiceTests {
     @Test
     public void t5_changeRoomAlias() {
         boolean success = roomService.changeRoomAlias(TEST_USER3_ID, TEST_ROOM_ID, "chatting");
-        List<MemberRoom> responses = roomService.getMembers(TEST_USER3_ID);
+        List<MemberRoom> responses = roomService.getRooms(TEST_USER3_ID);
         MemberRoom firstResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
@@ -107,12 +107,12 @@ public class RoomServiceTests {
     
     @Test
     public void t6_updateLastEntranceTime() {
-        List<MemberRoom> responses = roomService.getMembers(TEST_USER3_ID);
+        List<MemberRoom> responses = roomService.getRooms(TEST_USER3_ID);
         MemberRoom beforeResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
         boolean success = roomService.updateLastEntranceTime(TEST_USER3_ID, TEST_ROOM_ID);
-        responses = roomService.getMembers(TEST_USER3_ID);
+        responses = roomService.getRooms(TEST_USER3_ID);
         MemberRoom afterResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
