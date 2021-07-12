@@ -42,9 +42,8 @@ public class RoomService {
     
     public boolean inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
         LocalDateTime now = LocalDateTime.now();
-        List<MemberUser> memberUsers = memberRepository.findAllMemberUsersByRoomId(roomId);
-        List<User> users = getUsersByMemberUsers(memberUsers);
-        
+        List<User> users = memberRepository.findAllMemberUsersByRoomId(roomId);
+      
         Member targetUserMember = Member.builder()
                 .user(User.pseudo(targetUserId))
                 .room(Room.pseudo(roomId))
@@ -114,20 +113,6 @@ public class RoomService {
                 .map(User::getNickname)
                 .collect(Collectors.toList());
         return String.join(", ", memberNamesWithoutUser);
-    }
-    
-    private List<User> getUsersByMemberUsers(List<MemberUser> memberUsers) {
-        List<Long> userIds = memberUsers.stream()
-                .map(MemberUser::getUserId)
-                .collect(Collectors.toList());
-        List<User> users = userRepository.findAllById(userIds);
-        
-        Set<Long> unselectedUserIds = new HashSet<>(userIds);
-        users.forEach(user -> unselectedUserIds.remove(user.getId()));
-        if (!unselectedUserIds.isEmpty()) {
-            throw new UserNotFoundException(unselectedUserIds);
-        }
-        return users;
     }
     
     private String makeInvitedMemberName(List<User> Users) {
