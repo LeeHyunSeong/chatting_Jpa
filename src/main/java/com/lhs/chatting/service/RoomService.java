@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.lhs.chatting.exception.MemberNotFoundException;
 import com.lhs.chatting.exception.UserNotFoundException;
 import com.lhs.chatting.model.MemberRoom;
-import com.lhs.chatting.model.MemberUser;
 import com.lhs.chatting.model.entity.Member;
 import com.lhs.chatting.model.entity.Room;
 import com.lhs.chatting.model.entity.User;
@@ -37,7 +36,7 @@ public class RoomService {
 
         List<User> users = getUsersByIds(userIds);
         inviteUsersToRoom(room, users);
-        return true;
+        return true;    
     }
     
     public boolean inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
