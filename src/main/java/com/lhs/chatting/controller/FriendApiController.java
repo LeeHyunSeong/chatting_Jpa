@@ -41,7 +41,7 @@ public class FriendApiController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getAllFriends(
+    public ResponseEntity<GetAllFriendResponse> getAllFriends(
             @RequestParam Long userId,
             @RequestParam(required = false, defaultValue = FriendRelationType.DEFAULT) FriendRelationType relationType
     ) {
@@ -49,7 +49,7 @@ public class FriendApiController {
         GetAllFriendResponse response = GetAllFriendResponse.builder()
                 .friends(friends)
                 .build();
-        return ResponseEntity.ok(response.toString());
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{friendId}")
