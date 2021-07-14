@@ -46,7 +46,7 @@ public class RoomService {
         Member targetUserMember = Member.builder()
                 .user(User.pseudo(targetUserId))
                 .room(Room.pseudo(roomId))
-                .roomAlias(makeDefaultMemberName(users, targetUserId))
+                .roomAlias(makeJoinedMemberNameWithoutUser(users, targetUserId))
                 .joinedTime(now)
                 .lastEntranceTime(now)
                 .build();
@@ -93,7 +93,7 @@ public class RoomService {
     private void inviteUsersToRoom(Room room, List<User> users) {
         List<Member> members = users.stream()
                 .map(user -> {
-                    String defaultRoomAlias = makeDefaultMemberName(users, user.getId());
+                    String defaultRoomAlias = makeJoinedMemberNameWithoutUser(users, user.getId());
                     return Member.builder()
                             .room(room)
                             .user(user)
@@ -106,7 +106,7 @@ public class RoomService {
         memberRepository.saveAll(members);
     }
 
-    private String makeDefaultMemberName(List<User> memberUsers, Long userId) {
+    private String makeJoinedMemberNameWithoutUser(List<User> memberUsers, Long userId) {
         List<String> memberNamesWithoutUser = memberUsers.stream()
                 .filter(memberUser -> memberUser.getId() != userId)
                 .map(User::getNickname)
