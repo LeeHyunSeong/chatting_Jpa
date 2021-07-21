@@ -8,7 +8,6 @@ import lombok.ToString;
 
 @Getter
 @Builder
-@ToString
 public class GetRoomsResponse {
     
     private final List<MemberRoom> members;
