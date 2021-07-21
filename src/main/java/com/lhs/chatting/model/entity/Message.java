@@ -28,10 +28,7 @@ import lombok.NoArgsConstructor;
         initialValue = 1,
         allocationSize = 1
 )
-@Table(
-        name = "MESSAGE",
-        indexes = @Index(name = "idx_room_id", unique = true, columnList = "room_id")
-)
+@Table(name = "MESSAGE")
 @Builder
 @Getter
 @NoArgsConstructor
