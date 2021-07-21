@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lhs.chatting.model.CreateMessage;
 import com.lhs.chatting.model.GetRoomsResponse;
+import com.lhs.chatting.model.InviteMessage;
 import com.lhs.chatting.model.InviteUserRequest;
+import com.lhs.chatting.model.LeaveMessage;
 import com.lhs.chatting.model.MakeRoomRequest;
 import com.lhs.chatting.model.MemberRoom;
 import com.lhs.chatting.service.RoomService;
@@ -27,15 +30,15 @@ public class RoomApiController {
     private final RoomService roomService;
 
     @PostMapping
-    public ResponseEntity<Boolean> makeRoom(@RequestParam MakeRoomRequest request) {
-        boolean success = roomService.makeRoom(request.getUserIds());
-        return ResponseEntity.ok(success);
+    public ResponseEntity<CreateMessage> makeRoom(@RequestParam MakeRoomRequest request) {
+        CreateMessage message = roomService.makeRoom(request.getUserIds());
+        return ResponseEntity.ok(message);
     }
     
     @PostMapping("/{roomId}")
-    public ResponseEntity<Boolean> inviteFriend(@PathVariable Long roomId, @RequestParam InviteUserRequest request) {
-        boolean success = roomService.inviteFriend(request.getUserId(), roomId, request.getTargetUserId());
-        return ResponseEntity.ok(success);
+    public ResponseEntity<InviteMessage> inviteFriend(@PathVariable Long roomId, @RequestParam InviteUserRequest request) {
+        InviteMessage message = roomService.inviteFriend(request.getUserId(), roomId, request.getTargetUserId());
+        return ResponseEntity.ok(message);
     }
     
     @GetMapping
@@ -60,8 +63,8 @@ public class RoomApiController {
     }
     
     @DeleteMapping("/{roomId}/users/{userId}")
-    public ResponseEntity<Boolean> leaveRoom(@PathVariable Long roomId, @PathVariable Long userId) {
-        boolean success = roomService.leaveRoom(userId, roomId);
-        return ResponseEntity.ok(success);
+    public ResponseEntity<LeaveMessage> leaveRoom(@PathVariable Long roomId, @PathVariable Long userId) {
+        LeaveMessage message = roomService.leaveRoom(userId, roomId);
+        return ResponseEntity.ok(message);
     }
 }

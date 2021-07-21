@@ -12,11 +12,18 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.exception.MemberNotFoundException;
 import com.lhs.chatting.exception.UserNotFoundException;
+import com.lhs.chatting.model.CreateMessage;
+import com.lhs.chatting.model.InviteMessage;
+import com.lhs.chatting.model.LeaveMessage;
 import com.lhs.chatting.model.MemberRoom;
+import com.lhs.chatting.model.Nickname;
 import com.lhs.chatting.model.entity.Member;
+import com.lhs.chatting.model.entity.Message;
 import com.lhs.chatting.model.entity.Room;
 import com.lhs.chatting.model.entity.User;
+import com.lhs.chatting.model.type.MessageType;
 import com.lhs.chatting.repository.MemberRepository;
+import com.lhs.chatting.repository.MessageRepository;
 import com.lhs.chatting.repository.RoomRepository;
 import com.lhs.chatting.repository.UserRepository;
 
@@ -28,21 +35,22 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
     @Transactional
-    public boolean makeRoom(List<Long> userIds) {
+    public CreateMessage makeRoom(List<Long> userIds) {
         Room room = Room.newInstance();
         roomRepository.save(room);
 
         List<User> users = getUsersByIds(userIds);
-        inviteUsersToRoom(room, users);
-        return true;    
+        return inviteUsersToRoom(room, users);    
     }
     
-    public boolean inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
+    public InviteMessage inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
         LocalDateTime now = LocalDateTime.now();
         List<User> users = memberRepository.findAllMemberUsersByRoomId(roomId);
-      
+        Nickname targetUserNickname = userRepository.findNicknameById(targetUserId)
+                .orElseThrow(() -> new UserNotFoundException(targetUserId));
         Member targetUserMember = Member.builder()
                 .user(User.pseudo(targetUserId))
                 .room(Room.pseudo(roomId))
@@ -50,8 +58,12 @@ public class RoomService {
                 .joinedTime(now)
                 .lastEntranceTime(now)
                 .build();
+        Message invitedMessage = Message.of(roomId, targetUserId, targetUserNickname.getNickname() + "님이 초대되었습니다.", MessageType.NOTICE);
         memberRepository.save(targetUserMember);
-        return true;
+        messageRepository.save(invitedMessage);
+        return InviteMessage.builder()
+                .contents(invitedMessage.getContents())
+                .build();
     }
     
     public List<MemberRoom> getRooms(Long userId) {
@@ -74,9 +86,16 @@ public class RoomService {
         return true;
     }
     
-    public boolean leaveRoom(Long userId, Long roomId) {
+    public LeaveMessage leaveRoom(Long userId, Long roomId) {
+        Nickname userNickname = userRepository.findNicknameById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        Message leaveMessage = Message.of(roomId, userId, userNickname.getNickname() + "님이 나갔습니다.", MessageType.NOTICE);
+
         memberRepository.deleteByUserIdAndRoomId(userId, roomId);
-        return true;
+        messageRepository.save(leaveMessage);
+        return LeaveMessage.builder()
+                .contents(leaveMessage.getContents())
+                .build();
     }
 
     private List<User> getUsersByIds(List<Long> userIds) {
@@ -90,7 +109,7 @@ public class RoomService {
         return users;
     }
 
-    private void inviteUsersToRoom(Room room, List<User> users) {
+    private CreateMessage inviteUsersToRoom(Room room, List<User> users) {
         List<Member> members = users.stream()
                 .map(user -> {
                     String defaultRoomAlias = makeJoinedMemberNameWithoutUser(users, user.getId());
@@ -103,7 +122,12 @@ public class RoomService {
                             .build();
                 })
                 .collect(Collectors.toList());
+        Message noticeMessage = Message.of(room.getId(), 1L, makeNoticeContents(users), MessageType.NOTICE);
         memberRepository.saveAll(members);
+        messageRepository.save(noticeMessage);
+        return CreateMessage.builder()
+                .contents(noticeMessage.getContents())
+                .build();
     }
 
     private String makeJoinedMemberNameWithoutUser(List<User> memberUsers, Long userId) {
@@ -112,5 +136,12 @@ public class RoomService {
                 .map(User::getNickname)
                 .collect(Collectors.toList());
         return String.join(", ", memberNamesWithoutUser);
+    }
+    
+    private String makeNoticeContents(List<User> memberUsers) {
+        List<String> memberNames = memberUsers.stream()
+                .map(User::getNickname)
+                .collect(Collectors.toList());
+        return String.join("님, ", memberNames) + "님이 초대되었습니다.";
     }
 }
