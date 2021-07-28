@@ -12,7 +12,7 @@ import lombok.Getter;
 @Builder
 public class GetMessagesResponse {
        
-    private final int currentNum;
-    private final List<ChatMessage> chatMessages;
+    private final int displayedMsgNum;
+    private final List<Message> messages;
     
 }

@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.model.ChatMessage;
 import com.lhs.chatting.model.GetMessagesResponse;
 import com.lhs.chatting.model.MakeMessageRequest;
+import com.lhs.chatting.model.entity.Message;
 import com.lhs.chatting.service.MessageService;
+import com.lhs.chatting.util.DisplayedMsgNumUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,11 +32,11 @@ public class MessageApiController {
     }
     
     @GetMapping
-    public ResponseEntity<GetMessagesResponse> getMessages(@RequestParam Long roomId, @RequestParam int currentNum) {
-        List<ChatMessage> chatMessages = messageService.getMessages(roomId, currentNum);
+    public ResponseEntity<GetMessagesResponse> getMessages(@RequestParam Long roomId, @RequestParam int displayedMsgNum) {
+        List<Message> messages = messageService.getMessages(roomId, displayedMsgNum);
         GetMessagesResponse response = GetMessagesResponse.builder()
-                .currentNum(currentNum + chatMessages.size())
-                .chatMessages(chatMessages)
+                .displayedMsgNum(DisplayedMsgNumUtils.getNewDisplayedMsgNum(displayedMsgNum, messages.size()))
+                .messages(messages)
                 .build();
         return ResponseEntity.ok(response);
     }

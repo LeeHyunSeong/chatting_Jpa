@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.model.CreateMessage;
+import com.lhs.chatting.model.MultipleInviteMessage;
 import com.lhs.chatting.model.GetRoomsResponse;
 import com.lhs.chatting.model.InviteMessage;
 import com.lhs.chatting.model.InviteUserRequest;
@@ -30,14 +30,14 @@ public class RoomApiController {
     private final RoomService roomService;
 
     @PostMapping
-    public ResponseEntity<CreateMessage> makeRoom(@RequestParam MakeRoomRequest request) {
-        CreateMessage message = roomService.makeRoom(request.getUserIds());
+    public ResponseEntity<MultipleInviteMessage> makeRoom(@RequestParam MakeRoomRequest request) {
+        MultipleInviteMessage message = roomService.makeRoom(request.getHostUserId(), request.getUserIds());
         return ResponseEntity.ok(message);
     }
     
-    @PostMapping("/{roomId}")
-    public ResponseEntity<InviteMessage> inviteFriend(@PathVariable Long roomId, @RequestParam InviteUserRequest request) {
-        InviteMessage message = roomService.inviteFriend(request.getUserId(), roomId, request.getTargetUserId());
+    @PostMapping("/{roomId}/users/{userId}")
+    public ResponseEntity<InviteMessage> inviteFriend(@PathVariable Long roomId, @PathVariable Long userId) {
+        InviteMessage message = roomService.inviteFriend(roomId, userId);
         return ResponseEntity.ok(message);
     }
     

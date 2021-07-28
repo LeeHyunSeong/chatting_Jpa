@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class CreateMessage {
+public class MultipleInviteMessage {
     String contents;
 }

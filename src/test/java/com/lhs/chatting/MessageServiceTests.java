@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.lhs.chatting.model.ChatMessage;
-import com.lhs.chatting.model.CreateMessage;
+import com.lhs.chatting.model.MultipleInviteMessage;
 import com.lhs.chatting.model.RegisterUserRequest;
+import com.lhs.chatting.model.entity.Message;
 import com.lhs.chatting.service.MessageService;
 import com.lhs.chatting.service.RoomService;
 import com.lhs.chatting.service.UserService;
@@ -67,7 +67,7 @@ public class MessageServiceTests {
         List<Long> userIds = new ArrayList<>();
         userIds.add(TEST_USER1_ID);
         userIds.add(TEST_USER2_ID);
-        CreateMessage message = roomService.makeRoom(userIds);
+        MultipleInviteMessage message = roomService.makeRoom(TEST_USER1_ID, userIds);
         Assert.assertEquals("T1님, T2님이 초대되었습니다.", message.getContents());
     }
 
@@ -88,14 +88,15 @@ public class MessageServiceTests {
 
     @Test
     public void t4_getMessages() {
-        List<ChatMessage> responses = messageService.getMessages(TEST_ROOM_ID, 3);
-        ChatMessage firstResponse = responses.stream()
+        List<Message> responses = messageService.getMessages(TEST_ROOM_ID, 3);
+        Message firstResponse = responses.stream()
                 .findFirst()
                 .orElse(null);
         
         Assert.assertEquals(3, responses.size());
         Assert.assertNotNull(firstResponse);
         Assert.assertEquals(TEST_MESSAGE3_ID, firstResponse.getId());
+        Assert.assertEquals("TEST_USER2_CONTENTS1", firstResponse.getContents());
     }
     
     @Test
