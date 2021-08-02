@@ -12,13 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lhs.chatting.model.MultipleInviteMessage;
 import com.lhs.chatting.model.GetRoomsResponse;
 import com.lhs.chatting.model.InviteMessage;
-import com.lhs.chatting.model.InviteUserRequest;
 import com.lhs.chatting.model.LeaveMessage;
 import com.lhs.chatting.model.MakeRoomRequest;
 import com.lhs.chatting.model.MemberRoom;
+import com.lhs.chatting.model.MultipleInviteMessage;
 import com.lhs.chatting.service.RoomService;
 
 import lombok.RequiredArgsConstructor;
