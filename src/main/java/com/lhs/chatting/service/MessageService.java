@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.lhs.chatting.model.ChatMessages;
 import com.lhs.chatting.model.entity.Message;
 import com.lhs.chatting.model.type.MessageType;
 import com.lhs.chatting.repository.MessageRepository;
@@ -25,15 +26,24 @@ public class MessageService {
         return true;
     }
 
-    public List<Message> getMessages(Long roomId, int displayedMsgNum) {
+    public ChatMessages getMessages(Long roomId, int displayedMsgNum) {
         Page<Message> messagePage = repository.findByRoomIdAndMsgTypeOrderByCreatedTimeDesc(roomId, MessageType.MESSAGE, PageRequest.of(displayedMsgNum/DEFAULT_MSG_COUNT_OF_PAGE, DEFAULT_MSG_COUNT_OF_PAGE));
         List<Message> messages = messagePage.getContent();
 
-        return messages;
+        ChatMessages chatMessages = ChatMessages.builder()
+                .displayedMsgNum(getNewDisplayedMsgNum(displayedMsgNum, messages.size()))
+                .messages(messages)
+                .build();
+        
+        return chatMessages;
     }
 
     public Boolean deleteMessage(Long messageId) {
         repository.deleteById(messageId);
         return true;
+    }
+    
+    private int getNewDisplayedMsgNum(int displayedMsgNum, int addedMsgNum) {
+        return (displayedMsgNum / DEFAULT_MSG_COUNT_OF_PAGE) * DEFAULT_MSG_COUNT_OF_PAGE + addedMsgNum;
     }
 }
