@@ -12,11 +12,16 @@ import org.springframework.stereotype.Service;
 
 import com.lhs.chatting.exception.MemberNotFoundException;
 import com.lhs.chatting.exception.UserNotFoundException;
+import com.lhs.chatting.model.InviteMessage;
+import com.lhs.chatting.model.LeaveMessage;
 import com.lhs.chatting.model.MemberRoom;
+import com.lhs.chatting.model.MultipleInviteMessage;
 import com.lhs.chatting.model.entity.Member;
+import com.lhs.chatting.model.entity.Message;
 import com.lhs.chatting.model.entity.Room;
 import com.lhs.chatting.model.entity.User;
 import com.lhs.chatting.repository.MemberRepository;
+import com.lhs.chatting.repository.MessageRepository;
 import com.lhs.chatting.repository.RoomRepository;
 import com.lhs.chatting.repository.UserRepository;
 
@@ -28,30 +33,21 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
     @Transactional
-    public boolean makeRoom(List<Long> userIds) {
+    public MultipleInviteMessage makeRoom(Long hostUserId, List<Long> userIds) {
         Room room = Room.newInstance();
         roomRepository.save(room);
 
         List<User> users = getUsersByIds(userIds);
         inviteUsersToRoom(room, users);
-        return true;    
+        return saveCreateMessage(room.getId(), hostUserId, users);
     }
     
-    public boolean inviteFriend(Long hostUserId, Long roomId, Long targetUserId) {
-        LocalDateTime now = LocalDateTime.now();
-        List<User> users = memberRepository.findAllMemberUsersByRoomId(roomId);
-      
-        Member targetUserMember = Member.builder()
-                .user(User.pseudo(targetUserId))
-                .room(Room.pseudo(roomId))
-                .roomAlias(makeJoinedMemberNameWithoutUser(users, targetUserId))
-                .joinedTime(now)
-                .lastEntranceTime(now)
-                .build();
-        memberRepository.save(targetUserMember);
-        return true;
+    public InviteMessage inviteFriend(Long roomId, Long userId) {
+        saveMemberOfInvitedUser(roomId, userId);
+        return saveInviteMessage(roomId, userId);
     }
     
     public List<MemberRoom> getRooms(Long userId) {
@@ -74,11 +70,11 @@ public class RoomService {
         return true;
     }
     
-    public boolean leaveRoom(Long userId, Long roomId) {
+    public LeaveMessage leaveRoom(Long userId, Long roomId) {
         memberRepository.deleteByUserIdAndRoomId(userId, roomId);
-        return true;
+        return saveLeaveMessage(roomId, userId);
     }
-
+    
     private List<User> getUsersByIds(List<Long> userIds) {
         List<User> users = userRepository.findAllById(userIds);
 
@@ -112,5 +108,48 @@ public class RoomService {
                 .map(User::getNickname)
                 .collect(Collectors.toList());
         return String.join(", ", memberNamesWithoutUser);
+    }
+    
+    private void saveMemberOfInvitedUser(Long roomId, Long userId) {
+        List<User> users = memberRepository.findAllMemberUsersByRoomId(roomId);
+        LocalDateTime now = LocalDateTime.now();
+
+        Member invitedUserMember = Member.builder()
+                .user(User.pseudo(userId))
+                .room(Room.pseudo(roomId))
+                .roomAlias(makeJoinedMemberNameWithoutUser(users, userId))
+                .joinedTime(now)
+                .lastEntranceTime(now)
+                .build();
+      
+        memberRepository.save(invitedUserMember);
+    }
+    
+    private MultipleInviteMessage saveCreateMessage(Long roomId, Long hostUserId, List<User> users) {
+        Message multipleInviteMessage = Message.multipleInviteMessageOf(roomId, hostUserId, users);
+        messageRepository.save(multipleInviteMessage);
+        return MultipleInviteMessage.builder()
+                .contents(multipleInviteMessage.getContents())
+                .build();
+    }
+    
+    private InviteMessage saveInviteMessage(Long roomId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        Message invitedMessage = Message.inviteMessageOf(roomId, user);
+        messageRepository.save(invitedMessage);
+        return InviteMessage.builder()
+                .contents(invitedMessage.getContents())
+                .build();
+    }
+    
+    private LeaveMessage saveLeaveMessage(Long roomId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException(userId));
+        Message leaveMessage = Message.leaveMessageOf(roomId, user);
+        messageRepository.save(leaveMessage);
+        return LeaveMessage.builder()
+                .contents(leaveMessage.getContents())
+                .build();
     }
 }

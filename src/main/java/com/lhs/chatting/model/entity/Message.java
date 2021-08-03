@@ -2,19 +2,20 @@ package com.lhs.chatting.model.entity;
 
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.lhs.chatting.model.type.MessageType;
+import com.lhs.chatting.util.MessageContentsUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,10 +29,7 @@ import lombok.NoArgsConstructor;
         initialValue = 1,
         allocationSize = 1
 )
-@Table(
-        name = "MESSAGE",
-        indexes = @Index(name = "idx_room_id", unique = true, columnList = "room_id")
-)
+@Table(name = "MESSAGE")
 @Builder
 @Getter
 @NoArgsConstructor
@@ -59,7 +57,43 @@ public class Message {
     @Column(name = "created_time")
     private LocalDateTime createdTime;
 
-    public static Message of(Long roomId, Long userId, String contents, MessageType msgType) {
+    public static Message chatMessageOf(Long roomId, Long userId, String contents) {
+        return Message.of(
+                roomId,
+                userId,
+                contents,
+                MessageType.MESSAGE
+        );
+    }
+    
+    public static Message inviteMessageOf(Long roomId, User user) {
+        return Message.of(
+                roomId,
+                user.getId(),
+                MessageContentsUtils.makeInviteMessageContents(user),
+                MessageType.NOTICE
+        );
+    }
+
+    public static Message multipleInviteMessageOf(Long roomId, Long hostUserId, List<User> memberUsers) {
+        return Message.of(
+                roomId,
+                hostUserId,
+                MessageContentsUtils.makeMultipleInviteMessageContents(memberUsers),
+                MessageType.NOTICE
+        );
+    }
+
+    public static Message leaveMessageOf(Long roomId, User user) {
+        return Message.of(
+                roomId,
+                user.getId(),
+                MessageContentsUtils.makeLeaveMessageContents(user),
+                MessageType.NOTICE
+        );
+    }
+    
+    private static Message of(Long roomId, Long userId, String contents, MessageType msgType) {
         return Message.builder()
                 .room(Room.pseudo(roomId))
                 .user(User.pseudo(userId))

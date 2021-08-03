@@ -8,5 +8,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class MakeRoomRequest {
+    Long hostUserId;
     List<Long> userIds;
 }

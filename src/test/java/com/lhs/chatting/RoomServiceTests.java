@@ -12,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.lhs.chatting.model.RegisterUserRequest;
+import com.lhs.chatting.model.InviteMessage;
+import com.lhs.chatting.model.LeaveMessage;
 import com.lhs.chatting.model.MemberRoom;
+import com.lhs.chatting.model.MultipleInviteMessage;
+import com.lhs.chatting.model.RegisterUserRequest;
 import com.lhs.chatting.service.RoomService;
 import com.lhs.chatting.service.UserService;
 
@@ -60,6 +63,7 @@ public class RoomServiceTests {
         Assert.assertTrue(success1);
         Assert.assertTrue(success2);
         Assert.assertTrue(success3);
+
         Assert.assertEquals("test1", userService.getUser(TEST_USER1_ID).getUsername());
         Assert.assertEquals("test2", userService.getUser(TEST_USER2_ID).getUsername());
         Assert.assertEquals("test3", userService.getUser(TEST_USER3_ID).getUsername());
@@ -70,14 +74,14 @@ public class RoomServiceTests {
         List<Long> userIds = new ArrayList<>();
         userIds.add(TEST_USER1_ID);
         userIds.add(TEST_USER2_ID);
-        boolean success = roomService.makeRoom(userIds);
-        Assert.assertTrue(success);
+        MultipleInviteMessage message = roomService.makeRoom(TEST_USER2_ID, userIds);
+        Assert.assertEquals("T1님, T2님이 초대되었습니다.", message.getContents());
     }
 
     @Test
     public void t3_inviteFriend() {
-        boolean success = roomService.inviteFriend(TEST_USER1_ID, TEST_ROOM_ID, TEST_USER3_ID);
-        Assert.assertTrue(success);
+        InviteMessage message = roomService.inviteFriend(TEST_ROOM_ID, TEST_USER3_ID);
+        Assert.assertEquals("T3님이 초대되었습니다.", message.getContents());
     }
 
     @Test
@@ -123,7 +127,7 @@ public class RoomServiceTests {
 
     @Test
     public void t7_leaveRoom() {
-        boolean success = roomService.leaveRoom(TEST_USER3_ID, TEST_ROOM_ID);
-        Assert.assertTrue(success);
+        LeaveMessage message = roomService.leaveRoom(TEST_USER3_ID, TEST_ROOM_ID);
+        Assert.assertEquals("T3님이 나갔습니다.", message.getContents());
     }    
 }
